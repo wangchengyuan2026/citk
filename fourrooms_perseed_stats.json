@@ -1,0 +1,22 @@
+{
+  "purpose": "GLM-5.3 acceptance review: per-seed raw data for Welch t-tests (FourRooms transition coverage), collected independently 2026-10-02",
+  "env": "MiniGrid-FourRooms-v0",
+  "steps": 3000,
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agent_seeds": {"him": "100+seed", "rnd": "200+seed", "random": "default_rng(seed+777)"},
+  "him_transition_coverage_per_seed": [960, 735, 767, 942, 721, 701, 734, 744, 606, 762],
+  "rnd_transition_coverage_per_seed": [965, 685, 745, 974, 753, 735, 757, 815, 684, 721],
+  "rand_transition_coverage_per_seed": [778, 566, 526, 797, 739, 626, 628, 638, 471, 508],
+  "welch_t_tests_two_tailed": {
+    "him_vs_rnd": {"t": -0.342, "df": 18.0, "p": 0.7364, "verdict": "statistically indistinguishable"},
+    "him_vs_rand": {"t": 2.823, "df": 17.9, "p": 0.0113, "verdict": "significant at 0.05"},
+    "rnd_vs_rand": {"t": 3.178, "df": 17.9, "p": 0.0052, "verdict": "significant at 0.01"}
+  },
+  "gradient_check_external_mlp": {
+    "method": "central finite differences vs analytic backprop, ExtMLP([3,5,4,1])",
+    "params_checked": 28,
+    "max_relative_error": 5.59e-10,
+    "verdict": "backprop implementation correct"
+  },
+  "note": "per-seed means/stds reproduce validation_results.json aggregates (767.2/106.9, 783.4/105.0, 627.7/113.9); rounding in the paper table accounts for the 767/783/628 presentation."
+}
