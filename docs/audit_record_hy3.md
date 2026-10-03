@@ -53,6 +53,10 @@
 
 - `paper/CITK_paper.md`（英文投稿稿，含边界声明）— 已同步云端（CIT-K 更名**前**上传的版本，需重新上传新论文后替换此链接）：https://www.workbuddy.cn/space/d/iflakRZ4O3uw5qk3wDS83s
 - `paper/CITK_paper_zh.md`（完整中文版）— 已同步云端（同上，更名前版本）：https://www.workbuddy.cn/space/d/fUSDHPs2yVoYgfboZu3Mqx
+- **最终归档文件夹**（CIT-K 更名后最新论文+完整代码，2026-10 新建于个人空间；上述更名前版本节点保留未删）：https://www.workbuddy.cn/space/d/IBDLNCJQ531LZHJAW9mIVn
+  - 中文论文 doc：https://www.workbuddy.cn/space/d/JQtSrpNE2qQYVH4f64L46i
+  - 英文论文 doc：https://www.workbuddy.cn/space/d/NmmTPuEqUXnplyLSXNI3Mi
+  - 代码打包物 zip（含全部代码+论文+验证结果）：https://www.workbuddy.cn/space/d/554094S1xiN4xRH3i7iVGH
 - 本终审记录 `audit_record_hy3.md`
 
 ## 五、一句话结论
