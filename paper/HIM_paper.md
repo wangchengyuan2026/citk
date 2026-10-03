@@ -186,13 +186,13 @@ The theory's *mechanisms* are not each novel: enactivism / sensorimotor continge
 ### 7.1 Theoretical Lineage and This Paper's Contribution
 This work sits on a continuous research line; we demarcate the manuscripts to avoid duplicate claims:
 - **Foundation (published, Wang, 2018):** *Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation*. Through introspection and commonsense reasoning it proposes a criterion for "machine autonomous motivation" and a minimal "love and hate" model — the philosophical and methodological origin of the theory.
-- **This manuscript (submission):** the **unified** statement that consolidates, in one paper, the theory's *architectural framework* (comfort-gradient drive $L_t/\Delta L_t$, hope mechanism of §2.2, emergent attention/curiosity of §5) **and** its *existence proof* (constructive + empirical, §4.3) with dual/triple-track reproducible validation (§4) and auditable red lines. It does not split the framework and the proof across separate manuscripts; the two are presented together as one coherent claim.
+- **This manuscript (submission):** the **unified** statement that consolidates, in one paper, the theory's *architectural framework* (comfort-gradient drive $L_t/\Delta L_t$, hope mechanism of §2.2, emergent attention/curiosity of §5) **and** its *existence proof* (constructive + empirical, §4.3) with dual-track reproducible validation (§4) and auditable red lines. It does not split the framework and the proof across separate manuscripts; the two are presented together as one coherent claim.
 
 ---
 
 ## 8. Conclusion and the "Base" Claim
 
-HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed, a public-benchmark cross-check, and a large-grid exploration contrast — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
+HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed, and a public-benchmark cross-check — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
 
 ---
 
