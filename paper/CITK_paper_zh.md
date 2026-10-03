@@ -175,7 +175,7 @@ ARC-AGI-3 衡量**外部目标匹配效率**（RHAE）；尽管目标必须*被�
 
 ## 7. 相关工作与独特性
 
-理论的*机制*并非各自新颖：具身行动/感官-运动偶发性（O'Regan & Noë, 2001）、主动推理/自由能（Friston, 2010）、内稳态/内稳态调控强化学习（Keramati & Gutkin, 2014；Yoshida et al., 2025；Tomar, 2026）、Damasio 的内稳态/躯体标记（1999）、Piaget 的感觉运动阶段（1952）、Gibson 的可供性（1979）、Brooks 的无表征智能（1986）、Ashby 的内稳态机（1952）、Braitenberg 的车辆（1984）、Grey Walter 的海龟（1953），以及佛教十二因缘/唯识（种子-存储）与荀子的好利恶害，皆预见了片段。**独特之处在于联结**：一个最小内核 (a) 始于*空白新生体*，(b) 仅经由*被动*因果记忆学习，(c) 仅由单一可算*舒适度梯度* $\Delta L$ 驱动，(d) *可运行于约 119 行*。历史上的最小内核（Braitenberg、Walter、Ashby、Brooks）各自更小，但皆未承载带舒适度梯度变量的完整「从空白学习」叙事。与我们最接近者，**HRRL**（Yoshida et al., 2025）将奖励定义为*驱动减少* $r_t=d(H_t)-d(H_{t+1})$（$d$ 为偏离内稳态设定点的偏离度）；CIT-K 的舒适度梯度 $\Delta L_t=L_t-L_{t-1}$ 在 $d\equiv 1-C$ 下恰为该驱动减少奖励。因此 CIT-K 是 **HRRL 的最小、零网络、零梯度、零内容预训练实例**——该家族最小的可审计成员，而非其对手。我们将 CIT-K 定位为*综合/统一的最小基座*，而非前所未有机制的宣称。
+理论的*机制*并非各自新颖：具身行动/感官-运动偶发性（O'Regan & Noë, 2001）、主动推理/自由能（Friston, 2010）、内稳态/内稳态调控强化学习（Keramati & Gutkin, 2014；Yoshida et al., 2025；Tomar, 2026）、Damasio 的内稳态/躯体标记（1999）、Piaget 的感觉运动阶段（1952）、Gibson 的可供性（1979）、Brooks 的无表征智能（1986）、Ashby 的内稳态机（1952）、Braitenberg 的车辆（1984）、Grey Walter 的海龟（1953），以及佛教十二因缘/唯识（种子-存储）与荀子的好利恶害，皆预见了片段。**独特之处在于联结**：一个最小内核 (a) 始于*空白新生体*，(b) 仅经由*被动*因果记忆学习，(c) 仅由单一可算*舒适度梯度* $\Delta L$ 驱动，(d) *可运行于约 119 行*。历史上的最小内核（Braitenberg、Walter、Ashby、Brooks）各自更小，但皆未承载带舒适度梯度变量的完整「从空白学习」叙事。与我们最接近者，**HRRL**（Yoshida et al., 2025）将奖励定义为*驱动减少* $r_t=d(H_t)-d(H_{t+1})$（$d$ 为偏离内稳态设定点的偏离度）；CIT-K 的舒适度梯度 $\Delta L_t=L_t-L_{t-1}$ 在 $d\equiv 1-C$ 下恰为该驱动减少奖励。因此 CIT-K 是 **HRRL 的最小、零网络、零梯度、零内容预训练实例**——该家族最小的可审计成员，而非其对手。该家族的可扩展端已被独立实证：Yoshida & Kuniyoshi（2025, IEEE ICDL）展示了内稳态驱动在 Crafter 开放结局环境中自发习得觅食、取水、攻击、建造等生存技能——经由深度 RL。CIT-K 占据互补的最小端，即零网络实现同一驱动。我们将 CIT-K 定位为*综合/统一的最小基座*，而非前所未有机制的宣称。
 
 ### 7.1 理论谱系与本文贡献
 本文立足于一条连续的研究线；我们划分文稿以避免重复声明：
@@ -219,6 +219,7 @@ CIT-K 表明，一个空白出生、零数据、由舒适度驱动的智能体�
 - Towers, M., et al. (2023). Gymnasium. *arXiv:2407.17032*.
 - Tomar, D. (2026). From Tension to Resolution: Homeostatic Drive Learning as a Self-Regulating Alternative to Reward-Based Training. Preprint.
 - Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
+- Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
 - （哲学谱系：Schopenhauer、Spinoza、Freud、荀子、佛教阿毗达磨 / 唯识宗。）
 - 王程远 (Wang, C., 2018). 反思智能：存在自主动机的最简机器模型设计. *人工智能与机器人研究*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001.（已发表；奠基）
 
