@@ -51,7 +51,7 @@
 
 ## 四、本次交付物
 
-- `paper/CITK_paper.md`（英文投稿稿，含边界声明）— 已同步云端（HIM→CIT-K 更名**前**的版本，需重新上传新论文后替换此链接）：https://www.workbuddy.cn/space/d/iflakRZ4O3uw5qk3wDS83s
+- `paper/CITK_paper.md`（英文投稿稿，含边界声明）— 已同步云端（CIT-K 更名**前**上传的版本，需重新上传新论文后替换此链接）：https://www.workbuddy.cn/space/d/iflakRZ4O3uw5qk3wDS83s
 - `paper/CITK_paper_zh.md`（完整中文版）— 已同步云端（同上，更名前版本）：https://www.workbuddy.cn/space/d/fUSDHPs2yVoYgfboZu3Mqx
 - 本终审记录 `audit_record_hy3.md`
 
