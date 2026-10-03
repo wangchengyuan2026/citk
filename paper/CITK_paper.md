@@ -211,6 +211,7 @@ CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-e
 ## References
 
 - Ashby, W. R. (1952). *Design for a Brain*. Chapman & Hall.
+- Belikov, A. (2026). Intrinsic Motivation in Reinforcement Learning: A Research Agenda for Adaptive Self-Organisation. arXiv:2609.17325.
 - Braitenberg, V. (1984). *Vehicles: Experiments in Synthetic Psychology*. MIT Press.
 - Brooks, R. (1986). A robust layered control system for a mobile robot. *IEEE JRA*.
 - Burda, Y., Edwards, H., Storkey, A., & Klimov, O. (2018). Exploration by Random Network Distillation. *arXiv:1810.12894*.
@@ -220,19 +221,18 @@ CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-e
 - Gibson, J. J. (1979). *The Ecological Approach to Visual Perception*. Houghton Mifflin.
 - Grey Walter, W. (1953). *The Living Brain*. Duckworth.
 - Keramati, M., & Gutkin, B. (2014). Homeostatic reinforcement learning. *Nature Communications*.
+- Mantiuk, F., Zhou, H., & Wu, C. M. (2025). From Curiosity to Competence: How World Models Interact with the Dynamics of Exploration. arXiv:2507.08210.
 - O'Regan, J. K., & Noë, A. (2001). A sensorimotor account of vision. *BBS*.
+- Pathak, D., Agrawal, P., Efros, A. A., & Darrell, T. (2017). Curiosity-driven exploration by self-supervised prediction. *ICML 2017*. arXiv:1705.05363.
 - Piaget, J. (1952). *The Origins of Intelligence in Children*.
+- Raileanu, R., & Rocktäschel, T. (2020). RIDE: Rewarding impact-driven exploration for procedurally-generated environments. *ICLR 2020*. arXiv:2002.12292.
 - Towers, M., et al. (2023). Gymnasium. *arXiv:2407.17032*.
 - Tomar, D. (2026). From Tension to Resolution: Homeostatic Drive Learning as a Self-Regulating Alternative to Reward-Based Training. Preprint.
+- Wang, C. (2018). Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation. *Artificial Intelligence and Robotics Research*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001. (published; foundation)
 - Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
 - Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
-- Belikov, A. (2026). Intrinsic Motivation in Reinforcement Learning: A Research Agenda for Adaptive Self-Organisation. arXiv:2609.17325.
-- Mantiuk, F., Zhou, H., & Wu, C. M. (2025). From Curiosity to Competence: How World Models Interact with the Dynamics of Exploration. arXiv:2507.08210.
-- Pathak, D., Agrawal, P., Efros, A. A., & Darrell, T. (2017). Curiosity-driven exploration by self-supervised prediction. *ICML 2017*. arXiv:1705.05363.
-- Raileanu, R., & Rocktäschel, T. (2020). RIDE: Rewarding impact-driven exploration for procedurally-generated environments. *ICLR 2020*. arXiv:2002.12292.
 - Zhang, T., Xu, H., Wang, X., Wu, Y., Keutzer, K., Gonzalez, J. E., & Tian, Y. (2021). NovelD: A simple yet effective exploration criterion. *NeurIPS 2021*.
 - (and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
-- Wang, C. (2018). Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation. *Artificial Intelligence and Robotics Research*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001. (published; foundation)
 
 ---
 
