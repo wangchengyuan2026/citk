@@ -1,0 +1,183 @@
+{
+  "track": "C_grid100_exploration",
+  "grid": 100,
+  "steps": 30000,
+  "free_cells": 10000,
+  "him": {
+    "coverage_mean": 0.4693,
+    "coverage_std": 0.0177,
+    "stuck_rate": 0.0,
+    "seeds": 10
+  },
+  "fep_surprise_min": {
+    "coverage_mean": 0.0018,
+    "coverage_std": 0.0001,
+    "stuck_rate": 1.0,
+    "seeds": 10
+  },
+  "fep_with_epistemic": {
+    "coverage_mean": 0.0044,
+    "coverage_std": 0.0019,
+    "stuck_rate": 1.0,
+    "seeds": 10
+  },
+  "note": "FEP baseline = surprise-minimization (pragmatic free-energy) variant; adding an epistemic (information-gain) term escapes the trap (see fep_with_epistemic), confirming the critique targets the dominant stationary-env 'keep-still optimum', not expected free energy per se.",
+  "per_seed": {
+    "him": [
+      {
+        "coverage": 0.4652,
+        "stuck": false,
+        "new_last_k": 269
+      },
+      {
+        "coverage": 0.4942,
+        "stuck": false,
+        "new_last_k": 383
+      },
+      {
+        "coverage": 0.4703,
+        "stuck": false,
+        "new_last_k": 248
+      },
+      {
+        "coverage": 0.4649,
+        "stuck": false,
+        "new_last_k": 169
+      },
+      {
+        "coverage": 0.483,
+        "stuck": false,
+        "new_last_k": 186
+      },
+      {
+        "coverage": 0.4526,
+        "stuck": false,
+        "new_last_k": 171
+      },
+      {
+        "coverage": 0.4928,
+        "stuck": false,
+        "new_last_k": 122
+      },
+      {
+        "coverage": 0.4495,
+        "stuck": false,
+        "new_last_k": 187
+      },
+      {
+        "coverage": 0.4391,
+        "stuck": false,
+        "new_last_k": 324
+      },
+      {
+        "coverage": 0.4816,
+        "stuck": false,
+        "new_last_k": 259
+      }
+    ],
+    "fep": [
+      {
+        "coverage": 0.0017,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0019,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0018,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0019,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0019,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.002,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0018,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0019,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0017,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0018,
+        "stuck": true,
+        "new_last_k": 0
+      }
+    ],
+    "fep_epistemic": [
+      {
+        "coverage": 0.0016,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0027,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0061,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0063,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0065,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.002,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.006,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0031,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0064,
+        "stuck": true,
+        "new_last_k": 0
+      },
+      {
+        "coverage": 0.0035,
+        "stuck": true,
+        "new_last_k": 0
+      }
+    ]
+  }
+}

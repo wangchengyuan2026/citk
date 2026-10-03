@@ -10,8 +10,9 @@ plt.rcParams["axes.unicode_minus"] = False
 
 from him_env import run_own_track
 from him_minigrid import run_minigrid_track
+from him_grid100 import run_grid100_track
 
-OUT = "/workspace/him_validation"
+OUT = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(OUT, exist_ok=True)
 
 # ---------- Track A：自建规范测试台 ----------
@@ -19,12 +20,16 @@ A = run_own_track(steps=6000)
 
 # ---------- Track B：真·MiniGrid 公开基准（HIM vs RND vs Random）----------
 B_empty = run_minigrid_track("MiniGrid-Empty-8x8-v0", steps=3000,
-                             seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+                            seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 B_four = run_minigrid_track("MiniGrid-FourRooms-v0", steps=3000,
                            seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 
-results = {"A_own_canonical": A, "B_minigrid_empty": B_empty, "B_minigrid_four": B_four}
-with open(f"{OUT}/validation_results.json", "w") as f:
+# ---------- Track C：100×100 网格 HIM vs FEP 探索对比 ----------
+C = run_grid100_track()
+
+results = {"A_own_canonical": A, "B_minigrid_empty": B_empty,
+           "B_minigrid_four": B_four, "C_grid100_exploration": C}
+with open(os.path.join(OUT, "validation_results.json"), "w") as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 print("wrote validation_results.json")
 

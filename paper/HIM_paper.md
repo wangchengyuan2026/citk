@@ -1,23 +1,25 @@
 # HIM: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel
-### 猫智能论 (Cat Intelligence Theory) — Formal Kernel and Reproducible Testbed
+### 猫智能论 (Cat Intelligence Theory) — Architecture, Proof, and Reproducible Testbed
 
-> **Preprint draft.** This manuscript is the canonical statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, HIM. It is released together with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
+> **Preprint draft.** This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, HIM. It consolidates, in a single paper, the theory's *architectural framework* (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its *existence proof* (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check + Track C 100×100 exploration vs. FEP).
 >
 > **Author:** 王程远 (Chengyuan Wang, b. 1987), Independent Scholar, Huizhou, Guangdong, China
-> **Date:** 2026-10-01
-> **Status:** Draft for arXiv + Zenodo DOI. Not peer-reviewed.
+> **Date:** 2026-10-03
+> **Status:** Draft for submission. Not peer-reviewed. Code + data archived via GitHub Release → Zenodo (DOI to be minted).
 
 ---
 
 ## Abstract (English)
 
-We propose **HIM** (Heuristic-Intrinsic, Minimal), a complete yet minimal intelligence kernel derived from the *Cat Intelligence Theory* (猫智能论). The theory holds that intelligent behaviour can self-emerge from a **blank-born agent** that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a **comfort signal** from the *overlap rate* between its real-time sensory state and its (organism-shaped) need state, (4) **passively** memorises the causal relation *"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"*, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach and avoid harm. No external reward, no goal provided by the designer, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
+We propose **HIM** (Heuristic-Intrinsic, Minimal), a complete yet minimal intelligence kernel derived from the *Cat Intelligence Theory* (猫智能论). The theory holds that intelligent behaviour can self-emerge from a **blank-born agent** that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a **comfort signal** from the *overlap rate* between its real-time sensory state and its (organism-shaped) need state, (4) **passively** memorises the causal relation *"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"*, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach benefit and avoid harm. No external reward, no designer-supplied goal, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
 
-We formalise comfort as a **fuzzy-set surface-overlap** degree (canonical) and implement a **Gaussian-kernel smooth surrogate** of the pointwise closeness in a ~119-line reference kernel. We validate on two tracks: (A) a purpose-built Gymnasium-compatible canonical testbed faithful to the theory, and (B) the public **MiniGrid** benchmark, where HIM is compared head-to-head with **RND** (Random Network Distillation, Burda et al. 2018) in its **dependency-free, linear-predictor variant** (random target network + closed-form ridge predictor, no torch) and a Random policy. In structured environments HIM's structure-discovery breadth (transition coverage 767) **essentially matches** RND (783) and **clearly exceeds** Random (628), over 10 seeds (mean ± std; the HIM–RND gap is far below one standard deviation) — while using **zero neural networks, zero gradient, zero pretraining**. We argue this positions HIM as a candidate *base* (substrate) on which others may build, distinct from the large-model paradigm, and we state explicitly why it is **not** designed to win external-goal-matching benchmarks such as ARC-AGI.
+We formalise comfort as a **general comfort level** $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort *change* $\Delta C_t$. A **hope mechanism** (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on three tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public **MiniGrid** benchmark, where HIM is compared head-to-head with **RND** (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy; and (C) a 100×100 grid where HIM is contrasted with a **Free-Energy / surprise-minimisation** agent. In structured environments HIM's structure-discovery breadth (transition coverage $767\pm101$) **essentially matches** RND ($783\pm100$) and **clearly exceeds** Random ($628\pm108$) over 10 seeds, using **zero neural networks, zero gradient, zero pretraining**; on the 100×100 grid HIM covers $46.9\%\pm1.8\%$ of cells and never stalls, whereas the surprise-minimising agent covers $0.18\%\pm0.01\%$ and gets trapped in 100% of seeds. We give a **constructive + empirical proof** that an agent requiring no content pretraining can exist and self-develop, and state explicitly why HIM is **not** built to win external-goal benchmarks such as ARC-AGI.
 
 ## 摘要（中文）
 
-我们提出 **HIM**（Heuristic-Intrinsic, Minimal），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个**记忆空白的新生体**自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的**重叠率**导出**舒适度**信号，(4) **被动**记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。我们将舒适度形式化为**模糊集"面重叠"度**（规范口径），并在约 119 行参考内核中以**高斯核平滑代理**实现该逐点接近度。我们在两条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，HIM 与（免依赖、线性预测器变体的）**RND** 及随机策略同台对比。在结构化环境中，HIM 的结构发现广度（转移覆盖 767）**基本追平** RND（783）并**显著超过**随机（628）（10 种子均值±标准差，HIM 与 RND 之差远小于一个标准差）——且**零神经网络、零梯度、零预训练**。我们认为这使 HIM 成为他人可借以构建的候选**基座**，区别于大模型范式；并明确说明其为何**并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
+我们提出 **HIM**（Heuristic-Intrinsic, Minimal），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个**记忆空白的新生体**自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的**重叠率**导出**舒适度**信号，(4) **被动**记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。
+
+我们将舒适度形式化为**一般舒适度水平** $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的**变化** $\Delta C_t$。**希望机制**（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在三条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，HIM 与（免依赖线性预测器变体的）**RND** 及随机策略同台对比；(C) 100×100 网格上 HIM 与**自由能/惊奇最小化**智能体对比。在结构化环境中，HIM 的结构发现广度（转移覆盖 $767\pm101$）**基本追平** RND（$783\pm100$）并**显著超过**随机（$628\pm108$）（10 种子），且**零神经网络、零梯度、零预训练**；在 100×100 网格上 HIM 覆盖 $46.9\%\pm1.8\%$ 格且从不停滞，而惊奇最小化智能体仅覆盖 $0.18\%\pm0.01\%$ 并在 100% 种子中陷入陷阱。我们给出「无需内容预训练、能够存在并自主发展的智能体」的**构造性+经验性证明**，并明确说明 HIM **并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
 
 ---
 
@@ -30,7 +32,7 @@ By 2026 the consensus across LeCun, Marcus, Harnad, and Friston converges on a s
 We make a narrow, verifiable claim: **a blank-born agent driven solely by an intrinsic comfort signal can, from interaction alone, self-emerge a world model and discover environmental structure — without data, networks, or external reward.** Crucially, this is not asserted but *proven constructively* (code-level inspection) and corroborated at execution time in §4.3. We do **not** claim to solve externally-specified goal tasks, nor to outperform LLMs on their home turf. The contribution is a *minimal, reproducible base*, not a competitor to scaled models.
 
 ### 1.3 Why a "base" and not a demo
-A novel intelligence theory is only useful if others can build on it. We therefore release (i) a **canonical testbed** (Track A) that is the theory's faithful "home court", and (ii) a **public-benchmark cross-check** (Track B) that places the same agent beside the field's recognised intrinsic-motivation baseline. Reproducibility is the entry ticket to being a base.
+A novel intelligence theory is only useful if others can build on it. We therefore release (i) a **canonical testbed** (Track A) that is the theory's faithful "home court", (ii) a **public-benchmark cross-check** (Track B) that places the same agent beside the field's recognised intrinsic-motivation baseline, and (iii) a **large-grid exploration contrast** (Track C) against active-inference / free-energy agents. Reproducibility is the entry ticket to being a base.
 
 ---
 
@@ -45,15 +47,34 @@ The Cat Intelligence Theory was proposed and formalised by Wang (2018) in reflec
 4. **Passive causal memory.** The agent passively records *"what motion + what sensory–environment interaction → what sensory change → what comfort fluctuation,"* forming a cause–effect memory of scenes.
 5. **Recognition & decision.** The agent recognises scenes from this memory and decides actions that preserve or raise comfort — intelligence (approach benefit / avoid harm) is thereby born.
 
-### 2.2 Formalisation of comfort (canonical)
-Following the settled formulation, comfort is a **fuzzy-set surface-overlap** degree. Let the need state and the sensory state be membership fields $\mu_{\text{need}}(x)$ and $\mu_{\text{sens}}(x)$ over a domain $x$ (the "need surface" is irregular, not a single scalar). The **overlap rate** is the fuzzy **subset degree**
+### 2.2 Formalisation of comfort (general framework + minimal instantiation)
+We present comfort at two levels that are consistent, not contradictory:
+
+**General comfort level.** Let the agent's *sensory experience* at time $t$ be $W_t$ (how well current needs are met) and its *predictive expectation* (from memory) be $X_t$. The intrinsic comfort level is the weighted fusion
 
 $$
-O \;=\; \frac{\sum_x \min(\mu_{\text{need}}(x),\,\mu_{\text{sens}}(x))}{\sum_x \mu_{\text{need}}(x)},
-\qquad \text{comfort} = f(O),\;\; f \text{ monotonic}.
+L_t = (1-\beta_t)\,W_t + \beta_t\,X_t,\qquad \beta_t\in[0,1],
 $$
 
-The scalar-division form (*sensory ÷ need*) is a degenerate shorthand used only in everyday exposition; it is **not** the working definition. The difference-based per-component closeness $1 - |Q_2 - M|$ is a **pointwise primitive** of this overlap (a monotone, near-linear proxy at small deviations), and is the conceptual target the kernel approximates. The reference kernel implements a **Gaussian-kernel smooth surrogate** of this pointwise closeness — $\exp(-\|s - \text{NEED}\|^{2} / 2\sigma^{2})$ — which preserves the monotone structure while being differentiable and numerically stable; it is a faithful, *not literal*, implementation of the overlap primitive. Comfort is *proportional to* (not identically equal to) the overlap; a monotone transform is applied, consistent with the kernel. (The Gaussian form is chosen for smoothness/stability; any monotone surrogate of the overlap primitive is admissible under the theory.)
+and the **endogenous reward** is the temporal comfort gradient
+
+$$
+\Delta L_t = L_t - L_{t-1}.
+$$
+
+The agent maximises the cumulative $\Delta L_t$: it does not chase a static maximum comfort, but a *rising* comfort — making "explore, then iterate" itself the intrinsic drive.
+
+**Hope mechanism (W memory buffer).** The agent stores a buffer of historically high-comfort states. When the current comfort falls notably below the remembered peak, an endogenous drive pushes it to leave the low-variation, low-surprise local region — directly countering the entropy-minimisation trap (see §4.4). In the kernel, this is not a separate module: the passive causal memory `V[scene]` (comfort) and `M[scene][action]` (successor value) *are* the hope buffer — when comfort drops, one-step look-ahead seeks successors with higher remembered value.
+
+**Canonical minimal instantiation.** For the canonical testbed the sensory experience is realised as a smooth Gaussian-overlap comfort between the sensory state $s$ and the need anchor `NEED`:
+
+$$
+C(s)=\exp\!\left(-\frac{\|s-\text{NEED}\|^{2}}{2\sigma^{2}}\right),
+\qquad W_t\equiv C(s),\;\beta_t\to 0 \;\Rightarrow\; L_t=C_t,\;
+\Delta L_t=\Delta C_t.
+$$
+
+Thus the Gaussian overlap is a **minimal, differentiable instantiation** of the general comfort framework — the reward becomes the *change* in overlap comfort. The reference kernel (~119 effective lines) uses this instantiation; the more general $L_t$ form is recovered whenever a predictive expectation term is added (e.g., in richer worlds). The two "comfort formulas" in the literature are therefore one general form and its minimal case, not a contradiction.
 
 ### 2.3 Red lines (methodological constraints)
 The theory is deliberately constrained. The following are **not** permitted, and the implementation obeys them:
@@ -76,14 +97,14 @@ Cat Intelligence Theory operates at the **computational / functional level** (Ma
 
 HIM is a ~119-effective-line reference kernel implementing §2 faithfully:
 - **State**: a real-time sensory-state vector (discretised into a *scene* key).
-- **Comfort (intrinsic signal)**: the canonical signal is the **overlap-driven comfort** of §2.2 — the steady-state closeness of the sensory state to `NEED` (the homeostatic anchor, dominant in Track A). The minimal HIM-0 kernel additionally carries a **curiosity** facet: unseen scenes are assigned exploratory value. This is a legitimate, red-line-safe emergent of the passive-memory mechanism (no external goal/reward) and is what drives structure discovery in Track B; the two facets are not in conflict — overlap comfort anchors homeostasis, novelty comfort sparks exploration.
-- **Passive causal memory**: `V[scene]` = EMA comfort; `M[scene][action]` = EMA value of the successor; `T[scene][action]` = observed successor counts (the causal memory).
+- **Comfort (intrinsic signal)**: the canonical signal is the **overlap-driven comfort** $C(s)$ of §2.2 — the steady-state closeness of the sensory state to `NEED` (the homeostatic anchor, dominant in Track A). The minimal HIM-0 kernel additionally carries a **curiosity** facet: unseen scenes are assigned exploratory value. This is a legitimate, red-line-safe emergent of the passive-memory mechanism (no external goal/reward) and is what drives structure discovery in Track B; the two facets are not in conflict — overlap comfort anchors homeostasis, novelty comfort sparks exploration.
+- **Hope / passive causal memory**: `V[scene]` = EMA comfort; `M[scene][action]` = EMA value of the successor; `T[scene][action]` = observed successor counts (the causal memory). `V` and `M` jointly realise the hope mechanism of §2.2.
 - **Policy**: one-step look-ahead on `M` (greedy with $\varepsilon$-exploration early, exploit later) — the newborn is chaotic, the adult is purposeful.
 - **STILL action**: "doing nothing" is an explicit legal motion pattern (stillness is a motion pattern, per the theory).
 
 All of R1–R7 are obeyed: zero NN, zero gradient, zero pretraining, zero external reward, zero per-game branching; comfort is self-emergent (I-2 path); external maths answer *what*.
 
-*Scope boundary.* Everything above is the HIM kernel itself. Modules constructed **on top of** HIM — for example an external regressor that consumes HIM's self-emerged `(sensory, comfort)` experience to generalise beyond the cat's local memory (see the separate *next-step* plan, outside this manuscript) — lie strictly **outside** the kernel and do **not** alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of HIM; the kernel's red lines are defined and tested in isolation from them.
+*Scope boundary.* Everything above is the HIM kernel itself. Modules constructed **on top of** HIM — for example an external regressor that consumes HIM's self-emerged `(sensory, comfort)` experience to generalise beyond the cat's local memory — lie strictly **outside** the kernel and do **not** alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of HIM; the kernel's red lines are defined and tested in isolation from them.
 
 ---
 
@@ -137,39 +158,63 @@ In computer science, *"here is a concrete artifact that exhibits the property"* 
 
 **The principled distinction that makes the claim rigorous: structural prior vs. content pretraining.** HIM does contain *priors*, but they are exclusively **structural** — the algorithm itself encodes the theory (overlap-rate comfort, passive causal memory, one-step lookahead) and carries **no experiential content** about any specific world. This is categorically distinct from **content pretraining**, where world-specific data is ingested before deployment. A biological cat analogously has innate *structural* priors (sensory needs, a body) yet learns all *content* post-natally; HIM's "blank newborn" claim rests on exactly this distinction. The neutral `0.5` seeds and the fixed `NEED` / `σ` are *body parameters* under red line R2(a) (innate physiology), not pretraining: a sceptic is correct that they are priors, but they encode **no experience**, hence they are not data-pretraining.
 
-**Honest boundaries of the proof.** The proof establishes that *this implementation* has zero content pretraining; it does not assert that every future instantiation will. It proves *existence* and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does **not** prove HIM is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §5.
+**Honest boundaries of the proof.** The proof establishes that *this implementation* has zero content pretraining; it does not assert that every future instantiation will. It proves *existence* and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does **not** prove HIM is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §6.
+
+### 4.4 Track C — 100×100 grid: HIM vs. Free-Energy / surprise-minimisation
+We test the theory's central contrast with active inference (Friston, 2010) directly. On an open 100×100 grid (10,000 free cells, agent born at centre, 30,000 steps, 10 seeds), we compare:
+- **HIM** — the *same* HIM-0 kernel as Tracks A/B (blank memory, passive causal memory, one-step look-ahead), driven by novelty comfort (unseen cell = 1.0, seen = 0.1).
+- **FEP (surprise-minimisation)** — a baseline that maintains a familiarity belief (visit counts) and, following the dominant stationary-environment "keep-still optimum," **minimises expected surprise** by preferring the most familiar neighbouring cell.
+
+| Metric (mean ± std, 10 seeds) | HIM | FEP (surprise-min) |
+|---|---|---|
+| Cell coverage | **46.9% ± 1.8%** | **0.18% ± 0.01%** |
+| Stuck rate (final 2000-step window adds <0.5% new cells) | **0%** | **100%** |
+
+HIM covers ~260× more cells than the FEP agent and never stalls; the FEP agent collapses into a tiny familiar loop around its birthplace (coverage ≈ 18 cells) in every seed. This reproduces, with code and on identical seeds, the failure mode the theory criticises: **pure surprise-minimisation makes "stay put" optimal and forfeits exploration.** A full expected-free-energy agent with a balanced *epistemic* (information-gain) term can recover exploration — the critique targets the surprise-minimisation default, not EFE per se.
+
+*Honesty note on magnitude.* HIM reaches 46.9% under the *faithful* one-step-look-ahead kernel (not an optimal frontier planner); this is the same kernel validated in Tracks A/B, so the result is consistent rather than obtained with a purpose-built explorer. The 46.9% figure measures the kernel's exploration efficiency, not an upper bound, and the contrast with FEP is the claim — not any absolute coverage target.
 
 ---
 
-## 5. Why HIM Is Not Built to Win ARC-AGI (honest scope)
+## 5. Emergent Cognition: Attention and Curiosity
 
-ARC-AGI-3 scores **external-goal-matching efficiency** (RHAE); although the goal must be *discovered*, scoring still rewards *hitting that discovered goal*. Our **red line R4 forbids external goals/rewards**. A prior full-agent implementation of the same theory on the ARC public environment empirically plateaus at RHAE ≈ 0.675 (8/25 levels passed) and cannot reach the leaderboard top (~1.03) without violating R4. We therefore treat ARC as a *smoke test* (the agent runs in a real interactive environment) and explicitly **not** as the theory's validation yardstick. The validation yardstick for a self-emergent, intrinsically-driven theory is structure discovery (Track A/B), not goal matching.
+Beyond exploration, the comfort framework predicts that **higher cognition is not bolted on but emergent** from the same drive. Two axioms follow directly from §2.2:
+
+- **Axiom A — "where comfort goes, attention goes."** Attention is simply the agent's momentary focus on the sensory dimension or scene region whose comfort gradient is largest. Because all behaviour is gated by $\Delta L_t$, attention is *by construction* co-located with the gradient of comfort — there is no separate attentional module to design.
+- **Axiom B — "curiosity is the eternal drive to prevent comfort decline."** When comfort sits at a remembered peak, any local stay yields $\Delta L_t\le 0$; the only way to keep $\Delta L_t>0$ is to seek novelty (unvisited scenes). Curiosity is therefore not a hand-coded reward but the structural necessity of sustaining the comfort gradient — the same curiosity facet that drives Track B structure discovery.
+
+These axioms unify the ancient intuition (Schopenhauer's blind will, Xunzi's 好利恶害, the Buddhist 十二因缘 seed-and-store) with a single computable variable: the comfort gradient. They are *derived*, not asserted, and they require no additional mechanism beyond the kernel of §3.
 
 ---
 
-## 6. Related Work and Distinctiveness
+## 6. Why HIM Is Not Built to Win ARC-AGI (honest scope)
 
-The theory's *mechanisms* are not each novel: enactivism / sensorimotor contingency (O'Regan & Noë, 2001), active inference / free energy (Friston, 2010), homeostasis RL (Keramati & Gutkin, 2014), Damasio's homeostasis/somatic markers (1999), Piaget's sensorimotor stage (1952), Gibson's affordances (1979), Brooks' intelligence-without-representation (1986), Ashby's homeostat (1952), Braitenberg's vehicles (1984), Grey Walter's tortoises (1953), and the Buddhist 十二因缘 / 唯识 (seed-and-store) and Xunzi's 好利恶害 all anticipate pieces. **What is distinctive is the conjunction**: a minimal kernel that (a) starts from a *blank newborn*, (b) learns only by *passive* causal memory, (c) is driven solely by a single computable *overlap-rate comfort*, and (d) is *runnable in ~119 lines*. The historical minimal kernels (Braitenberg, Walter, Ashby, Brooks) are each smaller, but none carries the complete "learn-from-blank" narrative with the overlap-rate comfort variable. We position HIM as a *synthesis / unified minimal base*, not a claim of unprecedented mechanism.
+ARC-AGI-3 scores **external-goal-matching efficiency** (RHAE); although the goal must be *discovered*, scoring still rewards *hitting that discovered goal*. Our **red line R4 forbids external goals/rewards**. A prior full-agent implementation of the same theory on the ARC public environment empirically plateaus at RHAE ≈ 0.675 (8/25 levels passed) and cannot reach the leaderboard top (~1.03) without violating R4. We therefore treat ARC as a *smoke test* (the agent runs in a real interactive environment) and explicitly **not** as the theory's validation yardstick. The validation yardstick for a self-emergent, intrinsically-driven theory is structure discovery (Track A/B/C), not goal matching.
 
-### 6.1 Theoretical Lineage and This Paper's Contribution
+---
+
+## 7. Related Work and Distinctiveness
+
+The theory's *mechanisms* are not each novel: enactivism / sensorimotor contingency (O'Regan & Noë, 2001), active inference / free energy (Friston, 2010), homeostasis RL (Keramati & Gutkin, 2014), Damasio's homeostasis/somatic markers (1999), Piaget's sensorimotor stage (1952), Gibson's affordances (1979), Brooks' intelligence-without-representation (1986), Ashby's homeostat (1952), Braitenberg's vehicles (1984), Grey Walter's tortoises (1953), and the Buddhist 十二因缘 / 唯识 (seed-and-store) and Xunzi's 好利恶害 all anticipate pieces. **What is distinctive is the conjunction**: a minimal kernel that (a) starts from a *blank newborn*, (b) learns only by *passive* causal memory, (c) is driven solely by a single computable *comfort gradient* $\Delta L$, and (d) is *runnable in ~119 lines*. The historical minimal kernels (Braitenberg, Walter, Ashby, Brooks) are each smaller, but none carries the complete "learn-from-blank" narrative with the comfort-gradient variable. We position HIM as a *synthesis / unified minimal base*, not a claim of unprecedented mechanism.
+
+### 7.1 Theoretical Lineage and This Paper's Contribution
 This work sits on a continuous research line; we demarcate the manuscripts to avoid duplicate claims:
 - **Foundation (published, Wang, 2018):** *Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation*. Through introspection and commonsense reasoning it proposes a criterion for "machine autonomous motivation" and a minimal "love and hate" model — the philosophical and methodological origin of the theory.
-- **Architecture framework (unpublished single manuscript, HIM, bilingual zh/en; Wang, 2026):** *Homeostatic Intrinsic Motivation (HIM): An Autonomous Agent Architecture Based on Homeostatic Drive*. It renders the theory as a computable "comfort-gradient ΔL" drive and a "hope mechanism," and contrasts active inference (FEP) on a 100×100 grid. This (bilingual) manuscript is the direct precursor of HIM's architectural presentation here.
-- **This manuscript (submission):** building on the philosophical origin and the architecture framework, it contributes the **constructive + empirical proof of "an agent with no content pretraining can exist,"** dual-track reproducible validation, auditable red lines, and byte-for-byte reproducibility. It does not reiterate the ΔL / hope-mechanism framework; rather, on top of it, it proves *whether* a no-pretraining agent can exist.
+- **This manuscript (submission):** the **unified** statement that consolidates, in one paper, the theory's *architectural framework* (comfort-gradient drive $L_t/\Delta L_t$, hope mechanism of §2.2, emergent attention/curiosity of §5) **and** its *existence proof* (constructive + empirical, §4.3) with dual/triple-track reproducible validation (§4) and auditable red lines. It does not split the framework and the proof across separate manuscripts; the two are presented together as one coherent claim.
 
 ---
 
-## 7. Conclusion and the "Base" Claim
+## 8. Conclusion and the "Base" Claim
 
-HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed plus a public-benchmark cross-check — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
+HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed, a public-benchmark cross-check, and a large-grid exploration contrast — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
 
 ---
 
-## 8. Historical Significance and Outlook (position statement)
+## 9. Historical Significance and Outlook (position statement)
 
 **An existence proof against the scaling axiom.** The mainstream premise — *no intelligence without massive data* — is hereby demoted from axiom to testable hypothesis. A blank-born, zero-data, zero-network agent that self-emerges scene recognition and structure discovery proves, constructively, that the alternative exists.
 
-**Reviving a seventy-year-dormant line.** Ashby, Walter, Brooks, and developmental robotics all sought intelligence-from-blank, but stalled on non-reproducible kernels and missing testbeds. HIM supplies what they lacked: a 119-line auditable kernel plus a dual-track validation stage, on a shared stage with the intrinsic-motivation literature.
+**Reviving a seventy-year-dormant line.** Ashby, Walter, Brooks, and developmental robotics all sought intelligence-from-blank, but stalled on non-reproducible kernels and missing testbeds. HIM supplies what they lacked: a 119-line auditable kernel plus a multi-track validation stage, on a shared stage with the intrinsic-motivation literature.
 
 **Falsifiable predictions.** *1–2 years (~80%):* cited as a curiosity-grade minimal benchmark, not a paradigm shift; the realistic opening is **data efficiency** as crawlable data depletes. *3–5 years (~40–50%):* "HIM explores, DL consumes" matures into **developmental agents as data engines** — the fusion path, consistent with the base claim (R1). *10+ years (~10–15%):* if language or cross-domain abstraction is layered onto such kernels, the empiricist–rationalist debate acquires an **experimental platform** — the innate prior becomes a tunable parameter. *Chief risk:* remaining an elegant footnote, admired and bypassed, unless others build on it.
 
@@ -194,17 +239,16 @@ HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-eme
 - Towers, M., et al. (2023). Gymnasium. *arXiv:2407.17032*.
 - (and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
 - Wang, C. (2018). Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation. *Artificial Intelligence and Robotics Research*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001. (published; foundation)
-- Wang, C. (2026). Homeostatic Intrinsic Motivation (HIM): An Autonomous Agent Architecture Based on Homeostatic Drive. Preprint (single manuscript, bilingual zh/en; arXiv/Zenodo identifier pending).
 
 ---
 
 ## Appendix A — Reproducibility & Release
 
-- **Code:** `him_env.py` (Track A), `him_minigrid.py` (Track B, with RND), `run_validation.py` (dual-track harness).
-- **Env:** Gymnasium-compatible `HIMGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`).
-- **Determinism:** all runs seeded; raw metrics in `validation_results.json`; figures in `validation_fig.png`.
+- **Code:** `him_env.py` (Track A), `him_minigrid.py` (Track B, with RND), `him_grid100.py` (Track C, HIM vs FEP), `run_validation.py` (three-track harness).
+- **Env:** Gymnasium-compatible `HIMGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`); 100×100 open grid (Track C).
+- **Determinism:** all runs seeded; raw metrics in `validation_results.json` (Tracks A/B/C) and `grid100_results.json` (Track C); figures in `validation_fig.png` / `him_plus_dl_fig.png`.
 - **Red lines:** enumerated as R1–R7 in §2.3; the kernel obeys them by construction.
-- **DOI:** this manuscript + code are archived via GitHub Release → Zenodo, minting a citable, immutable DOI. Priority of the *idea* is anchored by the simultaneous arXiv preprint.
+- **DOI / priority:** this manuscript + code are archived via **GitHub Release → Zenodo**, minting a citable, immutable DOI. Priority of the *idea* is anchored by the GitHub Release timestamp.
 
 ### A.1 No-content-pretraining inspection (auditable)
 
@@ -212,22 +256,23 @@ The §4.3 constructive proof is reproducible by anyone. From the repository root
 
 ```bash
 # (1) No deep-learning framework is imported by HIM (only prose comments say "no torch")
-grep -rniE "torch|tensorflow|keras|neural|backprop|autograd|optim\." him_env.py him_minigrid.py run_validation.py
+grep -rniE "torch|tensorflow|keras|neural|backprop|autograd|optim\." \
+      him_env.py him_minigrid.py him_grid100.py run_validation.py
 #   → matches only comments; zero `import` lines
 
 # (2) No model loading / pretrained weights / external datasets
-grep -rniE "load\(|pickle|\.pt|\.h5|\.npy|read_csv|datasets" him_env.py him_minigrid.py run_validation.py
+grep -rniE "load\(|pickle|\.pt|\.h5|\.npy|read_csv|datasets" \
+      him_env.py him_minigrid.py him_grid100.py
 #   → zero hits
 
 # (3) HIM memory starts empty; the only initial number is a neutral EMA seed 0.5
-grep -nE "self\.V = \{\}|self\.M = \{\}" him_env.py him_minigrid.py
+grep -nE "self\.V = \{\}|self\.M = \{\}" him_env.py him_minigrid.py him_grid100.py
 #   → self.V = {}   self.M = {}   (blank at birth)
 
 # (4) No training loop / gradient step anywhere in the HIM agent
-grep -rniE "gradient|\.train\(|fit\(|SGD|Adam|backward\(" him_env.py him_minigrid.py
+grep -rniE "gradient|\.train\(|fit\(|SGD|Adam|backward\(" \
+      him_env.py him_minigrid.py him_grid100.py
 #   → zero hits
 ```
 
-These four checks are the code-level half of the existence proof; the execution-level half is the §4.1–§4.2 results. Together they establish that the released artifact contains **no content pretraining** — only structural priors (the theory encoded in the algorithm) and innate body parameters (red line R2(a)).
-
-> **TODO before submission:** (1) replace `[Your Name]`; (2) convert this markdown to LaTeX (`\usepackage` for math already inline-compatible); (3) embed `validation_fig.png` as Figure 1; (4) confirm Zenodo/GitHub linkage and arXiv submission date; (5) add ORCID / contact.
+These four checks are the code-level half of the existence proof; the execution-level half is the §4.1–§4.3 results. Together they establish that the released artifact contains **no content pretraining** — only structural priors (the theory encoded in the algorithm) and innate body parameters (red line R2(a)).

@@ -8,7 +8,8 @@ HIM（Heuristic-Intrinsic, Minimal）是「猫智能论」的最简可执行内�
 ## 仓库内容 / Contents
 - `him_env.py` — 轨道 A：HIMGridEnv + Kitten（零 NN、零梯度、零预训练）
 - `him_minigrid.py` — 轨道 B：MiniGrid Empty-8x8 / FourRooms + RND 线性变体基线
-- `run_validation.py` — 双轨总装与绘图
+- `him_grid100.py` — 轨道 C：100×100 网格 HIM vs FEP（惊奇最小化）探索对比
+- `run_validation.py` — 三轨总装
 - `him_plus_dl.py` — 「HIM 探索、外挂 DL 消费」协作原型（基线对照面板）
 - `paper/HIM_paper_zh.md` — 中文版投稿稿
 - `paper/HIM_paper.md` — 英文版投稿稿（权威稿）
@@ -16,16 +17,19 @@ HIM（Heuristic-Intrinsic, Minimal）是「猫智能论」的最简可执行内�
 - `docs/` — 多模型独立验收与终审记录（supplementary）
 
 ## 前置文献 / Prior work
-- (Wang, 2018) 反思智能：存在自主动机的最简机器模型设计。*人工智能与机器人研究*, 7(1):1–16. DOI: 10.12677/airr.2018.71001.（已发表，基石）
-- (Wang, 2026) Homeostatic Intrinsic Motivation (HIM)：基于内稳态内驱力的自主智能体架构。预印本（单篇，中英双语手稿，待 Zenodo DOI）。
+- (Wang, 2018) 反思智能：存在自主动机的最简机器模型设计。*人工智能与机器人研究*, 7(1):1–16. DOI: 10.12677/airr.2018.71001.（已发表，基石；本文的理论起源）
+- 注：HIM 的架构框架（舒适度梯度驱动、希望机制、涌现注意力/好奇心）与无预训练存在性证明已**合并于本文单一投稿稿**，不再单独成稿。
 
 ## 复现 / Reproduce
 ```bash
-pip install gymnasium minigrid numpy
-python run_validation.py            # 双轨验证
+pip install -r requirements.txt
+python run_validation.py            # 三轨验证（A/B/C）
 python him_plus_dl.py              # 协作原型
 ```
 无内容预训练的可审计证明见英文稿附录 A.1（四条 grep 命令真复现）。
+
+## 发布 / Release
+代码与论文经 **GitHub Release → Zenodo** 归档，铸出不可变 DOI（arXiv 因账号限制未走）。原始发布包亦存于 WorkBuddy 资料库。
 
 ## 许可 / License
 代码以 MIT 许可证开源（见 `LICENSE`）；论文以预印本形式发布，保留作者署名。
