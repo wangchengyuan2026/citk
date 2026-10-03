@@ -1,7 +1,7 @@
 # HIM: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel
 ### 猫智能论 (Cat Intelligence Theory) — Architecture, Proof, and Reproducible Testbed
 
-> **Preprint draft.** This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, HIM. It consolidates, in a single paper, the theory's *architectural framework* (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its *existence proof* (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check + Track C 100×100 exploration vs. FEP).
+> **Preprint draft.** This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, HIM. It consolidates, in a single paper, the theory's *architectural framework* (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its *existence proof* (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
 >
 > **Author:** 王程远 (Chengyuan Wang, b. 1987), Independent Scholar, Huizhou, Guangdong, China
 > **Date:** 2026-10-03
@@ -13,13 +13,13 @@
 
 We propose **HIM** (Heuristic-Intrinsic, Minimal), a complete yet minimal intelligence kernel derived from the *Cat Intelligence Theory* (猫智能论). The theory holds that intelligent behaviour can self-emerge from a **blank-born agent** that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a **comfort signal** from the *overlap rate* between its real-time sensory state and its (organism-shaped) need state, (4) **passively** memorises the causal relation *"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"*, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach benefit and avoid harm. No external reward, no designer-supplied goal, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
 
-We formalise comfort as a **general comfort level** $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort *change* $\Delta C_t$. A **hope mechanism** (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on three tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public **MiniGrid** benchmark, where HIM is compared head-to-head with **RND** (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy; and (C) a 100×100 grid where HIM is contrasted with a **Free-Energy / surprise-minimisation** agent. In structured environments HIM's structure-discovery breadth (transition coverage $767\pm101$) **essentially matches** RND ($783\pm100$) and **clearly exceeds** Random ($628\pm108$) over 10 seeds, using **zero neural networks, zero gradient, zero pretraining**; on the 100×100 grid HIM covers $46.9\%\pm1.8\%$ of cells and never stalls, whereas the surprise-minimising agent covers $0.18\%\pm0.01\%$ and gets trapped in 100% of seeds. We give a **constructive + empirical proof** that an agent requiring no content pretraining can exist and self-develop, and state explicitly why HIM is **not** built to win external-goal benchmarks such as ARC-AGI.
+We formalise comfort as a **general comfort level** $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort *change* $\Delta C_t$. A **hope mechanism** (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on two tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public **MiniGrid** benchmark, where HIM is compared head-to-head with **RND** (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy. In structured environments HIM's structure-discovery breadth (transition coverage $767\pm101$) **essentially matches** RND ($783\pm100$) and **clearly exceeds** Random ($628\pm108$) over 10 seeds, using **zero neural networks, zero gradient, zero pretraining**. We give a **constructive + empirical proof** that an agent requiring no content pretraining can exist and self-develop, and state explicitly why HIM is **not** built to win external-goal benchmarks such as ARC-AGI.
 
 ## 摘要（中文）
 
 我们提出 **HIM**（Heuristic-Intrinsic, Minimal），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个**记忆空白的新生体**自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的**重叠率**导出**舒适度**信号，(4) **被动**记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。
 
-我们将舒适度形式化为**一般舒适度水平** $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的**变化** $\Delta C_t$。**希望机制**（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在三条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，HIM 与（免依赖线性预测器变体的）**RND** 及随机策略同台对比；(C) 100×100 网格上 HIM 与**自由能/惊奇最小化**智能体对比。在结构化环境中，HIM 的结构发现广度（转移覆盖 $767\pm101$）**基本追平** RND（$783\pm100$）并**显著超过**随机（$628\pm108$）（10 种子），且**零神经网络、零梯度、零预训练**；在 100×100 网格上 HIM 覆盖 $46.9\%\pm1.8\%$ 格且从不停滞，而惊奇最小化智能体仅覆盖 $0.18\%\pm0.01\%$ 并在 100% 种子中陷入陷阱。我们给出「无需内容预训练、能够存在并自主发展的智能体」的**构造性+经验性证明**，并明确说明 HIM **并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
+我们将舒适度形式化为**一般舒适度水平** $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的**变化** $\Delta C_t$。**希望机制**（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在两条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，HIM 与（免依赖线性预测器变体的）**RND** 及随机策略同台对比。在结构化环境中，HIM 的结构发现广度（转移覆盖 $767\pm101$）**基本追平** RND（$783\pm100$）并**显著超过**随机（$628\pm108$）（10 种子），且**零神经网络、零梯度、零预训练**。我们给出「无需内容预训练、能够存在并自主发展的智能体」的**构造性+经验性证明**，并明确说明 HIM **并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
 
 ---
 
@@ -32,7 +32,7 @@ By 2026 the consensus across LeCun, Marcus, Harnad, and Friston converges on a s
 We make a narrow, verifiable claim: **a blank-born agent driven solely by an intrinsic comfort signal can, from interaction alone, self-emerge a world model and discover environmental structure — without data, networks, or external reward.** Crucially, this is not asserted but *proven constructively* (code-level inspection) and corroborated at execution time in §4.3. We do **not** claim to solve externally-specified goal tasks, nor to outperform LLMs on their home turf. The contribution is a *minimal, reproducible base*, not a competitor to scaled models.
 
 ### 1.3 Why a "base" and not a demo
-A novel intelligence theory is only useful if others can build on it. We therefore release (i) a **canonical testbed** (Track A) that is the theory's faithful "home court", (ii) a **public-benchmark cross-check** (Track B) that places the same agent beside the field's recognised intrinsic-motivation baseline, and (iii) a **large-grid exploration contrast** (Track C) against active-inference / free-energy agents. Reproducibility is the entry ticket to being a base.
+A novel intelligence theory is only useful if others can build on it. We therefore release (i) a **canonical testbed** (Track A) that is the theory's faithful "home court", and (ii) a **public-benchmark cross-check** (Track B) that places the same agent beside the field's recognised intrinsic-motivation baseline. Reproducibility is the entry ticket to being a base.
 
 ---
 
@@ -64,7 +64,7 @@ $$
 
 The agent maximises the cumulative $\Delta L_t$: it does not chase a static maximum comfort, but a *rising* comfort — making "explore, then iterate" itself the intrinsic drive.
 
-**Hope mechanism (W memory buffer).** The agent stores a buffer of historically high-comfort states. When the current comfort falls notably below the remembered peak, an endogenous drive pushes it to leave the low-variation, low-surprise local region — directly countering the entropy-minimisation trap (see §4.4). In the kernel, this is not a separate module: the passive causal memory `V[scene]` (comfort) and `M[scene][action]` (successor value) *are* the hope buffer — when comfort drops, one-step look-ahead seeks successors with higher remembered value.
+**Hope mechanism (W memory buffer).** The agent stores a buffer of historically high-comfort states. When the current comfort falls notably below the remembered peak, an endogenous drive pushes it to leave the low-variation, low-surprise local region — directly countering the entropy-minimisation trap inherent to any purely familiar-seeking drive. In the kernel, this is not a separate module: the passive causal memory `V[scene]` (comfort) and `M[scene][action]` (successor value) *are* the hope buffer — when comfort drops, one-step look-ahead seeks successors with higher remembered value.
 
 **Canonical minimal instantiation.** For the canonical testbed the sensory experience is realised as a smooth Gaussian-overlap comfort between the sensory state $s$ and the need anchor `NEED`:
 
@@ -160,20 +160,6 @@ In computer science, *"here is a concrete artifact that exhibits the property"* 
 
 **Honest boundaries of the proof.** The proof establishes that *this implementation* has zero content pretraining; it does not assert that every future instantiation will. It proves *existence* and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does **not** prove HIM is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §6.
 
-### 4.4 Track C — 100×100 grid: HIM vs. Free-Energy / surprise-minimisation
-We test the theory's central contrast with active inference (Friston, 2010) directly. On an open 100×100 grid (10,000 free cells, agent born at centre, 30,000 steps, 10 seeds), we compare:
-- **HIM** — the *same* HIM-0 kernel as Tracks A/B (blank memory, passive causal memory, one-step look-ahead), driven by novelty comfort (unseen cell = 1.0, seen = 0.1).
-- **FEP (surprise-minimisation)** — a baseline that maintains a familiarity belief (visit counts) and, following the dominant stationary-environment "keep-still optimum," **minimises expected surprise** by preferring the most familiar neighbouring cell.
-
-| Metric (mean ± std, 10 seeds) | HIM | FEP (surprise-min) |
-|---|---|---|
-| Cell coverage | **46.9% ± 1.8%** | **0.18% ± 0.01%** |
-| Stuck rate (final 2000-step window adds <0.5% new cells) | **0%** | **100%** |
-
-HIM covers ~260× more cells than the FEP agent and never stalls; the FEP agent collapses into a tiny familiar loop around its birthplace (coverage ≈ 18 cells) in every seed. This reproduces, with code and on identical seeds, the failure mode the theory criticises: **pure surprise-minimisation makes "stay put" optimal and forfeits exploration.** A full expected-free-energy agent with a balanced *epistemic* (information-gain) term can recover exploration — the critique targets the surprise-minimisation default, not EFE per se.
-
-*Honesty note on magnitude.* HIM reaches 46.9% under the *faithful* one-step-look-ahead kernel (not an optimal frontier planner); this is the same kernel validated in Tracks A/B, so the result is consistent rather than obtained with a purpose-built explorer. The 46.9% figure measures the kernel's exploration efficiency, not an upper bound, and the contrast with FEP is the claim — not any absolute coverage target.
-
 ---
 
 ## 5. Emergent Cognition: Attention and Curiosity
@@ -244,9 +230,9 @@ HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-eme
 
 ## Appendix A — Reproducibility & Release
 
-- **Code:** `him_env.py` (Track A), `him_minigrid.py` (Track B, with RND), `him_grid100.py` (Track C, HIM vs FEP), `run_validation.py` (three-track harness).
-- **Env:** Gymnasium-compatible `HIMGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`); 100×100 open grid (Track C).
-- **Determinism:** all runs seeded; raw metrics in `validation_results.json` (Tracks A/B/C) and `grid100_results.json` (Track C); figures in `validation_fig.png` / `him_plus_dl_fig.png`.
+- **Code:** `him_env.py` (Track A), `him_minigrid.py` (Track B, with RND), `run_validation.py` (two-track harness).
+- **Env:** Gymnasium-compatible `HIMGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`).
+- **Determinism:** all runs seeded; raw metrics in `validation_results.json` (Tracks A/B); figures in `validation_fig.png` / `him_plus_dl_fig.png`.
 - **Red lines:** enumerated as R1–R7 in §2.3; the kernel obeys them by construction.
 - **DOI / priority:** this manuscript + code are archived via **GitHub Release → Zenodo**, minting a citable, immutable DOI. Priority of the *idea* is anchored by the GitHub Release timestamp.
 
@@ -257,21 +243,21 @@ The §4.3 constructive proof is reproducible by anyone. From the repository root
 ```bash
 # (1) No deep-learning framework is imported by HIM (only prose comments say "no torch")
 grep -rniE "torch|tensorflow|keras|neural|backprop|autograd|optim\." \
-      him_env.py him_minigrid.py him_grid100.py run_validation.py
+      him_env.py him_minigrid.py run_validation.py
 #   → matches only comments; zero `import` lines
 
 # (2) No model loading / pretrained weights / external datasets
 grep -rniE "load\(|pickle|\.pt|\.h5|\.npy|read_csv|datasets" \
-      him_env.py him_minigrid.py him_grid100.py
+      him_env.py him_minigrid.py
 #   → zero hits
 
 # (3) HIM memory starts empty; the only initial number is a neutral EMA seed 0.5
-grep -nE "self\.V = \{\}|self\.M = \{\}" him_env.py him_minigrid.py him_grid100.py
+grep -nE "self\.V = \{\}|self\.M = \{\}" him_env.py him_minigrid.py
 #   → self.V = {}   self.M = {}   (blank at birth)
 
 # (4) No training loop / gradient step anywhere in the HIM agent
 grep -rniE "gradient|\.train\(|fit\(|SGD|Adam|backward\(" \
-      him_env.py him_minigrid.py him_grid100.py
+      him_env.py him_minigrid.py
 #   → zero hits
 ```
 

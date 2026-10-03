@@ -8,8 +8,7 @@ HIM（Heuristic-Intrinsic, Minimal）是「猫智能论」的最简可执行内�
 ## 仓库内容 / Contents
 - `him_env.py` — 轨道 A：HIMGridEnv + Kitten（零 NN、零梯度、零预训练）
 - `him_minigrid.py` — 轨道 B：MiniGrid Empty-8x8 / FourRooms + RND 线性变体基线
-- `him_grid100.py` — 轨道 C：100×100 网格 HIM vs FEP（惊奇最小化）探索对比
-- `run_validation.py` — 三轨总装
+- `run_validation.py` — 双轨总装
 - `him_plus_dl.py` — 「HIM 探索、外挂 DL 消费」协作原型（基线对照面板）
 - `paper/HIM_paper_zh.md` — 中文版投稿稿
 - `paper/HIM_paper.md` — 英文版投稿稿（权威稿）
@@ -23,7 +22,7 @@ HIM（Heuristic-Intrinsic, Minimal）是「猫智能论」的最简可执行内�
 ## 复现 / Reproduce
 ```bash
 pip install -r requirements.txt
-python run_validation.py            # 三轨验证（A/B/C）
+python run_validation.py            # 双轨验证（A/B）
 python him_plus_dl.py              # 协作原型
 ```
 无内容预训练的可审计证明见英文稿附录 A.1（四条 grep 命令真复现）。
