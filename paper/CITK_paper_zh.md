@@ -92,6 +92,8 @@ $$
 - **(R6)** 无神经网络、无预训练、无梯度、无逐任务分支。
 - **(R7)** 感知回答*是什么*，绝不回答*想要什么*。
 
+*安全推论（对奖励黑客的结构性免疫）。* 由于 R4 不接纳**任何**种类的奖励信号——外部的、代理的，或自生的——智能体没有任何可供其针对监督者评估而优化的目标。奖励黑客失效模式（智能体利用被错指的目标）在 CIT-K 中因而不仅是*难以*诱发，而是*结构上缺席*：根本无奖励可供黑客。近期分析表明，奖励黑客在有限评估下是一种结构性均衡，横跨 RLHF、DPO 与 Constitutional AI 皆然（Wang & Huang, 2026）；CIT-K 是在架构层级绕开整个问题，而非靠更好的奖励塑形。这是红线的直接后果，而非附加的保险。
+
 *关于 NEED 与自生需求（化解表面张力）。* R2(a) 允许将**感官需求**设定点 `NEED` 作为身体参数调校——它是机体的内稳态设定点（暖、中光、静），而非设计者给定的目标。R3 的禁令特指**记忆需求**状态（驱动记忆巩固的内部塑造需求）：它必须经由 I-2 路径自生，绝不直接指派。固定 `NEED` 因此与 R3 完全相容——*感官*需求是身体常数，*记忆*需求是自生的。透过公理 N2（§2.0）看，这一固定 `NEED` 并非作者拍板的数，而是*系统发育给定*的稳态——进化保留下来的、与生存相容的需求剖型；内核将其作为身体常数继承，从不重新推导，而这恰是公理 N3 的种群搜索在更完整叙述中应取代的角色。
 
 ### 2.4 描述层级与基质无关性
@@ -109,6 +111,8 @@ CIT-K 是一个约 119 行有效代码的参考内核，忠实实现 §2：
 - **静止动作**：「什么都不做」是显式合法运动模式（静止即运动模式，依理论）。
 
 R1–R7 全部遵守：零 NN、零梯度、零预训练、零外部奖励、零逐任务分支；舒适度自生（I-2 路径）；外部数学回答*是什么*。
+
+*复杂度预算（内核是代码最小，非状态最小）。* 约 119 行计的是**代码**复杂度，而非**运行时**复杂度。执行时，智能体的状态由 `V`/`M`/`T` 表携带，这些表随经验增长至 $O(|\mathcal S||\mathcal A|)$ 量级——在轨道 A 中，学得的表覆盖整个场景空间。因此最小性主张是关于**算法**（一个固定的、无参数的程序，其唯一记忆是它活过什么）；复杂度的携带者是*习得记忆*，而非代码或预训练权重。这是「空白新生儿」故事诚实的另一面：内核以极小交付，但其能力由它所栖居的世界书写。
 
 *范围边界。* 以上皆是 CIT-K 内核本身。构建于 CIT-K **之上**的模块——例如消费 CIT-K 自主涌现的`（感官, 舒适度）`经验以超越猫的局部记忆的外部回归器——严格位于内核**之外**，不改变其零 NN / 零梯度状态。此类附加物是基座主张（R1）的演示，而非 CIT-K 的一部分；内核的红线被独立定义与测试，与它们隔离。
 
@@ -242,11 +246,12 @@ CIT-K 表明，一个空白出生、零数据、由舒适度驱动的智能体�
 - Raileanu, R., & Rocktäschel, T. (2020). RIDE: Rewarding impact-driven exploration for procedurally-generated environments. *ICLR 2020*. arXiv:2002.12292.
 - Towers, M., et al. (2023). Gymnasium. *arXiv:2407.17032*.
 - Tomar, D. (2026). From Tension to Resolution: Homeostatic Drive Learning as a Self-Regulating Alternative to Reward-Based Training. Preprint.
-- White, J., Southgate, E., Thomson, J., & Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans* ("The mind of a worm"). *Developmental Biology*.
 - 王程远 (Wang, C., 2018). 反思智能：存在自主动机的最简机器模型设计. *人工智能与机器人研究*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001.（已发表；奠基）
-- Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
-- Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
+- Wang, J., & Huang, J. (2026). Reward Hacking as Equilibrium under Finite Evaluation. arXiv:2603.28063.
+- White, J., Southgate, E., Thomson, J., & Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans* ("The mind of a worm"). *Developmental Biology*.
 - Yalon, N. S., Goldstein, A., Mudrik, L., & Geva, M. (2026). Indications of Belief-Guided Agency and Meta-Cognitive Monitoring in Large Language Models. arXiv:2602.02467.
+- Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
+- Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
 - Zhang, T., Xu, H., Wang, X., Wu, Y., Keutzer, K., Gonzalez, J. E., & Tian, Y. (2021). NovelD: A simple yet effective exploration criterion. *NeurIPS 2021*.
 - （哲学谱系：Schopenhauer、Spinoza、Freud、荀子、佛教阿毗达磨 / 唯识宗。）
 

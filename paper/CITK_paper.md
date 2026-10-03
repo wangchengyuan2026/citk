@@ -98,6 +98,8 @@ The theory is deliberately constrained. The following are **not** permitted, and
 - **(R6)** No neural network, no pretraining, no gradient, no per-game branching.
 - **(R7)** Perception answers *what*, never *want*.
 
+*Security corollary (architectural immunity to reward hacking).* Because R4 admits **no** reward signal of any kind — external, proxy, or self-derived — there is no objective the agent could optimise against a supervisor's evaluation. The reward-hacking failure mode (an agent exploiting a misspecified objective) is therefore not merely *hard* to induce in CIT-K; it is *structurally absent*: there is no reward to hack. Recent analyses show reward hacking is a structural equilibrium under finite evaluation, persisting across RLHF, DPO and Constitutional AI alike (Wang & Huang, 2026); CIT-K sidesteps the entire problem at the architectural level rather than by better reward shaping. This is a direct consequence of the red lines, not an added safeguard.
+
 *Clarification on NEED vs. the self-emergent need (resolving an apparent tension).* R2(a) permits tuning the **sensory-need** set-point `NEED` as a body parameter — it is the organism's endogenous steady state (warm, mid-light, quiet), not a designer-supplied goal. R3's prohibition applies specifically to the **memory-need** state (the internally shaped need that drives memory consolidation): that must self-emerge via the I-2 path and is never directly assigned. The fixed `NEED` is therefore fully consistent with R3 — the *sensory* need is a body constant, the *memory* need is self-emergent. Read through Axiom N2 (§2.0), this fixed `NEED` is not an author-chosen number but a *phylogeny-given* steady state — the survival-compatible need profile that evolution retains; the kernel inherits it as a body constant and never re-derives it, which is exactly the role that Axiom N3's population search would, in a fuller account, replace.
 
 ### 2.4 Level of description and substrate independence
@@ -115,6 +117,8 @@ CIT-K is a ~119-effective-line reference kernel implementing §2 faithfully:
 - **STILL action**: "doing nothing" is an explicit legal motion pattern (stillness is a motion pattern, per the theory).
 
 All of R1–R7 are obeyed: zero NN, zero gradient, zero pretraining, zero external reward, zero per-game branching; comfort is self-emergent (I-2 path); external maths answer *what*.
+
+*Complexity budget (the kernel is code-minimal, not state-minimal).* The ~119-line count measures **code** complexity, not **runtime** complexity. At execution the agent's state is carried by the `V`/`M`/`T` tables, which grow with experience to $O(|\mathcal S||\mathcal A|)$ entries — in Track A the learned tables span the full scene space. The minimalism claim is therefore about the **algorithm** (a fixed, parameter-free procedure whose only memory is what it has lived); the carrier of complexity is *acquired memory*, not code or pretrained weights. This is the honest dual of the blank-newborn story: the kernel ships tiny, but its competence is written by the world it inhabits.
 
 *Scope boundary.* Everything above is the CIT-K kernel itself. Modules constructed **on top of** CIT-K — for example an external regressor that consumes CIT-K's self-emerged `(sensory, comfort)` experience to generalise beyond the cat's local memory — lie strictly **outside** the kernel and do **not** alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of CIT-K; the kernel's red lines are defined and tested in isolation from them.
 
@@ -248,11 +252,12 @@ CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-e
 - Raileanu, R., & Rocktäschel, T. (2020). RIDE: Rewarding impact-driven exploration for procedurally-generated environments. *ICLR 2020*. arXiv:2002.12292.
 - Towers, M., et al. (2023). Gymnasium. *arXiv:2407.17032*.
 - Tomar, D. (2026). From Tension to Resolution: Homeostatic Drive Learning as a Self-Regulating Alternative to Reward-Based Training. Preprint.
-- White, J., Southgate, E., Thomson, J., & Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans* ("The mind of a worm"). *Developmental Biology*.
 - Wang, C. (2018). Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation. *Artificial Intelligence and Robotics Research*, 7(1), 1–16. DOI: 10.12677/airr.2018.71001. (published; foundation)
-- Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
-- Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
+- Wang, J., & Huang, J. (2026). Reward Hacking as Equilibrium under Finite Evaluation. arXiv:2603.28063.
+- White, J., Southgate, E., Thomson, J., & Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans* ("The mind of a worm"). *Developmental Biology*.
 - Yalon, N. S., Goldstein, A., Mudrik, L., & Geva, M. (2026). Indications of Belief-Guided Agency and Meta-Cognitive Monitoring in Large Language Models. arXiv:2602.02467.
+- Yoshida, N., & Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. *2025 IEEE International Conference on Development and Learning (ICDL)*. DOI: 10.1109/ICDL63968.2025.11204447.
+- Yoshida, N., Sprekeler, H., & Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. *Current Opinion in Behavioral Sciences*, 66, 101611.
 - Zhang, T., Xu, H., Wang, X., Wu, Y., Keutzer, K., Gonzalez, J. E., & Tian, Y. (2021). NovelD: A simple yet effective exploration criterion. *NeurIPS 2021*.
 - (and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
 
