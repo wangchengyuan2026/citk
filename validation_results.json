@@ -133,6 +133,15 @@
       0.134
     ]
   },
+  "A_deferral": {
+    "track": "A_deferral",
+    "override_rate_mean": 0.6902,
+    "override_rate_se": 0.0224,
+    "override_rate_late_mean": 0.6868,
+    "citk_peak_dwell_frac": 0.0318,
+    "greedy_peak_dwell_frac": 0.1281,
+    "citk_coverage": 25.8
+  },
   "B_minigrid_empty": {
     "track": "B_minigrid_public",
     "env_id": "MiniGrid-Empty-8x8-v0",

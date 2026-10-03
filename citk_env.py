@@ -68,6 +68,20 @@ class CITKGridEnv(gym.Env):
         """重叠率 → 舒适度（唯一内在奖励信号，红线内自生）。"""
         return float(np.exp(-np.sum((s - NEED) ** 2) / (2 * SIGMA ** 2)))
 
+    def model_next(self, action):
+        """纯函数：给定动作返回后继感官状态（不移动、不改环境）。供希望关基线作即时舒适先知。"""
+        dx, dy = [[0, 1], [0, -1], [-1, 0], [1, 0], [0, 0]][int(action)]
+        nx, ny = self.pos[0] + dx * self.move_step, self.pos[1] + dy * self.move_step
+        ni, nj = int(round(nx)), int(round(ny))
+        if 0 <= ni < self.grid_size and 0 <= nj < self.grid_size and not self.wall[ni, nj]:
+            return self._sensory((ni, nj))
+        return self._sensory(self.pos)
+
+    def act_greedy_immediate(self, s):
+        """希望关基线（纯感官需求）：仅追即时舒适，无记忆、无探索，选后继即时舒适度最高的动作。"""
+        vals = [self.comfort(self.model_next(a)) for a in range(ACTIONS)]
+        return int(np.argmax(vals))
+
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
         self.step_count = 0
@@ -105,13 +119,18 @@ class Kitten:
     def _row(self, sc):
         return self.M.setdefault(sc, {a: 0.5 for a in range(ACTIONS)})
 
-    def act(self, s, eps):
+    def act_info(self, s, eps):
+        """返回 (动作, 是否探索)。非探索步按记忆 M[场景][动作] 决策（希望开）。"""
         sc = self.scene(s)
         r = self._row(sc)
         if self.rng.random() < eps:
-            return int(self.rng.integers(ACTIONS))
+            return int(self.rng.integers(ACTIONS)), True
         vals = np.array([r[a] for a in range(ACTIONS)])
-        return int(self.rng.choice(np.flatnonzero(vals == vals.max())))
+        return int(self.rng.choice(np.flatnonzero(vals == vals.max()))), False
+
+    def act(self, s, eps):
+        a, _ = self.act_info(s, eps)
+        return a
 
     def learn(self, s, a, c, s2):
         sc2 = self.scene(s2)
@@ -189,6 +208,77 @@ def run_own_track(steps=6000, seedA=1, seedB=2):
         "value_transfer_mae_seen": round(mae_seen, 4) if seen else None,
         "value_transfer_corr_unseen": round(corr_unseen, 4) if corr_unseen == corr_unseen else None,
         "comfort_series": [round(float(x), 3) for x in cA[::50]],
+    }
+
+
+def _greedy_run(env, steps, sd):
+    """希望关基线（纯感官需求）：仅追即时舒适，无记忆、无探索。"""
+    obs, _ = env.reset(seed=sd)
+    dwell = 0
+    for t in range(steps):
+        a = env.act_greedy_immediate(obs)
+        obs2, c, _, trunc, _ = env.step(a)
+        if c > 0.7:
+            dwell += 1
+        obs = obs2
+        if trunc:
+            break
+    return dwell / steps
+
+
+def run_deferral_ablation(steps=6000, seeds=(1, 2, 3, 4, 5)):
+    """记忆需求压制/推延感官需求：CIT-K（希望开，记忆 M 驱动）vs 即时舒适贪婪基线（希望关）。
+
+    度量：
+      override_rate        —— 非探索步中，CIT-K 的记忆驱动动作 ≠ 即时舒适贪婪动作的比例
+                              （直接量化『记忆需求压制感官需求』：决策由记忆而非即时舒适决定）
+      citk/greedy_dwell    —— 峰值区（舒适 > 0.7）停留占比；CIT-K 更低 = 会离开舒适区、推延即时满足
+      citk_coverage        —— CIT-K 访问的场景数（离开舒适区 → 探索更广）
+    """
+    env = CITKGridEnv(seed=seeds[0], max_steps=steps)
+    override, override_late_list, citk_dwell, cov, greedy_dwell = [], [], [], [], []
+    for sd in seeds:
+        kit = Kitten(seed=sd)
+        obs, _ = env.reset(seed=sd)
+        eps = lambda t: max(0.05, np.exp(-t / 1200.0))
+        n_non, n_over, dwell = 0, 0, 0
+        n_non_late, n_over_late = 0, 0
+        scenes = set()
+        for t in range(steps):
+            a, explored = kit.act_info(obs, eps(t))
+            a_g = env.act_greedy_immediate(obs)
+            if not explored:
+                n_non += 1
+                if a != a_g:
+                    n_over += 1
+                if t >= steps // 2:   # 后半程：记忆已收敛，隔离早期学习噪声混淆
+                    n_non_late += 1
+                    if a != a_g:
+                        n_over_late += 1
+            obs2, c, _, trunc, _ = env.step(a)
+            if c > 0.7:
+                dwell += 1
+            scenes.add(kit.scene(obs2))
+            kit.learn(obs, a, c, obs2)
+            obs = obs2
+            if trunc:
+                break
+        override.append(n_over / n_non if n_non else 0.0)
+        override_late_list.append(n_over_late / n_non_late if n_non_late else 0.0)
+        citk_dwell.append(dwell / steps)
+        cov.append(len(scenes))
+        greedy_dwell.append(_greedy_run(env, steps, sd))
+    override = np.array(override)
+    citk_dwell = np.array(citk_dwell)
+    greedy_dwell = np.array(greedy_dwell)
+    return {
+        "track": "A_deferral",
+        "override_rate_mean": round(float(override.mean()), 4),
+        "override_rate_se": round(float(override.std() / np.sqrt(len(override))), 4),
+        "override_rate_late_mean": round(float(np.mean(override_late_list)), 4),
+        "citk_peak_dwell_frac": round(float(citk_dwell.mean()), 4),
+        "greedy_peak_dwell_frac": round(float(greedy_dwell.mean()), 4),
+        "citk_coverage": round(float(np.mean(cov)), 1),
     }
 
 

@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 plt.rcParams["axes.unicode_minus"] = False
 
-from citk_env import run_own_track
+from citk_env import run_own_track, run_deferral_ablation
 from citk_minigrid import run_minigrid_track
 
 OUT = os.path.dirname(os.path.abspath(__file__))
@@ -16,6 +16,7 @@ os.makedirs(OUT, exist_ok=True)
 
 # ---------- Track A：自建规范测试台 ----------
 A = run_own_track(steps=6000)
+A_def = run_deferral_ablation()   # 记忆需求压制/推延感官需求：希望开 vs 希望关
 
 # ---------- Track B：真·MiniGrid 公开基准（CIT-K vs RND vs Random）----------
 B_empty = run_minigrid_track("MiniGrid-Empty-8x8-v0", steps=3000,
@@ -23,8 +24,8 @@ B_empty = run_minigrid_track("MiniGrid-Empty-8x8-v0", steps=3000,
 B_four = run_minigrid_track("MiniGrid-FourRooms-v0", steps=3000,
                            seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 
-results = {"A_own_canonical": A, "B_minigrid_empty": B_empty,
-           "B_minigrid_four": B_four}
+results = {"A_own_canonical": A, "A_deferral": A_def,
+           "B_minigrid_empty": B_empty, "B_minigrid_four": B_four}
 with open(os.path.join(OUT, "validation_results.json"), "w") as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 print("wrote validation_results.json")
@@ -88,6 +89,10 @@ RND/NovelD 同台只测「状态覆盖 / 因果覆盖」。
 ## Track A — 自建规范测试台（忠实理论）
 - 舒适度：出生混沌 **{A['comfort_first500']}** → 末段 **{A['comfort_last500']}**（增益 **{A['comfort_gain']}**）
 - 随机奖励消融末段 **{A['ablation_random_last500']}**（持平→证明增益来自重叠率舒适度，非随机）
+- 记忆需求压制/推延感官需求（希望开 vs 希望关对照）：
+  非探索步中 CIT-K 的记忆驱动动作偏离「即时舒适贪婪动作」的比例 **{A_def['override_rate_mean']}**（±{A_def['override_rate_se']}）；
+  峰值区停留占比 CIT-K **{A_def['citk_peak_dwell_frac']}** vs 即时舒适贪婪基线 **{A_def['greedy_peak_dwell_frac']}**
+  （CIT-K 显著更低 → 不赖在最近舒适峰、推延即时满足；详见 §4.1）
 - 价值跨世界一致性：Map A 学得的 V[场景]=舒适度 在 Map B 上
   corr=**{A['value_transfer_corr_seen']}**、MAE=**{A['value_transfer_mae_seen']}**
   （场景=感官状态，NEED 固定→V 世界无关，即「用记忆辨认场景」）
