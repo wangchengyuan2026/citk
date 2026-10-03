@@ -9,13 +9,13 @@
 ## 一、三个核心问题的裁定
 
 ### 1. 是否偏离主线？——否
-- 主论文（HIM_paper）8 章 + 附录，全篇只论证一件事：HIM 零数据/零 NN 自涌现内核 + 双轨可复现验证 + 无预训练存在性证明。
+- 主论文（CITK_paper）8 章 + 附录，全篇只论证一件事：CIT-K 零数据/零 NN 自涌现内核 + 双轨可复现验证 + 无预训练存在性证明。
 - 四道外部验收追加的内容（10 种子统计、Welch p 值、Track A 全程分布诚实注记、§8 历史意义）全部是**加固而非偏航**。
-- 外部 DL 协作（HIM + 外挂回归器）被严格隔离在独立 `plan_him_plus_dl.md` + `him_plus_dl.py`，**未进入主论文**（主论文 grep "external DL / MLP / cooperation" 零命中）。符合"下一步工作"定位。
+- 外部 DL 协作（CIT-K + 外挂回归器）被严格隔离在独立 `plan_citk_plus_dl.md` + `citk_plus_dl.py`，**未进入主论文**（主论文 grep "external DL / MLP / cooperation" 零命中）。符合"下一步工作"定位。
 
 ### 2. 是否踩红线？——否（已用代码扫描确认）
-- HIM 核心三文件 `import torch/tensorflow/keras` 行数 = **0**；HIM 自身训练循环/梯度命中 = **0**。
-- 外挂 DL 仅 `import` HIM 的 `Kitten/HIMGridEnv` 来**消费**产物，**从未改动**内核——是 R1「基座」的合法示范，不触碰 R4/R6。
+- CIT-K 核心三文件 `import torch/tensorflow/keras` 行数 = **0**；CIT-K 自身训练循环/梯度命中 = **0**。
+- 外挂 DL 仅 `import` CIT-K 的 `Kitten/CITKGridEnv` 来**消费**产物，**从未改动**内核——是 R1「基座」的合法示范，不触碰 R4/R6。
 - 已补一句"范围边界"声明（§3 末尾），明确外挂模块严格位于内核之外、不改零 NN/零梯度状态，防审稿人误解。
 
 ### 3. 是否把问题搞复杂、模糊重点？——主论文否；项目侧有膨胀但已隔离
@@ -33,8 +33,8 @@
 | F5 | Deepseek | 附录 A.1 注释行含 "torch" 可能被误读 | ⚪ 已注明"仅匹配注释"，可接受 |
 | G1 | GLM-5.3 | Track A 全程分布选择性呈现 | ✅ 已补诚实注记（中位数≈0、63%<0.05） |
 | K1 | Kimi-K3 | Track A 仅单种子 | ✅ 已补 10 种子 mean±std + 符号检验 p=0.001 |
-| K2 | Kimi-K3 | 协作原型 kNN 打赢 MLP | ✅ 已在计划文档降级为"任何回归器可消费 HIM 经验流"，DL 必要性收敛为待高维任务验证 |
-| F1/F2 | Deepseek/Kimi | 标签来源措辞 + 缺随机采集对照 | 🟡 已在计划文档澄清（标签=内在舒适度信号，采样=HIM 自主轨迹）；随机对照作为 v2 必修项记录，**未做实验**——但属"下一步工作"，不进主论文，不阻断投稿 |
+| K2 | Kimi-K3 | 协作原型 kNN 打赢 MLP | ✅ 已在计划文档降级为"任何回归器可消费 CIT-K 经验流"，DL 必要性收敛为待高维任务验证 |
+| F1/F2 | Deepseek/Kimi | 标签来源措辞 + 缺随机采集对照 | 🟡 已在计划文档澄清（标签=内在舒适度信号，采样=CIT-K 自主轨迹）；随机对照作为 v2 必修项记录，**未做实验**——但属"下一步工作"，不进主论文，不阻断投稿 |
 
 ---
 
@@ -51,9 +51,9 @@
 
 ## 四、本次交付物
 
-- `paper/HIM_paper_en.md`（= HIM_paper.md，英文，含边界声明）— 已同步云端：https://www.workbuddy.cn/space/d/iflakRZ4O3uw5qk3wDS83s
-- `paper/HIM_paper_zh.md`（完整中文版）— 已同步云端：https://www.workbuddy.cn/space/d/fUSDHPs2yVoYgfboZu3Mqx
+- `paper/CITK_paper_en.md`（= CITK_paper.md，英文，含边界声明）— 已同步云端：https://www.workbuddy.cn/space/d/iflakRZ4O3uw5qk3wDS83s
+- `paper/CITK_paper_zh.md`（完整中文版）— 已同步云端：https://www.workbuddy.cn/space/d/fUSDHPs2yVoYgfboZu3Mqx
 - 本终审记录 `audit_record_hy3.md`
 
 ## 五、一句话结论
-> 四轮外部改进**没有把 HIM 带偏、没有越线、没有模糊焦点**；它们把论文从"轶事级单次结果"夯实成了"统计显著、完全可复现、红线可审计"的投稿级成品。现在的唯一缺口是作者名等机械信息，以及把协作原型明确标为"下一步工作"。
+> 四轮外部改进**没有把 CIT-K 带偏、没有越线、没有模糊焦点**；它们把论文从"轶事级单次结果"夯实成了"统计显著、完全可复现、红线可审计"的投稿级成品。现在的唯一缺口是作者名等机械信息，以及把协作原型明确标为"下一步工作"。

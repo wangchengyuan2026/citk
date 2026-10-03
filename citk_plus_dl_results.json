@@ -1,0 +1,21 @@
+{
+  "concept": "CIT-K zero-training exploration -> external regressors consume emergent (s,comfort) -> generalize",
+  "citk_samples_collected": 6000,
+  "citk_visited_scenes": 30,
+  "external_mlp": "numpy MLP 3->16->16->1, ReLU+SGD, trained ONLY on CIT-K's autonomous (s,comfort) samples",
+  "trivial_baselines_same_train_set": "constant / ridge-linear / kNN(k=5) trained on the SAME 80% train split (Kimi-K3 acceptance requirement)",
+  "mlp_test_mae_on_experienced": 0.0582,
+  "dense_unseen_grid_mae": {
+    "external_mlp": 0.1672,
+    "knn_k5": 0.1291,
+    "linear_ridge": 0.2497,
+    "constant": 0.178,
+    "citk_local_lookup": 0.2862
+  },
+  "dense_unseen_grid_corr_true": {
+    "external_mlp": 0.5655,
+    "knn_k5": 0.6087,
+    "linear_ridge": 0.4864
+  },
+  "interpretation": "Any sufficiently flexible regressor can consume CIT-K's self-emerged experience stream and generalise beyond the cat's local memory (MLP 0.167, kNN 0.129, vs CIT-K lookup 0.286 MAE on unseen states). Deep learning is NOT specifically required here — trivial kNN matches or beats the small MLP; DL's expected advantage lies on high-dimensional perceptual inputs where kNN fails. The cooperation claim is therefore scoped to 'CIT-K's experience stream is consumable and generalisable', not 'CIT-K needs deep learning'. CIT-K itself stays zero-training/zero-NN throughout."
+}

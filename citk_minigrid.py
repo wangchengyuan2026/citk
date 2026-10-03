@@ -1,14 +1,14 @@
-# Track B — 公开基准交叉校验：HIM(零NN被动记忆) vs RND(神经网络内在动机标杆) vs Random
+# Track B — 公开基准交叉校验：CIT-K(零NN被动记忆) vs RND(神经网络内在动机标杆) vs Random
 # =============================================================================
-# 目的：用「外部可信」的公开基准验证 HIM-0 最简版的同一主张——
+# 目的：用「外部可信」的公开基准验证 CIT-K-0 最简版的同一主张——
 #   零训练数据、零外部奖励/目标，纯内在驱动能否从交互中发现世界结构。
 # 本文件把内在动机文献的标杆方法 RND（Random Network Distillation, Burda 2018）
-# 作为第三个基线同台，直接回应「零 NN 的 HIM 能否赶上 NN 内在动机方法」。
+# 作为第三个基线同台，直接回应「零 NN 的 CIT-K 能否赶上 NN 内在动机方法」。
 #
 # 公平设计：三个 agent 共用同一套策略（epsilon-贪心 + 一步前瞻，记忆图 V/M），
 # 唯一差别是「每步内在信号」如何算：
 #   - Random : 无学习，地板
-#   - HIM    : 新奇计数（1.0 未见场景 / 0.1 已见）—— 零 NN、纯被动记忆
+#   - CIT-K    : 新奇计数（1.0 未见场景 / 0.1 已见）—— 零 NN、纯被动记忆
 #   - RND    : 随机目标网络 φ(s) 与岭回归预测器 f(s) 的误差 ||f(s)-φ(s)||² —— NN 方法
 # 因此差异只来自内在信号质量，正是要验证的命题。
 #
@@ -23,7 +23,7 @@ import gymnasium as gym
 import minigrid  # noqa: F401  (注册 MiniGrid 环境)
 
 # MiniGrid 动作子集：左转/右转/前进/切换 + 静止(拾取=空地无操作)
-HIM_ACTIONS = [0, 1, 2, 5, 3]   # turn-left, turn-right, forward, toggle, pickup(=STILL no-op)
+CITK_ACTIONS = [0, 1, 2, 5, 3]   # turn-left, turn-right, forward, toggle, pickup(=STILL no-op)
 A_NAMES = ["L", "R", "F", "T", "STILL"]
 
 
@@ -32,8 +32,8 @@ def scene_of(obs):
     return tuple(int(x) for x in np.asarray(obs["image"]).flatten())
 
 
-class HIMMiniGrid:
-    """与 HIM-0 同构：空白记忆 + 被动因果记忆 + 一步前瞻，仅新奇驱动（零 NN）。
+class CITKMiniGrid:
+    """与 CIT-K-0 同构：空白记忆 + 被动因果记忆 + 一步前瞻，仅新奇驱动（零 NN）。
 
     子类可覆写 reward_for(...) 换内在信号（如 RND），策略结构不变。"""
     def __init__(self, ema=0.3, seed=7):
@@ -45,10 +45,10 @@ class HIMMiniGrid:
         self.T = {}      # 场景 -> 动作 -> Counter(后继场景)  ← 因果记忆
 
     def _row(self, sc):
-        return self.M.setdefault(sc, {a: 0.5 for a in range(len(HIM_ACTIONS))})
+        return self.M.setdefault(sc, {a: 0.5 for a in range(len(CITK_ACTIONS))})
 
     def on_obs(self, obs):
-        """每步观测钩子（RND 用来更新预测器；HIM 无需）。"""
+        """每步观测钩子（RND 用来更新预测器；CIT-K 无需）。"""
         pass
 
     def reward_for(self, sc2, obs2, sc, a):
@@ -58,8 +58,8 @@ class HIMMiniGrid:
     def act(self, sc, eps):
         r = self._row(sc)
         if self.rng.random() < eps:
-            return int(self.rng.integers(len(HIM_ACTIONS)))
-        vals = np.array([r[a] for a in range(len(HIM_ACTIONS))])
+            return int(self.rng.integers(len(CITK_ACTIONS)))
+        vals = np.array([r[a] for a in range(len(CITK_ACTIONS))])
         return int(self.rng.choice(np.flatnonzero(vals == vals.max())))
 
     def learn(self, sc, a, sc2, reward):
@@ -72,14 +72,14 @@ class HIMMiniGrid:
         cnt[sc2] = cnt.get(sc2, 0) + 1
 
 
-class RNDMiniGrid(HIMMiniGrid):
+class RNDMiniGrid(CITKMiniGrid):
     """RND（Random Network Distillation）基线——内在动机文献标杆 NN 方法。
 
     纯 numpy 实现（随机目标网络固定 + 岭回归预测器，无需 torch）：
       φ(s) = tanh(W·s + b)        固定随机目标
       f(s) ≈ φ(s)                  岭回归预测器（闭式解，无自动梯度）
       内在奖励 = mean( (f(s) - φ(s))² )   未见状态预测误差大→高探索
-    这是文献中的 NN 内在动机方法，作为 HIM 的「带 NN」对照（HIM 本身零 NN）。"""
+    这是文献中的 NN 内在动机方法，作为 CIT-K 的「带 NN」对照（CIT-K 本身零 NN）。"""
     def __init__(self, feat_dim=32, lam=1.0, buf=1500, retrain=150, ema=0.3, seed=21):
         super().__init__(ema=ema, seed=seed)
         self.rng = np.random.default_rng(seed)
@@ -148,8 +148,8 @@ def _run(env_id, agent, steps, seed, eps_fn):
         if agent:
             a_idx = agent.act(sc, eps_fn(t))
         else:
-            a_idx = int(rand_rng.integers(len(HIM_ACTIONS)))
-        action = HIM_ACTIONS[a_idx]
+            a_idx = int(rand_rng.integers(len(CITK_ACTIONS)))
+        action = CITK_ACTIONS[a_idx]
         obs2, _, term, trunc, _ = env.step(action)
         sc2 = scene_of(obs2)
         reward = agent.reward_for(sc2, obs2, sc, a_idx) if agent else 0.0
@@ -181,14 +181,14 @@ def _model_accuracy(T):
 def run_minigrid_track(env_id="MiniGrid-Empty-8x8-v0", steps=3000,
                        seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), eps0=0.6):
     eps_fn = lambda t: max(0.05, eps0 * np.exp(-t / (steps / 3)))
-    him_cells, him_rooms, him_trans, him_acc = [], [], [], []
+    citk_cells, citk_rooms, citk_trans, citk_acc = [], [], [], []
     rnd_cells, rnd_rooms, rnd_trans, rnd_acc = [], [], [], []
     rand_cells, rand_rooms, rand_trans = [], [], []
     for s in seeds:
-        h = HIMMiniGrid(seed=100 + s)
+        h = CITKMiniGrid(seed=100 + s)
         c, rm, tr, T = _run(env_id, h, steps, s, eps_fn)
-        him_cells.append(len(c)); him_rooms.append(len(rm)); him_trans.append(len(tr))
-        him_acc.append(_model_accuracy(T))
+        citk_cells.append(len(c)); citk_rooms.append(len(rm)); citk_trans.append(len(tr))
+        citk_acc.append(_model_accuracy(T))
         r = RNDMiniGrid(seed=200 + s)
         c2, rm2, tr2, T2 = _run(env_id, r, steps, s, eps_fn)
         rnd_cells.append(len(c2)); rnd_rooms.append(len(rm2)); rnd_trans.append(len(tr2))
@@ -205,26 +205,26 @@ def run_minigrid_track(env_id="MiniGrid-Empty-8x8-v0", steps=3000,
         "steps": steps,
         "n_seeds": len(seeds),
         "seeds": list(seeds),
-        "him_cell_coverage": m(cov(him_cells)),
-        "him_cell_coverage_std": sd(cov(him_cells)),
+        "citk_cell_coverage": m(cov(citk_cells)),
+        "citk_cell_coverage_std": sd(cov(citk_cells)),
         "rnd_cell_coverage": m(cov(rnd_cells)),
         "rnd_cell_coverage_std": sd(cov(rnd_cells)),
         "rand_cell_coverage": m(cov(rand_cells)),
         "rand_cell_coverage_std": sd(cov(rand_cells)),
-        "him_transition_coverage": int(round(m(him_trans))),
-        "him_transition_coverage_std": sd(him_trans),
+        "citk_transition_coverage": int(round(m(citk_trans))),
+        "citk_transition_coverage_std": sd(citk_trans),
         "rnd_transition_coverage": int(round(m(rnd_trans))),
         "rnd_transition_coverage_std": sd(rnd_trans),
         "rand_transition_coverage": int(round(m(rand_trans))),
         "rand_transition_coverage_std": sd(rand_trans),
-        "him_rooms_reached": m(him_rooms),
-        "him_rooms_reached_std": sd(him_rooms),
+        "citk_rooms_reached": m(citk_rooms),
+        "citk_rooms_reached_std": sd(citk_rooms),
         "rnd_rooms_reached": m(rnd_rooms),
         "rnd_rooms_reached_std": sd(rnd_rooms),
         "rand_rooms_reached": m(rand_rooms),
         "rand_rooms_reached_std": sd(rand_rooms),
-        "him_model_accuracy": m(him_acc),
-        "him_model_accuracy_std": sd(him_acc),
+        "citk_model_accuracy": m(citk_acc),
+        "citk_model_accuracy_std": sd(citk_acc),
         "rnd_model_accuracy": m(rnd_acc),
         "rnd_model_accuracy_std": sd(rnd_acc),
     }

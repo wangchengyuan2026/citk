@@ -1,10 +1,10 @@
-# HIM-0 最简版 · 双轨验证报告
+# CIT-K-0 最简版 · 双轨验证报告
 > 零大数据训练的自训练智能体（猫智能论最简版）验证环境说明与结果
 
 ## 验证环境来源（双轨，各司其职）
 | 轨 | 来源 | 角色 | 可信度 |
 |---|---|---|---|
-| A | 自建规范测试台 `HIMGridEnv`（Gymnasium 兼容） | 理论忠实试炼场 + 范式官方法庭 | 内部有效，已开源可复现 |
+| A | 自建规范测试台 `CITKGridEnv`（Gymnasium 兼容） | 理论忠实试炼场 + 范式官方法庭 | 内部有效，已开源可复现 |
 | B | 真·MiniGrid（Farama，公开库） | 外部可信度交叉校验 | 外部认可 |
 
 选择理由：ARC-AGI-3 按「目标达成效率(RHAE)」计分且目标需被发现但终按命中计分，
@@ -19,8 +19,8 @@ RND/NovelD 同台只测「状态覆盖 / 因果覆盖」。
   corr=**0.7989**、MAE=**0.0317**
   （场景=感官状态，NEED 固定→V 世界无关，即「用记忆辨认场景」）
 
-## Track B — MiniGrid 公开校验（外部可信度：HIM vs RND vs Random）
-| 指标 | Empty-8x8 (HIM/RND/Random) | FourRooms (HIM/RND/Random) |
+## Track B — MiniGrid 公开校验（外部可信度：CIT-K vs RND vs Random）
+| 指标 | Empty-8x8 (CIT-K/RND/Random) | FourRooms (CIT-K/RND/Random) |
 |---|---|---|
 | 格子覆盖 | 1.0 / 1.0 / 1.0 | 0.2927 / 0.3046 / 0.2857 |
 | 因果转移覆盖 | 426 / 430 / 389 | 767 / 783 / 628 |
@@ -30,29 +30,29 @@ RND/NovelD 同台只测「状态覆盖 / 因果覆盖」。
 新增 **RND（Random Network Distillation, Burda 2018）** 作为第三个基线——此处采用其
 **免依赖的线性预测器变体**（固定随机目标网络 + 岭回归预测器，无 torch/自动梯度）：它保留
 RND 的核心机制「随机目标 + 可学习预测器 → 预测误差即新奇」，但去掉深度网络依赖，从而把
-比较聚焦在「内在动机思想」本身而非其网络载体。RND 与 HIM 共用**同一套策略**（仅内在信号
-不同：HIM=新奇计数/零NN，RND=线性预测误差），做到苹果对苹果。
+比较聚焦在「内在动机思想」本身而非其网络载体。RND 与 CIT-K 共用**同一套策略**（仅内在信号
+不同：CIT-K=新奇计数/零NN，RND=线性预测误差），做到苹果对苹果。
 
 > 注：数值为 **10 个种子**的均值；转移覆盖等指标的逐种子标准差已写入
-> `validation_results.json`（如 FourRooms 转移覆盖 HIM std=101.4562、
+> `validation_results.json`（如 FourRooms 转移覆盖 CIT-K std=101.4562、
 > RND std=99.5994、Random std=108.0658）。
 
 结论：无结构环境(Empty)三者均饱和，符合预期。
-**有结构环境(FourRooms)：HIM(零NN被动记忆) 的因果转移覆盖 767（±101.4562）对比
+**有结构环境(FourRooms)：CIT-K(零NN被动记忆) 的因果转移覆盖 767（±101.4562）对比
 RND(线性变体) 783（±99.5994）与 Random 628（±108.0658）**——
-若 HIM 与 RND 基本持平，则证明「零 NN、纯被动记忆的内在驱动」在结构发现广度上
+若 CIT-K 与 RND 基本持平，则证明「零 NN、纯被动记忆的内在驱动」在结构发现广度上
 **追平了 RND（其免依赖线性变体）**，这是范式外部可信度的关键证据（具体数值见上表、图与 json）。
 
 ## 诚实局限
 1. 玩具尺度：Track A 为平滑场、Track B 为 8×8/四房网格，非 ARC 像素级。
 2. MiniGrid 的 goal 由 mission 显式给定；本实验忽略 mission，用无目标内在驱动，
    与「无外部目标」同构，但非完整任务求解。
-3. 未与真 LLM 对比（沙箱无 API）；Random 代理下界，HIM 优势在结构化环境成立。
+3. 未与真 LLM 对比（沙箱无 API）；Random 代理下界，CIT-K 优势在结构化环境成立。
 4. 红线墙未动：本验证证明「自训练/结构发现」成立，但「无外部目标则不追外部目标」
    的限制不变——故仍非 ARC 主奖路径（见此前批判评估）。
 
 ## 交付物
-- `him_env.py` — Track A 规范测试台（Gymnasium 兼容，可复现）
-- `him_minigrid.py` — Track B MiniGrid 移植（内在驱动，忽略 mission）
+- `citk_env.py` — Track A 规范测试台（Gymnasium 兼容，可复现）
+- `citk_minigrid.py` — Track B MiniGrid 移植（内在驱动，忽略 mission）
 - `validation_results.json` — 原始指标
 - `validation_fig.png` — 双轨对照图

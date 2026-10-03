@@ -1,31 +1,32 @@
 # =============================================================================
-# 下一步工作原型：HIM（零训练猫） + 外挂深度学习（协作，非作弊）
+# 下一步工作原型：CIT-K（零训练猫） + 外挂深度学习（协作，非作弊）
 # -----------------------------------------------------------------------------
 # 概念：
-#   HIM 最简版（Kitten，零 NN / 零预训练 / 零梯度）从空白自主探索，产出
+#   CIT-K 最简版（Kitten，零 NN / 零预训练 / 零梯度）从空白自主探索，产出
 #   「趋利避害」内容 = 它的局部价值/舒适度记忆 V[场景] 与因果记忆 M。
 #   我们把这张「猫自主探索产物」喂给一个 *外挂* 的深度学习模块（此处用一个
-#   免依赖 numpy MLP 代表），让它学会 HIM 的舒适度场并 *泛化* 到猫没去过
+#   免依赖 numpy MLP 代表），让它学会 CIT-K 的舒适度场并 *泛化* 到猫没去过
 #   的感官状态。
 #
 # 为什么不是作弊（红线合规 + R1 基座愿景）：
-#   - HIM 核心始终零 NN / 零预训练 / 零梯度，本次完全不改、不碰。
-#   - 外挂 DL 是独立模块，只消费 HIM *自涌现* 的 (感官状态, 舒适度) 样本；
-#     标签是 HIM 的内在舒适度，没有任何外部奖励 / 世界标注被注入。
-#   - 这是「两种底层理论合作」：HIM=落地探索者+局部记忆（零训练）；
-#     DL=全局函数逼近器（需训练，但仅由 HIM 自举，而非由世界预训练）。
-#   - 恰好兑现 R1：HIM 是「别人/别的模块可在其上建构的基座」。
+#   - CIT-K 核心始终零 NN / 零预训练 / 零梯度，本次完全不改、不碰。
+#   - 外挂 DL 是独立模块，只消费 CIT-K *自涌现* 的 (感官状态, 舒适度) 样本；
+#     标签是 CIT-K 的内在舒适度，没有任何外部奖励 / 世界标注被注入。
+#   - 这是「两种底层理论合作」：CIT-K=落地探索者+局部记忆（零训练）；
+#     DL=全局函数逼近器（需训练，但仅由 CIT-K 自举，而非由世界预训练）。
+#   - 恰好兑现 R1：CIT-K 是「别人/别的模块可在其上建构的基座」。
 #
 # 分工证明：猫的局部记忆只认得 *访问过的* 场景（未见过默认 0.5）；
 #          外挂 MLP 训练后能 *外推* 到未见感官状态——这是猫单独做不到的。
 # =============================================================================
 import json
+import os
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from him_env import HIMGridEnv, Kitten, NEED, SIGMA
+from citk_env import CITKGridEnv, Kitten, NEED, SIGMA
 
 RNG = np.random.default_rng(1234)
 
@@ -88,8 +89,8 @@ def _mae(a, b):
 # ---------------------------------------------------------------------------
 def main():
     STEPS = 6000
-    # --- 阶段 1：HIM 零训练自主探索（与论文 Track A 同源，核心不动） ---
-    env = HIMGridEnv(seed=1, max_steps=STEPS)
+    # --- 阶段 1：CIT-K 零训练自主探索（与论文 Track A 同源，核心不动） ---
+    env = CITKGridEnv(seed=1, max_steps=STEPS)
     kit = Kitten(seed=7)
     obs, _ = env.reset(seed=1)
     eps = lambda t: max(0.05, np.exp(-t / 1200.0))
@@ -106,7 +107,7 @@ def main():
     Y = np.array([c for _, c in samples])
     visited_scenes = set(kit.scene(s) for s in X)
 
-    # --- 阶段 2：外挂 DL 消费 HIM 自涌现样本（仅在 HIM 产物上训练） ---
+    # --- 阶段 2：外挂 DL 消费 CIT-K 自涌现样本（仅在 CIT-K 产物上训练） ---
     n = len(X)
     perm = RNG.permutation(n)
     n_tr = int(0.8 * n)
@@ -135,9 +136,9 @@ def main():
     w_lin = ridge_fit(X[tr], Y[tr])
     y_const = float(Y[tr].mean())
 
-    # --- 阶段 3：分工证明 —— 外推到 HIM 局部记忆够不到的未见感官状态 ---
-    # 在 [0,1]^3 上铺一张密集网格（729 点），大部分是 HIM 没精确访问过的
-    # 感官组合；比较 MLP 泛化预测 vs 平凡基线 vs HIM 局部查表（未见默认 0.5）。
+    # --- 阶段 3：分工证明 —— 外推到 CIT-K 局部记忆够不到的未见感官状态 ---
+    # 在 [0,1]^3 上铺一张密集网格（729 点），大部分是 CIT-K 没精确访问过的
+    # 感官组合；比较 MLP 泛化预测 vs 平凡基线 vs CIT-K 局部查表（未见默认 0.5）。
     g = np.linspace(0.02, 0.98, 9)
     grid = np.array([[i, j, k] for i in g for j in g for k in g], float)
     true_c = np.array([float(np.exp(-np.sum((s - NEED) ** 2) / (2 * SIGMA ** 2))) for s in grid])
@@ -145,13 +146,13 @@ def main():
     lin_pred = ridge_pred(w_lin, grid)
     knn = knn_pred(X[tr], Y[tr], grid)
     const_pred = np.full(len(grid), y_const)
-    him_lookup = np.array([kit.V.get(kit.scene(s), 0.5) for s in grid])  # 猫的局部记忆
+    citk_lookup = np.array([kit.V.get(kit.scene(s), 0.5) for s in grid])  # 猫的局部记忆
 
     mlp_dense_mae = _mae(mlp_pred, true_c)
     lin_dense_mae = _mae(lin_pred, true_c)
     knn_dense_mae = _mae(knn, true_c)
     const_dense_mae = _mae(const_pred, true_c)
-    him_dense_mae = _mae(him_lookup, true_c)
+    citk_dense_mae = _mae(citk_lookup, true_c)
     mlp_dense_corr = float(np.corrcoef(mlp_pred, true_c)[0, 1])
     lin_dense_corr = float(np.corrcoef(lin_pred, true_c)[0, 1])
     knn_dense_corr = float(np.corrcoef(knn, true_c)[0, 1])
@@ -165,30 +166,31 @@ def main():
     true_slab = np.array([float(np.exp(-np.sum((s - NEED) ** 2) / (2 * SIGMA ** 2))) for s in slab]).reshape(40, 40)
     mlp_slab = mlp.predict(slab).reshape(40, 40)
     knn_slab = knn_pred(X[tr], Y[tr], slab).reshape(40, 40)
-    him_slab = np.array([kit.V.get(kit.scene(s), 0.5) for s in slab]).reshape(40, 40)
+    citk_slab = np.array([kit.V.get(kit.scene(s), 0.5) for s in slab]).reshape(40, 40)
 
     fig, ax = plt.subplots(1, 4, figsize=(18, 4.3))
-    fig.suptitle("HIM (zero-training cat) experience consumed by regressors  |  "
-                 "comfort field: truth vs MLP vs kNN vs HIM local lookup", fontsize=11)
+    fig.suptitle("CIT-K (zero-training cat) experience consumed by regressors  |  "
+                 "comfort field: truth vs MLP vs kNN vs CIT-K local lookup", fontsize=11)
     for axx, mat, title in [
         (ax[0], true_slab, "Truth (overlap comfort)"),
-        (ax[1], mlp_slab, "External MLP\n(trained on HIM's samples)"),
+        (ax[1], mlp_slab, "External MLP\n(trained on CIT-K's samples)"),
         (ax[2], knn_slab, "kNN baseline (trivial,\ntrained on same samples)"),
-        (ax[3], him_slab, "HIM local lookup (0.5 on\nunvisited scenes)"),
+        (ax[3], citk_slab, "CIT-K local lookup (0.5 on\nunvisited scenes)"),
     ]:
         im = axx.imshow(mat, origin="lower", extent=[0, 1, 0, 1], vmin=0, vmax=1, cmap="viridis")
         axx.set_title(title, fontsize=9)
         axx.set_xlabel("sensory ch0"); axx.set_ylabel("sensory ch1")
     fig.colorbar(im, ax=ax, shrink=0.8, label="comfort")
     fig.tight_layout(rect=[0, 0, 1, 0.93])
-    fig.savefig("/workspace/him_validation/him_plus_dl_fig.png", dpi=130)
+    OUT = os.path.dirname(os.path.abspath(__file__))
+    fig.savefig(os.path.join(OUT, "citk_plus_dl_fig.png"), dpi=130)
     plt.close(fig)
 
     metrics = {
-        "concept": "HIM zero-training exploration -> external regressors consume emergent (s,comfort) -> generalize",
-        "him_samples_collected": int(n),
-        "him_visited_scenes": int(len(visited_scenes)),
-        "external_mlp": "numpy MLP 3->16->16->1, ReLU+SGD, trained ONLY on HIM's autonomous (s,comfort) samples",
+        "concept": "CIT-K zero-training exploration -> external regressors consume emergent (s,comfort) -> generalize",
+        "citk_samples_collected": int(n),
+        "citk_visited_scenes": int(len(visited_scenes)),
+        "external_mlp": "numpy MLP 3->16->16->1, ReLU+SGD, trained ONLY on CIT-K's autonomous (s,comfort) samples",
         "trivial_baselines_same_train_set": "constant / ridge-linear / kNN(k=5) trained on the SAME 80% train split (Kimi-K3 acceptance requirement)",
         "mlp_test_mae_on_experienced": round(mlp_test_mae, 4),
         "dense_unseen_grid_mae": {
@@ -196,7 +198,7 @@ def main():
             "knn_k5": round(knn_dense_mae, 4),
             "linear_ridge": round(lin_dense_mae, 4),
             "constant": round(const_dense_mae, 4),
-            "him_local_lookup": round(him_dense_mae, 4),
+            "citk_local_lookup": round(citk_dense_mae, 4),
         },
         "dense_unseen_grid_corr_true": {
             "external_mlp": round(mlp_dense_corr, 4),
@@ -204,18 +206,18 @@ def main():
             "linear_ridge": round(lin_dense_corr, 4),
         },
         "interpretation": (
-            "Any sufficiently flexible regressor can consume HIM's self-emerged experience "
+            "Any sufficiently flexible regressor can consume CIT-K's self-emerged experience "
             "stream and generalise beyond the cat's local memory (MLP %.3f, kNN %.3f, vs "
-            "HIM lookup %.3f MAE on unseen states). Deep learning is NOT specifically "
+            "CIT-K lookup %.3f MAE on unseen states). Deep learning is NOT specifically "
             "required here — trivial kNN matches or beats the small MLP; DL's expected "
             "advantage lies on high-dimensional perceptual inputs where kNN fails. The "
-            "cooperation claim is therefore scoped to 'HIM's experience stream is "
-            "consumable and generalisable', not 'HIM needs deep learning'. HIM itself "
+            "cooperation claim is therefore scoped to 'CIT-K's experience stream is "
+            "consumable and generalisable', not 'CIT-K needs deep learning'. CIT-K itself "
             "stays zero-training/zero-NN throughout."
-            % (mlp_dense_mae, knn_dense_mae, him_dense_mae)
+            % (mlp_dense_mae, knn_dense_mae, citk_dense_mae)
         ),
     }
-    with open("/workspace/him_validation/him_plus_dl_results.json", "w") as f:
+    with open(os.path.join(OUT, "citk_plus_dl_results.json"), "w") as f:
         json.dump(metrics, f, indent=2, ensure_ascii=False)
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
 

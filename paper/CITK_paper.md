@@ -1,7 +1,7 @@
-# HIM: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel
+# CIT-K: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel
 ### 猫智能论 (Cat Intelligence Theory) — Architecture, Proof, and Reproducible Testbed
 
-> **Preprint draft.** This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, HIM. It consolidates, in a single paper, the theory's *architectural framework* (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its *existence proof* (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
+> **Preprint draft.** This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, CIT-K. It consolidates, in a single paper, the theory's *architectural framework* (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its *existence proof* (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
 >
 > **Author:** 王程远 (Chengyuan Wang, b. 1987), Independent Scholar, Huizhou, Guangdong, China
 > **Date:** 2026-10-03
@@ -11,15 +11,15 @@
 
 ## Abstract (English)
 
-We propose **HIM** (Heuristic-Intrinsic, Minimal), a complete yet minimal intelligence kernel derived from the *Cat Intelligence Theory* (猫智能论). The theory holds that intelligent behaviour can self-emerge from a **blank-born agent** that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a **comfort signal** from the *overlap rate* between its real-time sensory state and its (organism-shaped) need state, (4) **passively** memorises the causal relation *"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"*, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach benefit and avoid harm. No external reward, no designer-supplied goal, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
+We propose **CIT-K** (Cat Intelligence Theory Kernel), a complete yet minimal intelligence kernel derived from the *Cat Intelligence Theory* (猫智能论). The theory holds that intelligent behaviour can self-emerge from a **blank-born agent** that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a **comfort signal** from the *overlap rate* between its real-time sensory state and its (organism-shaped) need state, (4) **passively** memorises the causal relation *"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"*, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach benefit and avoid harm. No external reward, no designer-supplied goal, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
 
-We formalise comfort as a **general comfort level** $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort *change* $\Delta C_t$. A **hope mechanism** (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on two tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public **MiniGrid** benchmark, where HIM is compared head-to-head with **RND** (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy. In structured environments HIM's structure-discovery breadth (transition coverage $767\pm101$) **essentially matches** this dependency-free linear RND variant ($783\pm100$) and **clearly exceeds** Random ($628\pm108$) over 10 seeds, using **zero neural networks, zero gradient, zero pretraining**. Formally, HIM is a zero-network, zero-gradient, zero-content-pretraining minimal instantiation of **homeostatically-regulated reinforcement learning** (HRRL; Keramati & Gutkin, 2014; Yoshida et al., 2025): its comfort gradient $\Delta L_t$ is exactly the drive-reduction reward $d_t-d_{t+1}$ under the deviation $d\equiv 1-C$. We give a **constructive + empirical proof** that an agent requiring no content pretraining can exist and self-develop, and state explicitly why HIM is **not** built to win external-goal benchmarks such as ARC-AGI.
+We formalise comfort as a **general comfort level** $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort *change* $\Delta C_t$. A **hope mechanism** (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on two tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public **MiniGrid** benchmark, where CIT-K is compared head-to-head with **RND** (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy. In structured environments CIT-K's structure-discovery breadth (transition coverage $767\pm101$) **essentially matches** this dependency-free linear RND variant ($783\pm100$) and **clearly exceeds** Random ($628\pm108$) over 10 seeds, using **zero neural networks, zero gradient, zero pretraining**. Formally, CIT-K is a zero-network, zero-gradient, zero-content-pretraining minimal instantiation of **homeostatically-regulated reinforcement learning** (HRRL; Keramati & Gutkin, 2014; Yoshida et al., 2025): its comfort gradient $\Delta L_t$ is exactly the drive-reduction reward $d_t-d_{t+1}$ under the deviation $d\equiv 1-C$. We give a **constructive + empirical proof** that an agent requiring no content pretraining can exist and self-develop, and state explicitly why CIT-K is **not** built to win external-goal benchmarks such as ARC-AGI.
 
 ## 摘要（中文）
 
-我们提出 **HIM**（Heuristic-Intrinsic, Minimal），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个**记忆空白的新生体**自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的**重叠率**导出**舒适度**信号，(4) **被动**记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。
+我们提出 **CIT-K**（Heuristic-Intrinsic, Minimal），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个**记忆空白的新生体**自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的**重叠率**导出**舒适度**信号，(4) **被动**记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。
 
-我们将舒适度形式化为**一般舒适度水平** $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的**变化** $\Delta C_t$。**希望机制**（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在两条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，HIM 与（免依赖线性预测器变体的）**RND** 及随机策略同台对比。在结构化环境中，HIM 的结构发现广度（转移覆盖 $767\pm101$）**基本追平** RND（$783\pm100$）并**显著超过**随机（$628\pm108$）（10 种子），且**零神经网络、零梯度、零预训练**。我们给出「无需内容预训练、能够存在并自主发展的智能体」的**构造性+经验性证明**，并明确说明 HIM **并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
+我们将舒适度形式化为**一般舒适度水平** $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的**变化** $\Delta C_t$。**希望机制**（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在两条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 **MiniGrid** 基准，CIT-K 与（免依赖线性预测器变体的）**RND** 及随机策略同台对比。在结构化环境中，CIT-K 的结构发现广度（转移覆盖 $767\pm101$）**基本追平** RND（$783\pm100$）并**显著超过**随机（$628\pm108$）（10 种子），且**零神经网络、零梯度、零预训练**。我们给出「无需内容预训练、能够存在并自主发展的智能体」的**构造性+经验性证明**，并明确说明 CIT-K **并非**为赢得 ARC-AGI 等外部目标匹配型基准而设计。
 
 ---
 
@@ -38,7 +38,7 @@ A novel intelligence theory is only useful if others can build on it. We therefo
 
 ## 2. The Cat Intelligence Theory (猫智能论)
 
-The Cat Intelligence Theory was proposed and formalised by Wang (2018) in reflection on whether a machine can possess autonomous motivation. Its philosophical and methodological origin lies in the foundational paper *Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation* (Wang, 2018, published), which models machine autonomous motivation through a minimal "love and hate" abstraction and first advances "cat intelligence" as an intelligence criterion independent of the linguistic Turing test. This manuscript builds on it by giving the theory's *minimal executable kernel* (HIM) and a *no-pretraining existence proof*.
+The Cat Intelligence Theory was proposed and formalised by Wang (2018) in reflection on whether a machine can possess autonomous motivation. Its philosophical and methodological origin lies in the foundational paper *Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation* (Wang, 2018, published), which models machine autonomous motivation through a minimal "love and hate" abstraction and first advances "cat intelligence" as an intelligence criterion independent of the linguistic Turing test. This manuscript builds on it by giving the theory's *minimal executable kernel* (CIT-K) and a *no-pretraining existence proof*.
 
 ### 2.1 The core causal chain
 1. **Blank birth.** Memory starts empty. Sensory apparatus moves unstructured (stillness is itself a motion pattern).
@@ -93,18 +93,18 @@ Cat Intelligence Theory operates at the **computational / functional level** (Ma
 
 ---
 
-## 3. The HIM Kernel (Minimal Implementation)
+## 3. The CIT-K Kernel (Minimal Implementation)
 
-HIM is a ~119-effective-line reference kernel implementing §2 faithfully:
+CIT-K is a ~119-effective-line reference kernel implementing §2 faithfully:
 - **State**: a real-time sensory-state vector (discretised into a *scene* key).
-- **Comfort (intrinsic signal)**: the canonical signal is the **overlap-driven comfort** $C(s)$ of §2.2 — the steady-state closeness of the sensory state to `NEED` (the homeostatic anchor, dominant in Track A). The minimal HIM-0 kernel additionally carries a **curiosity** facet: unseen scenes are assigned exploratory value. This is a legitimate, red-line-safe emergent of the passive-memory mechanism (no external goal/reward) and is what drives structure discovery in Track B; the two facets are not in conflict — overlap comfort anchors homeostasis, novelty comfort sparks exploration.
+- **Comfort (intrinsic signal)**: the canonical signal is the **overlap-driven comfort** $C(s)$ of §2.2 — the steady-state closeness of the sensory state to `NEED` (the homeostatic anchor, dominant in Track A). The minimal CIT-K-0 kernel additionally carries a **curiosity** facet: unseen scenes are assigned exploratory value. This is a legitimate, red-line-safe emergent of the passive-memory mechanism (no external goal/reward) and is what drives structure discovery in Track B; the two facets are not in conflict — overlap comfort anchors homeostasis, novelty comfort sparks exploration.
 - **Hope / passive causal memory**: `V[scene]` = EMA comfort; `M[scene][action]` = EMA value of the successor; `T[scene][action]` = observed successor counts (the causal memory). `V` and `M` jointly realise the hope mechanism of §2.2.
 - **Policy**: one-step look-ahead on `M` (greedy with $\varepsilon$-exploration early, exploit later) — the newborn is chaotic, the adult is purposeful.
 - **STILL action**: "doing nothing" is an explicit legal motion pattern (stillness is a motion pattern, per the theory).
 
 All of R1–R7 are obeyed: zero NN, zero gradient, zero pretraining, zero external reward, zero per-game branching; comfort is self-emergent (I-2 path); external maths answer *what*.
 
-*Scope boundary.* Everything above is the HIM kernel itself. Modules constructed **on top of** HIM — for example an external regressor that consumes HIM's self-emerged `(sensory, comfort)` experience to generalise beyond the cat's local memory — lie strictly **outside** the kernel and do **not** alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of HIM; the kernel's red lines are defined and tested in isolation from them.
+*Scope boundary.* Everything above is the CIT-K kernel itself. Modules constructed **on top of** CIT-K — for example an external regressor that consumes CIT-K's self-emerged `(sensory, comfort)` experience to generalise beyond the cat's local memory — lie strictly **outside** the kernel and do **not** alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of CIT-K; the kernel's red lines are defined and tested in isolation from them.
 
 ---
 
@@ -112,7 +112,7 @@ All of R1–R7 are obeyed: zero NN, zero gradient, zero pretraining, zero extern
 
 All experiments are deterministic under fixed seeds and require only `numpy`, `gymnasium`, and `minigrid`. Figures and raw JSON accompany the code release.
 
-### 4.1 Track A — Canonical testbed (`HIMGridEnv`, Gymnasium-compatible)
+### 4.1 Track A — Canonical testbed (`CITKGridEnv`, Gymnasium-compatible)
 A smooth sensory field with a comfort source; faithfully instantiates §2.1–2.2.
 
 | Measure | Result |
@@ -128,37 +128,37 @@ The cross-world result is the empirical statement of *"recognise scenes by memor
 Two honesty notes. **(i) Seed sensitivity.** The headline +0.324 is one seed near the upper quartile; across 10 independently-seeded runs the gain is +0.203 ± 0.190 (range 0.010–0.573) — the *direction* is robust (10/10, p = 0.001), the *magnitude* is seed-sensitive, so we report the distribution rather than the best case. **(ii) The trajectory is episodic, not convergent.** Over the full run the median instantaneous comfort is ≈ 0.00 (63% of sampled steps < 0.05): the agent alternates between extended exploratory excursions and returns to comfort zones, so the endpoint gain measures a rising *return rate* to comfort, not sustained residence in it. This alternation between exploratory and comfort-seeking drives is itself consistent with the theory's dual drives (§2.1, §3).
 
 ### 4.2 Track B — Public benchmark cross-check (MiniGrid)
-We port the **same** HIM agent to real MiniGrid (Farama), **ignore the mission (external goal)**, and drive purely by intrinsic novelty — placing HIM on the same stage as curiosity / intrinsic-motivation literature. We add **RND** (Random Network Distillation, Burda et al. 2018) in its **dependency-free, linear-predictor variant**: a fixed random target network whose representation is predicted by a closed-form ridge regressor (no torch, no autograd). This preserves RND's essential mechanism — *random target + learnable predictor → prediction error as novelty* — while removing the deep-network dependency, so the comparison isolates the *intrinsic-motivation idea* from its network substrate. All three agents share the **identical policy**; only the intrinsic signal differs (HIM = novelty count / zero-NN; RND = linear-predictor error). 3000 steps × **10 seeds**; values are means, with standard deviations reported alongside (and in `validation_results.json`).
+We port the **same** CIT-K agent to real MiniGrid (Farama), **ignore the mission (external goal)**, and drive purely by intrinsic novelty — placing CIT-K on the same stage as curiosity / intrinsic-motivation literature. We add **RND** (Random Network Distillation, Burda et al. 2018) in its **dependency-free, linear-predictor variant**: a fixed random target network whose representation is predicted by a closed-form ridge regressor (no torch, no autograd). This preserves RND's essential mechanism — *random target + learnable predictor → prediction error as novelty* — while removing the deep-network dependency, so the comparison isolates the *intrinsic-motivation idea* from its network substrate. All three agents share the **identical policy**; only the intrinsic signal differs (CIT-K = novelty count / zero-NN; RND = linear-predictor error). 3000 steps × **10 seeds**; values are means, with standard deviations reported alongside (and in `validation_results.json`).
 
-| Metric | Empty-8×8 (HIM / RND / Random) | FourRooms (HIM / RND / Random) |
+| Metric | Empty-8×8 (CIT-K / RND / Random) | FourRooms (CIT-K / RND / Random) |
 |---|---|---|
 | Cell coverage (mean ± std) | 1.000 / 1.000 / 1.000 | 0.293 ± 0.044 / 0.305 ± 0.039 / 0.286 ± 0.056 |
 | **Transition coverage** (structure breadth, mean ± std) | 426 ± 4 / 430 ± 0 / 389 ± 15 | **767 ± 101 / 783 ± 100 / 628 ± 108** |
 | Rooms reached (mean ± std) | 4.0 / 4.0 / 4.0 | 2.7 ± 0.46 / 3.3 ± 0.46 / 2.2 ± 0.87 |
 | Causal-memory accuracy (mean ± std) | 0.884 ± 0.005 / 0.884 ± 0.005 | 0.859 ± 0.022 / 0.844 ± 0.021 |
 
-**Reading.** In the unstructured Empty world all three saturate (expected). In the **structured FourRooms** world, HIM (zero-NN, passive memory) attains transition coverage **767 ± 101**, essentially matching RND in its linear variant (**783 ± 100**) and clearly exceeding Random (**628 ± 108**). The HIM–RND gap is far below one standard deviation, so the central empirical claim holds: *a zero-data, zero-network, comfort-driven agent discovers world structure on par with the (dependency-free, linear) RND intrinsic-motivation method.* Welch t-tests over per-seed transition coverages confirm this reading: HIM vs. RND is statistically indistinguishable (two-tailed p = 0.74), while both significantly exceed Random (HIM vs. Random p = 0.011; RND vs. Random p = 0.005; n = 10 seeds). Across 10 seeds the ordering is stable: HIM ≈ RND ≫ Random for structure breadth. The one edge for RND is rooms reached (3.3 vs 2.7) and cell coverage, plausibly because its continuous error reward sustains longer-horizon exploration — a concrete, red-line-safe upgrade path for HIM (replace the discrete novelty count with a smoothed novelty signal).
+**Reading.** In the unstructured Empty world all three saturate (expected). In the **structured FourRooms** world, CIT-K (zero-NN, passive memory) attains transition coverage **767 ± 101**, essentially matching RND in its linear variant (**783 ± 100**) and clearly exceeding Random (**628 ± 108**). The CIT-K–RND gap is far below one standard deviation, so the central empirical claim holds: *a zero-data, zero-network, comfort-driven agent discovers world structure on par with the (dependency-free, linear) RND intrinsic-motivation method.* Welch t-tests over per-seed transition coverages confirm this reading: CIT-K vs. RND is statistically indistinguishable (two-tailed p = 0.74), while both significantly exceed Random (CIT-K vs. Random p = 0.011; RND vs. Random p = 0.005; n = 10 seeds). Across 10 seeds the ordering is stable: CIT-K ≈ RND ≫ Random for structure breadth. The one edge for RND is rooms reached (3.3 vs 2.7) and cell coverage, plausibly because its continuous error reward sustains longer-horizon exploration — a concrete, red-line-safe upgrade path for CIT-K (replace the discrete novelty count with a smoothed novelty signal).
 
 ### 4.3 Zero-data, no-pretraining: a constructive existence proof
 
-The headline claim of HIM is that an intelligent agent can self-emerge **without any external training data, pretrained weights, or gradient-based learning**. This is not asserted rhetorically; it is *proven constructively* and *corroborated at execution time*.
+The headline claim of CIT-K is that an intelligent agent can self-emerge **without any external training data, pretrained weights, or gradient-based learning**. This is not asserted rhetorically; it is *proven constructively* and *corroborated at execution time*.
 
-**Constructive proof (code-level).** HIM is a concrete, fully inspectable artifact (~119 lines). A static scan of the HIM agent establishes the following (exact commands and outputs are reproduced in Appendix A):
+**Constructive proof (code-level).** CIT-K is a concrete, fully inspectable artifact (~119 lines). A static scan of the CIT-K agent establishes the following (exact commands and outputs are reproduced in Appendix A):
 
-| Inspection | What it rules out | Result on HIM |
+| Inspection | What it rules out | Result on CIT-K |
 |---|---|---|
 | Deep-learning imports (`torch / tensorflow / neural / backprop / autograd / optim`) | neural networks, gradient descent | only prose comments stating *"no torch"*; **zero imports** |
 | Model / weight loading (`load() / pickle / .pt / .h5 / .npy / read_csv / datasets`) | pretrained parameters, external datasets | **zero hits** |
 | Memory initialisation (`self.V`, `self.M`) | baked-in world knowledge | start as **empty** `{}`; only a neutral EMA seed `0.5` and an empty visit counter |
-| Training loop / gradient step | offline or online pretraining | **absent** from the HIM agent |
+| Training loop / gradient step | offline or online pretraining | **absent** from the CIT-K agent |
 
 In computer science, *"here is a concrete artifact that exhibits the property"* is the standard proof that such an artifact **exists**. The artifact is the proof.
 
 **Execution-level corroboration.** The same blank agent, run from an empty memory, produces emergent learning from scratch: Track A comfort rises 0.054 → 0.378 (chaos → ordered seeking); cross-world recognition corr 0.799 (memory-based, not rote); Track B structure-discovery breadth matches the RND baseline while using zero networks. The behaviour demonstrably arises **without** any pretraining fed in.
 
-**The principled distinction that makes the claim rigorous: structural prior vs. content pretraining.** HIM does contain *priors*, but they are exclusively **structural** — the algorithm itself encodes the theory (overlap-rate comfort, passive causal memory, one-step lookahead) and carries **no experiential content** about any specific world. This is categorically distinct from **content pretraining**, where world-specific data is ingested before deployment. A biological cat analogously has innate *structural* priors (sensory needs, a body) yet learns all *content* post-natally; HIM's "blank newborn" claim rests on exactly this distinction. The neutral `0.5` seeds and the fixed `NEED` / `σ` are *body parameters* under red line R2(a) (innate physiology), not pretraining: a sceptic is correct that they are priors, but they encode **no experience**, hence they are not data-pretraining.
+**The principled distinction that makes the claim rigorous: structural prior vs. content pretraining.** CIT-K does contain *priors*, but they are exclusively **structural** — the algorithm itself encodes the theory (overlap-rate comfort, passive causal memory, one-step lookahead) and carries **no experiential content** about any specific world. This is categorically distinct from **content pretraining**, where world-specific data is ingested before deployment. A biological cat analogously has innate *structural* priors (sensory needs, a body) yet learns all *content* post-natally; CIT-K's "blank newborn" claim rests on exactly this distinction. The neutral `0.5` seeds and the fixed `NEED` / `σ` are *body parameters* under red line R2(a) (innate physiology), not pretraining: a sceptic is correct that they are priors, but they encode **no experience**, hence they are not data-pretraining.
 
-**Honest boundaries of the proof.** The proof establishes that *this implementation* has zero content pretraining; it does not assert that every future instantiation will. It proves *existence* and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does **not** prove HIM is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §6.
+**Honest boundaries of the proof.** The proof establishes that *this implementation* has zero content pretraining; it does not assert that every future instantiation will. It proves *existence* and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does **not** prove CIT-K is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §6.
 
 ---
 
@@ -173,7 +173,7 @@ These axioms unify the ancient intuition (Schopenhauer's blind will, Xunzi's 好
 
 ---
 
-## 6. Why HIM Is Not Built to Win ARC-AGI (honest scope)
+## 6. Why CIT-K Is Not Built to Win ARC-AGI (honest scope)
 
 ARC-AGI-3 scores **external-goal-matching efficiency** (RHAE); although the goal must be *discovered*, scoring still rewards *hitting that discovered goal*. Our **red line R4 forbids external goals/rewards**. A prior full-agent implementation of the same theory on the ARC public environment empirically plateaus at RHAE ≈ 0.675 (8/25 levels passed) and cannot reach the leaderboard top (~1.03) without violating R4. We therefore treat ARC as a *smoke test* (the agent runs in a real interactive environment) and explicitly **not** as the theory's validation yardstick. The validation yardstick for a self-emergent, intrinsically-driven theory is structure discovery (Tracks A/B), not goal matching.
 
@@ -181,7 +181,7 @@ ARC-AGI-3 scores **external-goal-matching efficiency** (RHAE); although the goal
 
 ## 7. Related Work and Distinctiveness
 
-The theory's *mechanisms* are not each novel: enactivism / sensorimotor contingency (O'Regan & Noë, 2001), active inference / free energy (Friston, 2010), homeostatic / homeostatically-regulated RL (Keramati & Gutkin, 2014; Yoshida et al., 2025; Tomar, 2026), Damasio's homeostasis/somatic markers (1999), Piaget's sensorimotor stage (1952), Gibson's affordances (1979), Brooks' intelligence-without-representation (1986), Ashby's homeostat (1952), Braitenberg's vehicles (1984), Grey Walter's tortoises (1953), and the Buddhist 十二因缘 / 唯识 (seed-and-store) and Xunzi's 好利恶害 all anticipate pieces. **What is distinctive is the conjunction**: a minimal kernel that (a) starts from a *blank newborn*, (b) learns only by *passive* causal memory, (c) is driven solely by a single computable *comfort gradient* $\Delta L$, and (d) is *runnable in ~119 lines*. The historical minimal kernels (Braitenberg, Walter, Ashby, Brooks) are each smaller, but none carries the complete "learn-from-blank" narrative with the comfort-gradient variable. Closest to us, **HRRL** (Yoshida et al., 2025) defines reward as *drive reduction* $r_t=d(H_t)-d(H_{t+1})$ for a deviation $d$ from a homeostatic setpoint; HIM's comfort gradient $\Delta L_t = L_t - L_{t-1}$ is precisely that drive-reduction reward under $d \equiv 1-C$. HIM is therefore a **minimal, zero-network, zero-gradient, zero-content-pretraining instantiation of HRRL** — the family's smallest auditable member, not a rival to it. We position HIM as a *synthesis / unified minimal base*, not a claim of unprecedented mechanism.
+The theory's *mechanisms* are not each novel: enactivism / sensorimotor contingency (O'Regan & Noë, 2001), active inference / free energy (Friston, 2010), homeostatic / homeostatically-regulated RL (Keramati & Gutkin, 2014; Yoshida et al., 2025; Tomar, 2026), Damasio's homeostasis/somatic markers (1999), Piaget's sensorimotor stage (1952), Gibson's affordances (1979), Brooks' intelligence-without-representation (1986), Ashby's homeostat (1952), Braitenberg's vehicles (1984), Grey Walter's tortoises (1953), and the Buddhist 十二因缘 / 唯识 (seed-and-store) and Xunzi's 好利恶害 all anticipate pieces. **What is distinctive is the conjunction**: a minimal kernel that (a) starts from a *blank newborn*, (b) learns only by *passive* causal memory, (c) is driven solely by a single computable *comfort gradient* $\Delta L$, and (d) is *runnable in ~119 lines*. The historical minimal kernels (Braitenberg, Walter, Ashby, Brooks) are each smaller, but none carries the complete "learn-from-blank" narrative with the comfort-gradient variable. Closest to us, **HRRL** (Yoshida et al., 2025) defines reward as *drive reduction* $r_t=d(H_t)-d(H_{t+1})$ for a deviation $d$ from a homeostatic setpoint; CIT-K's comfort gradient $\Delta L_t = L_t - L_{t-1}$ is precisely that drive-reduction reward under $d \equiv 1-C$. CIT-K is therefore a **minimal, zero-network, zero-gradient, zero-content-pretraining instantiation of HRRL** — the family's smallest auditable member, not a rival to it. We position CIT-K as a *synthesis / unified minimal base*, not a claim of unprecedented mechanism.
 
 ### 7.1 Theoretical Lineage and This Paper's Contribution
 This work sits on a continuous research line; we demarcate the manuscripts to avoid duplicate claims:
@@ -192,7 +192,7 @@ This work sits on a continuous research line; we demarcate the manuscripts to av
 
 ## 8. Conclusion and the "Base" Claim
 
-HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed, and a public-benchmark cross-check — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
+CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a **minimal, reproducible base** — a canonical testbed, and a public-benchmark cross-check — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
 
 ---
 
@@ -200,11 +200,11 @@ HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-eme
 
 **An existence proof against the scaling axiom.** The mainstream premise — *no intelligence without massive data* — is hereby demoted from axiom to testable hypothesis. A blank-born, zero-data, zero-network agent that self-emerges scene recognition and structure discovery proves, constructively, that the alternative exists.
 
-**Reviving a seventy-year-dormant line.** Ashby, Walter, Brooks, and developmental robotics all sought intelligence-from-blank, but stalled on non-reproducible kernels and missing testbeds. HIM supplies what they lacked: a 119-line auditable kernel plus a multi-track validation stage, on a shared stage with the intrinsic-motivation literature.
+**Reviving a seventy-year-dormant line.** Ashby, Walter, Brooks, and developmental robotics all sought intelligence-from-blank, but stalled on non-reproducible kernels and missing testbeds. CIT-K supplies what they lacked: a 119-line auditable kernel plus a multi-track validation stage, on a shared stage with the intrinsic-motivation literature.
 
-**Falsifiable predictions.** *1–2 years (~80%):* cited as a curiosity-grade minimal benchmark, not a paradigm shift; the realistic opening is **data efficiency** as crawlable data depletes. *3–5 years (~40–50%):* "HIM explores, DL consumes" matures into **developmental agents as data engines** — the fusion path, consistent with the base claim (R1). *10+ years (~10–15%):* if language or cross-domain abstraction is layered onto such kernels, the empiricist–rationalist debate acquires an **experimental platform** — the innate prior becomes a tunable parameter. *Chief risk:* remaining an elegant footnote, admired and bypassed, unless others build on it.
+**Falsifiable predictions.** *1–2 years (~80%):* cited as a curiosity-grade minimal benchmark, not a paradigm shift; the realistic opening is **data efficiency** as crawlable data depletes. *3–5 years (~40–50%):* "CIT-K explores, DL consumes" matures into **developmental agents as data engines** — the fusion path, consistent with the base claim (R1). *10+ years (~10–15%):* if language or cross-domain abstraction is layered onto such kernels, the empiricist–rationalist debate acquires an **experimental platform** — the innate prior becomes a tunable parameter. *Chief risk:* remaining an elegant footnote, admired and bypassed, unless others build on it.
 
-**One sentence.** HIM's significance is not outperforming LLMs — it cannot — but demoting "intelligence must be fed data" from axiom to hypothesis, and building the first reproducible apparatus for the ancient question of whether intelligence can grow from blank. A monument at the beginning of the question, not at the end of the answer.
+**One sentence.** CIT-K's significance is not outperforming LLMs — it cannot — but demoting "intelligence must be fed data" from axiom to hypothesis, and building the first reproducible apparatus for the ancient question of whether intelligence can grow from blank. A monument at the beginning of the question, not at the end of the answer.
 
 ---
 
@@ -232,34 +232,34 @@ HIM demonstrates that a blank-born, zero-data, comfort-driven agent can self-eme
 
 ## Appendix A — Reproducibility & Release
 
-- **Code:** `him_env.py` (Track A), `him_minigrid.py` (Track B, with RND), `run_validation.py` (two-track harness).
-- **Env:** Gymnasium-compatible `HIMGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`).
-- **Determinism:** all runs seeded; raw metrics in `validation_results.json` (Tracks A/B); figures in `validation_fig.png` / `him_plus_dl_fig.png`.
+- **Code:** `citk_env.py` (Track A), `citk_minigrid.py` (Track B, with RND), `run_validation.py` (two-track harness).
+- **Env:** Gymnasium-compatible `CITKGridEnv`; public MiniGrid (`MiniGrid-Empty-8x8-v0`, `MiniGrid-FourRooms-v0`).
+- **Determinism:** all runs seeded; raw metrics in `validation_results.json` (Tracks A/B); figures in `validation_fig.png` / `citk_plus_dl_fig.png`.
 - **Red lines:** enumerated as R1–R7 in §2.3; the kernel obeys them by construction.
 - **DOI / priority:** this manuscript + code are archived via **GitHub Release → Zenodo**, minting a citable, immutable DOI. Priority of the *idea* is anchored by the GitHub Release timestamp.
 
 ### A.1 No-content-pretraining inspection (auditable)
 
-The §4.3 constructive proof is reproducible by anyone. From the repository root (`him_validation/`):
+The §4.3 constructive proof is reproducible by anyone. From the repository root (`citk_validation/`):
 
 ```bash
-# (1) No deep-learning framework is imported by HIM (only prose comments say "no torch")
+# (1) No deep-learning framework is imported by CIT-K (only prose comments say "no torch")
 grep -rniE "torch|tensorflow|keras|neural|backprop|autograd|optim\." \
-      him_env.py him_minigrid.py run_validation.py
+      citk_env.py citk_minigrid.py run_validation.py
 #   → matches only comments; zero `import` lines
 
 # (2) No model loading / pretrained weights / external datasets
 grep -rniE "load\(|pickle|\.pt|\.h5|\.npy|read_csv|datasets" \
-      him_env.py him_minigrid.py
+      citk_env.py citk_minigrid.py
 #   → zero hits
 
-# (3) HIM memory starts empty; the only initial number is a neutral EMA seed 0.5
-grep -nE "self\.V = \{\}|self\.M = \{\}" him_env.py him_minigrid.py
+# (3) CIT-K memory starts empty; the only initial number is a neutral EMA seed 0.5
+grep -nE "self\.V = \{\}|self\.M = \{\}" citk_env.py citk_minigrid.py
 #   → self.V = {}   self.M = {}   (blank at birth)
 
-# (4) No training loop / gradient step anywhere in the HIM agent
+# (4) No training loop / gradient step anywhere in the CIT-K agent
 grep -rniE "gradient|\.train\(|fit\(|SGD|Adam|backward\(" \
-      him_env.py him_minigrid.py
+      citk_env.py citk_minigrid.py
 #   → zero hits
 ```
 

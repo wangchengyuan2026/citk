@@ -1,6 +1,6 @@
-# Track A — 猫智能论《最简版》官方验证环境 (HIMGridEnv)
+# Track A — 猫智能论《最简版》官方验证环境 (CITKGridEnv)
 # =============================================================================
-# 这是 HIM-0 最简版智能体的「规范测试台」：开源、Gymnasium 兼容、可复现、
+# 这是 CIT-K-0 最简版智能体的「规范测试台」：开源、Gymnasium 兼容、可复现、
 # 可引用。它精确还原猫智能论原语（红线内）：
 #   - 出生记忆空白（Kitten.V/M 初始为空 / 中性）
 #   - 感官实时状态向量 s（由环境特征场采样，含噪声）
@@ -10,7 +10,7 @@
 #   - 被动因果记忆：V[场景]=舒服度, M[场景][动作]→后继场景值；一步前瞻决策
 #
 # 用法：
-#   from him_env import HIMGridEnv, Kitten, run_own_track
+#   from citk_env import CITKGridEnv, Kitten, run_own_track
 #   metrics = run_own_track()
 # =============================================================================
 import numpy as np
@@ -24,7 +24,7 @@ ACTIONS = 5                           # up, down, left, right, STILL
 A_NAMES = ["up", "down", "left", "right", "STILL"]
 
 
-class HIMGridEnv(gym.Env):
+class CITKGridEnv(gym.Env):
     """Gymnasium 兼容的最小猫智能论世界：连续感官场 + 离散网格 + 墙体结构。"""
     metadata = {"render_modes": []}
 
@@ -90,7 +90,7 @@ class HIMGridEnv(gym.Env):
 
 
 # ---------------------------------------------------------------------------
-# Kitten：空白出生 + 被动因果记忆（与 HIM-0 同构，Gymnasium 无关的策略）
+# Kitten：空白出生 + 被动因果记忆（与 CIT-K-0 同构，Gymnasium 无关的策略）
 # ---------------------------------------------------------------------------
 class Kitten:
     def __init__(self, bins=4, ema=0.2, seed=7):
@@ -122,7 +122,7 @@ class Kitten:
 
 
 # ---------------------------------------------------------------------------
-# 运行协议：返回验证 HIM-0 最简版的核心指标
+# 运行协议：返回验证 CIT-K-0 最简版的核心指标
 # ---------------------------------------------------------------------------
 def rollout(env, kitten, steps, use_true_reward=True, seed=None, transfer_V=None):
     if transfer_V is not None:
@@ -153,7 +153,7 @@ def _pearson(xs, ys):
 
 def run_own_track(steps=6000, seedA=1, seedB=2):
     """Track A 主流程：出生→学习、随机奖励消融、场景辨认(价值跨世界一致)。"""
-    env = HIMGridEnv(seed=seedA, max_steps=steps)
+    env = CITKGridEnv(seed=seedA, max_steps=steps)
     kit = Kitten()
     cA, nA = rollout(env, kit, steps, seed=seedA)
 
@@ -162,7 +162,7 @@ def run_own_track(steps=6000, seedA=1, seedB=2):
 
     # 价值函数跨世界一致性：在 Map B 上采样感官场景，检验「Map A 学到的
     # V[场景]=舒适度」是否仍成立（NEED 固定 → V 世界无关，这正是场景辨认）。
-    envB = HIMGridEnv(seed=seedB, max_steps=steps)
+    envB = CITKGridEnv(seed=seedB, max_steps=steps)
     rng = np.random.default_rng(99)
     seen, unseen = [], []
     for _ in range(400):
