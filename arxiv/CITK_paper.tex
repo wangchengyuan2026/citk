@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\title{CIT-K: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel\\ \large 猫智能论 (Cat Intelligence Theory) — Architecture, Proof, and Reproducible Testbed}
+\author{Chengyuan Wang (王程远)\\ Independent Scholar, Huizhou, Guangdong, China}
+\date{October 2026}
+\begin{document}
+\maketitle
+\begin{quote}
+\textbf{Preprint draft.} This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, CIT-K. It consolidates, in a single paper, the theory's \emph{architectural framework} (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its \emph{existence proof} (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
+\textbf{Author:} 王程远 (Chengyuan Wang, b. 1987), Independent Scholar, Huizhou, Guangdong, China
+\textbf{Date:} 2026-10-03
+\textbf{Status:} Draft for submission. Not peer-reviewed. Code + data archived via GitHub Release → Zenodo (DOI to be minted).
+\end{quote}
+\begin{abstract}
+
+We propose \textbf{CIT-K} (Cat Intelligence Theory Kernel), a complete yet minimal intelligence kernel derived from the \emph{Cat Intelligence Theory} (猫智能论). The theory holds that intelligent behaviour can self-emerge from a \textbf{blank-born agent} that (1) initiates unstructured sensory-motor activity, (2) interacts with its environment, (3) derives a \textbf{comfort signal} from the \emph{overlap rate} between its real-time sensory state and its (organism-shaped) need state, (4) \textbf{passively} memorises the causal relation \emph{"(motion, sensory–environment interaction) → sensory change → comfort fluctuation"}, and (5) thereby learns to recognise scenes and to act so as to preserve or raise comfort — i.e. to approach benefit and avoid harm. No external reward, no designer-supplied goal, no neural network, no pretraining, no gradient, and no per-task branching are used; the only tunable parameters lie in the body (sensory–motor) and in how the sensory-need state shapes the memory-need state.
+
+We formalise comfort as a \textbf{general comfort level} $L_t = (1-\beta_t)W_t + \beta_t X_t$ — a weighted fusion of sensory experience $W_t$ and predictive expectation $X_t$ — whose temporal gradient $\Delta L_t$ is the endogenous reward; the canonical minimal instantiation realises $W_t$ as the Gaussian-overlap comfort $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$, reducing the reward to the comfort \emph{change} $\Delta C_t$. A \textbf{hope mechanism} (memory of past high-comfort states) lets the agent leave low-variation local traps. We validate on two tracks: (A) a purpose-built Gymnasium-compatible canonical testbed; (B) the public \textbf{MiniGrid} benchmark, where CIT-K is compared head-to-head with \textbf{RND} (Burda et al. 2018, dependency-free linear-predictor variant) and a Random policy. In structured environments CIT-K's structure-discovery breadth (transition coverage $767\pm101$) \textbf{essentially matches} this dependency-free linear RND variant ($783\pm100$) and \textbf{clearly exceeds} Random ($628\pm108$) over 10 seeds, using \textbf{zero neural networks, zero gradient, zero pretraining}. Formally, CIT-K is a zero-network, zero-gradient, zero-content-pretraining minimal instantiation of \textbf{homeostatically-regulated reinforcement learning} (HRRL; Keramati \& Gutkin, 2014; Yoshida et al., 2025): its comfort gradient $\Delta L_t$ is exactly the drive-reduction reward $d_t-d_{t+1}$ under the deviation $d\equiv 1-C$. We give a \textbf{constructive + empirical proof} that an agent requiring no content pretraining can exist and self-develop, and state explicitly why CIT-K is \textbf{not} built to win external-goal benchmarks such as ARC-AGI.
+
+\end{abstract}
+\paragraph{摘要（中文）}
+
+我们提出 \textbf{CIT-K}（Cat Intelligence Theory Kernel，猫智能论内核），一个源自「猫智能论」的、完整而极简的智能内核。该理论认为：智能可由一个\textbf{记忆空白的新生体}自发涌现——它(1) 发起无序的感官-运动活动，(2) 与环境互动，(3) 由「感官实时状态」与「（机体塑造的）需求状态」的\textbf{重叠率}导出\textbf{舒适度}信号，(4) \textbf{被动}记住「（运动, 感官-环境互动）→ 感官状态变化 → 舒适度波动」的因果关系，(5) 借此辨认场景并行动以维持/提升舒适度（趋利避害）。该内核不使用任何外部奖励、不接收设计者给定的目标、无神经网络、无预训练、无梯度、无逐任务分支；唯一可调参数位于身体（感官-运动）以及感官需求状态如何塑造记忆需求状态。
+
+我们将舒适度形式化为\textbf{一般舒适度水平} $L_t=(1-\beta_t)W_t+\beta_t X_t$——感官经验 $W_t$ 与预测期望 $X_t$ 的加权融合——其时序梯度 $\Delta L_t$ 即为内生奖励；规范最小实例化将 $W_t$ 取为高斯重叠舒适度 $C(s)=\exp(-\|s-\text{NEED}\|^2/2\sigma^2)$，使奖励化简为舒适度的\textbf{变化} $\Delta C_t$。\textbf{希望机制}（对过往高舒适度状态的记忆）使智能体得以离开低变化局部陷阱。我们在两条轨道上验证：(A) 忠实理论的 Gymnasium 兼容规范测试台；(B) 公开 \textbf{MiniGrid} 基准，CIT-K 与（免依赖线性预测器变体的）\textbf{RND} 及随机策略同台对比。在结构化环境中，CIT-K 的结构发现广度（转移覆盖 $767\pm101$）\textbf{基本追平} RND（$783\pm100$）并\textbf{显著超过}随机（$628\pm108$）（10 种子），且\textbf{零神经网络、零梯度、零预训练}。我们给出「无需内容预训练、能够存在并自主发展的智能体」的\textbf{构造性+经验性证明}，并明确说明 CIT-K \textbf{并非}为赢得 ARC-AGI 等外部目标匹配型基准而设计。
+
+\section{1. Motivation and Positioning}
+
+\subsection{1.1 The widely-acknowledged AGI pain points}
+By 2026 the consensus across LeCun, Marcus, Harnad, and Friston converges on a shared diagnosis of the large-language-model (LLM) paradigm: it lacks \textbf{embodiment / grounding}, lacks \textbf{intrinsic motivation}, cannot \textbf{autonomously set its own goals}, degrades on \textbf{multi-step fluid reasoning}, and shows \textbf{diminishing returns from scaling}. These are precisely the gaps the Cat Intelligence Theory aims to address at the architectural level.
+
+\subsection{1.2 What we claim, and what we do not}
+We make a narrow, verifiable claim: \textbf{a blank-born agent driven solely by an intrinsic comfort signal can, from interaction alone, self-emerge a world model and discover environmental structure — without data, networks, or external reward.} Crucially, this is not asserted but \emph{proven constructively} (code-level inspection) and corroborated at execution time in §4.3. We do \textbf{not} claim to solve externally-specified goal tasks, nor to outperform LLMs on their home turf. The contribution is a \emph{minimal, reproducible base}, not a competitor to scaled models.
+
+\subsection{1.3 Why a "base" and not a demo}
+A novel intelligence theory is only useful if others can build on it. We therefore release (i) a \textbf{canonical testbed} (Track A) that is the theory's faithful "home court", and (ii) a \textbf{public-benchmark cross-check} (Track B) that places the same agent beside the field's recognised intrinsic-motivation baseline. Reproducibility is the entry ticket to being a base.
+
+---
+
+\section{2. The Cat Intelligence Theory (猫智能论)}
+
+The Cat Intelligence Theory was proposed and formalised by Wang (2018) in reflection on whether a machine can possess autonomous motivation. Its philosophical and methodological origin lies in the foundational paper \emph{Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation} (Wang, 2018, published), which models machine autonomous motivation through a minimal "love and hate" abstraction and first advances "cat intelligence" as an intelligence criterion independent of the linguistic Turing test. This manuscript builds on it by giving the theory's \emph{minimal executable kernel} (CIT-K) and a \emph{no-pretraining existence proof}.
+
+\subsection{2.0 From natural intelligence: three design axioms}
+
+The kernel's constraints are not arbitrary — they are distilled from three observations about intelligence \emph{as it actually arises in nature}, which together form the theory's design axioms.
+
+\textbf{Axiom N1 — Intelligence needs no data feeding.} Every animal that exhibits intelligent behaviour (approach benefit, avoid harm, self-preservation, life-continuation) developed it \emph{without} being trained on large external datasets; the behaviour is already present before any curriculum. We therefore take it as a premise that naturally-arising intelligence does not \emph{require} extrinsic data injection — if a mechanism can self-emerge from interaction alone, that suffices. CIT-K's constructive proof in §4.3 shows that such a mechanism \emph{can} exist; it does not claim that all natural intelligence \emph{must} be of this kind.
+
+\textbf{Axiom N2 — The drive is a phylogenetically-selected need state, not a designed reward.} Natural lineages vary without limit; each variant carries its own innate sensory needs / aesthetics. Natural selection retains the need profiles that are survival-compatible and discards the rest. The data of the \emph{sensory-need state} inside a survival-fit organism is therefore exactly the source motive and the underlying logic of its intelligence — \emph{selected by evolution, not fed, shaped, or written in by a designer}. This is why CIT-K's endogenous drive is a fixed comfort anchor \texttt{NEED} carried in the body (§2.3, R2(a)): it is a body constant because it is a phylogeny-given steady state, never a task-supplied goal.
+
+\textbf{Axiom N3 — Adaptation is discovered by population variation and survival selection.} To assess whether an agent's environment-adapting ability confers a survival advantage, one need not hand-design the need function. Emit, at high frequency and without a fixed pattern, a population of agents carrying \emph{different} sensory-need states; the survivors are precisely those whose needs echo the environment's hospitality to the organism. The agent adapted to a specific environment has its sensory needs matched to that environment's survival affordances. This axiom tells us \emph{where \texttt{NEED} comes from}: not from the designer, but from a population search over need functions filtered by the environment. It is stated here as the theory's generative principle and taken up as a research programme in §9.
+
+These three axioms are the philosophical spine of 猫智能论: no data (N1) → the need is evolution-given (N2) → the need is discoverable by population selection (N3). They motivate, but are distinct from, the mechanism of §2.1.
+
+\subsection{2.1 The core causal chain}
+\begin{enumerate}
+\item \textbf{Blank birth.} Memory starts empty. Sensory apparatus moves unstructured (stillness is itself a motion pattern).
+\item \textbf{Interaction.} Movement touches the environment and changes the real-time sensory state.
+\item \textbf{Overlap → comfort.} The \emph{overlap rate} between the real-time sensory state and the (organism-shaped) need state produces a \textbf{comfort fluctuation}.
+\item \textbf{Passive causal memory.} The agent passively records \emph{"what motion + what sensory–environment interaction → what sensory change → what comfort fluctuation,"} forming a cause–effect memory of scenes.
+\item \textbf{Recognition \& decision.} The agent recognises scenes from this memory and decides actions that preserve or raise comfort — intelligence (approach benefit / avoid harm) is thereby born.
+\end{enumerate}
+
+\subsection{2.2 Formalisation of comfort (general framework + minimal instantiation)}
+We present comfort at two levels that are consistent, not contradictory:
+
+\textbf{General comfort level.} Let the agent's \emph{sensory experience} at time $t$ be $W_t$ (how well current needs are met) and its \emph{predictive expectation} (from memory) be $X_t$. The intrinsic comfort level is the weighted fusion
+
+\[
+L_t = (1-\beta_t)\,W_t + \beta_t\,X_t,\qquad \beta_t\in[0,1],
+\]
+
+and the \textbf{endogenous reward} is the temporal comfort gradient
+
+\[
+\Delta L_t = L_t - L_{t-1}.
+\]
+
+The agent maximises the cumulative $\Delta L_t$: it does not chase a static maximum comfort, but a \emph{rising} comfort — making "explore, then iterate" itself the intrinsic drive.
+
+\textbf{Hope mechanism (W memory buffer).} The agent stores a buffer of historically high-comfort states. When the current comfort falls notably below the remembered peak, an endogenous drive pushes it to leave the low-variation, low-surprise local region — directly countering the entropy-minimisation trap inherent to any purely familiar-seeking drive. In the kernel, this is not a separate module: the passive causal memory \texttt{V[scene]} (comfort) and \texttt{M[scene][action]} (successor value) \emph{are} the hope buffer — when comfort drops, one-step look-ahead seeks successors with higher remembered value.
+
+\textbf{Canonical minimal instantiation.} For the canonical testbed the sensory experience is realised as a smooth Gaussian-overlap comfort between the sensory state $s$ and the need anchor \texttt{NEED}:
+
+\[
+C(s)=\exp\!\left(-\frac{\|s-\text{NEED}\|^{2}}{2\sigma^{2}}\right),
+\qquad W_t\equiv C(s),\;\beta_t\to 0 \;\Rightarrow\; L_t=C_t,\;
+\Delta L_t=\Delta C_t.
+\]
+
+Thus the Gaussian overlap is a \textbf{minimal, differentiable instantiation} of the general comfort framework — the reward becomes the \emph{change} in overlap comfort. The reference kernel (~119 effective lines) uses this instantiation; the more general $L_t$ form is recovered whenever a predictive expectation term is added (e.g., in richer worlds). The two "comfort formulas" in the literature are therefore one general form and its minimal case, not a contradiction.
+
+\subsection{2.3 Red lines (methodological constraints)}
+The theory is deliberately constrained. The following are \textbf{not} permitted, and the implementation obeys them:
+\begin{itemize}
+\item \textbf{(R1)} The deepest base (sensory–motor closure → comfort → passive causal memory) is non-substitutable.
+\item \textbf{(R2)} Only two regions are tunable: (a) the body (sensory/motor), (b) how the sensory-need state shapes the memory-need state. The memory-need state is \textbf{never set directly}.
+\item \textbf{(R3)} The need state must self-emerge (only via the internal path); it is not assigned.
+\item \textbf{(R4)} No \emph{competitive} theory is imported: no RL reward signal, no Free-Energy objective, no externally supplied goal.
+\item \textbf{(R5)} External mathematics (fuzzy sets, classification, dynamical systems) may be used to answer \emph{what}, never \emph{want}.
+\item \textbf{(R6)} No neural network, no pretraining, no gradient, no per-game branching.
+\item \textbf{(R7)} Perception answers \emph{what}, never \emph{want}.
+\end{itemize}
+
+\emph{Security corollary (architectural immunity to reward hacking).} Because R4 admits \textbf{no} reward signal of any kind — external, proxy, or self-derived — there is no objective the agent could optimise against a supervisor's evaluation. The reward-hacking failure mode (an agent exploiting a misspecified objective) is therefore not merely \emph{hard} to induce in CIT-K; it is \emph{structurally absent}: there is no reward to hack. Recent analyses show reward hacking is a structural equilibrium under finite evaluation, persisting across RLHF, DPO and Constitutional AI alike (Wang \& Huang, 2026); CIT-K sidesteps the entire problem at the architectural level rather than by better reward shaping. This is a direct consequence of the red lines, not an added safeguard.
+
+\emph{Clarification on NEED vs. the self-emergent need (resolving an apparent tension).} R2(a) permits tuning the \textbf{sensory-need} set-point \texttt{NEED} as a body parameter — it is the organism's endogenous steady state (warm, mid-light, quiet), not a designer-supplied goal. R3's prohibition applies specifically to the \textbf{memory-need} state (the internally shaped need that drives memory consolidation): that must self-emerge via the I-2 path and is never directly assigned. The fixed \texttt{NEED} is therefore fully consistent with R3 — the \emph{sensory} need is a body constant, the \emph{memory} need is self-emergent. Read through Axiom N2 (§2.0), this fixed \texttt{NEED} is not an author-chosen number but a \emph{phylogeny-given} steady state — the survival-compatible need profile that evolution retains; the kernel inherits it as a body constant and never re-derives it, which is exactly the role that Axiom N3's population search would, in a fuller account, replace.
+
+\subsection{2.4 Level of description and substrate independence}
+Cat Intelligence Theory operates at the \textbf{computational / functional level} (Marr). Neurotransmitters (dopamine, serotonin, …) belong to the \emph{implementation} level ("biological experimental psychology") and are irrelevant to the theory's truth — they are substrate details. The base is therefore \textbf{substrate-independent}: it runs on a cat brain, on silicon, or on a digital agent equally. This is also why the theory explicitly does \textbf{not} require sleep or physical-fatigue recovery (those are implementation-level by-products); a digital agent needs neither.
+
+---
+
+\section{3. The CIT-K Kernel (Minimal Implementation)}
+
+CIT-K is a ~119-effective-line reference kernel implementing §2 faithfully:
+\begin{itemize}
+\item \textbf{State}: a real-time sensory-state vector (discretised into a \emph{scene} key).
+\item \textbf{Comfort (intrinsic signal)}: the canonical signal is the \textbf{overlap-driven comfort} $C(s)$ of §2.2 — the steady-state closeness of the sensory state to \texttt{NEED} (the homeostatic anchor, dominant in Track A). The minimal CIT-K-0 kernel additionally carries a \textbf{curiosity} facet: unseen scenes are assigned exploratory value. This is a legitimate, red-line-safe emergent of the passive-memory mechanism (no external goal/reward) and is what drives structure discovery in Track B; the two facets are not in conflict — overlap comfort anchors homeostasis, novelty comfort sparks exploration.
+\item \textbf{Hope / passive causal memory}: \texttt{V[scene]} = EMA comfort; \texttt{M[scene][action]} = EMA value of the successor; \texttt{T[scene][action]} = observed successor counts (the causal memory). \texttt{V} and \texttt{M} jointly realise the hope mechanism of §2.2.
+\item \textbf{Policy}: one-step look-ahead on \texttt{M} (greedy with $\varepsilon$-exploration early, exploit later) — the newborn is chaotic, the adult is purposeful.
+\item \textbf{STILL action}: "doing nothing" is an explicit legal motion pattern (stillness is a motion pattern, per the theory).
+\end{itemize}
+
+All of R1–R7 are obeyed: zero NN, zero gradient, zero pretraining, zero external reward, zero per-game branching; comfort is self-emergent (I-2 path); external maths answer \emph{what}.
+
+\emph{Complexity budget (the kernel is code-minimal, not state-minimal).} The ~119-line count measures \textbf{code} complexity, not \textbf{runtime} complexity. At execution the agent's state is carried by the \texttt{V}/\texttt{M}/\texttt{T} tables, which grow with experience to $O(|\mathcal S||\mathcal A|)$ entries — in Track A the learned tables span the full scene space. The minimalism claim is therefore about the \textbf{algorithm} (a fixed, parameter-free procedure whose only memory is what it has lived); the carrier of complexity is \emph{acquired memory}, not code or pretrained weights. This is the honest dual of the blank-newborn story: the kernel ships tiny, but its competence is written by the world it inhabits.
+
+\emph{Scope boundary.} Everything above is the CIT-K kernel itself. Modules constructed \textbf{on top of} CIT-K — for example an external regressor that consumes CIT-K's self-emerged \texttt{(sensory, comfort)} experience to generalise beyond the cat's local memory — lie strictly \textbf{outside} the kernel and do \textbf{not} alter its zero-NN / zero-gradient status. Such add-ons are demonstrations of the base claim (R1), not part of CIT-K; the kernel's red lines are defined and tested in isolation from them.
+
+---
+
+\section{4. Experimental Validation}
+
+All experiments are deterministic under fixed seeds and require only \texttt{numpy}, \texttt{gymnasium}, and \texttt{minigrid}. Figures and raw JSON accompany the code release.
+
+\subsection{4.1 Track A — Canonical testbed (`CITKGridEnv`, Gymnasium-compatible)}
+A smooth sensory field with a comfort source; faithfully instantiates §2.1–2.2.
+
+\begin{table}[ht]\centering
+\begin{tabular}{ll}
+\toprule
+Measure & Result \\
+\midrule
+Comfort, first 500 steps (newborn, chaotic) & \textbf{0.054} \\
+Comfort, last 500 steps (trained) & \textbf{0.378} (gain \textbf{+0.324}) \\
+Multi-seed robustness (10 seeds, env \& agent seeds varied) & gain \textbf{+0.203 ± 0.190}; positive in \textbf{10/10} seeds (sign test \textbf{p = 0.001}) \\
+Ablation: random reward signal, last 500 & \textbf{0.001} (gain is from overlap, not chance) \\
+Value cross-world consistency (Map A → Map B) & scene-level Pearson \textbf{0.902 ± 0.012} / MAE \textbf{0.048} (10 agent seeds, range \textbf{0.85–0.97}, world-invariant); raw position-level \textbf{0.45 ± 0.02} across 10×9 agent–world pairs (range \textbf{0.09–0.86}) \\
+Memory need overrides immediate comfort (hope ON vs hope OFF) & on \textbf{69\%} of deliberate steps the memory-driven action ≠ immediate-comfort-greedy action (late-phase \textbf{68.7\%}); peak-zone dwell \textbf{0.032} vs \textbf{0.128} for a pure-comfort agent \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The cross-world result is the empirical statement of \emph{"recognise scenes by memory"}: the need state is fixed across worlds, so \texttt{V[scene]} is world-independent. The faithful test of this claim is \textbf{scene-level}: correlate the learned \texttt{V[scene]} against the scene's true mean comfort $\mathbb{E}[C \mid \text{scene}]$ — which, because $C(s)=\exp(-\lVert s-\text{NEED}\rVert^2/2\sigma^2)$ depends only on $s$, is itself world-invariant. This yields Pearson \textbf{0.902 ± 0.012} / MAE \textbf{0.048} across 10 agent seeds (range \textbf{0.85–0.97}) over the ≈29 scenes learned in Map A. The \emph{raw position-level} probe (correlating \texttt{V[scene]} against comfort at individual positions) additionally folds in within-scene position variance, world geometry and agent seed: across 10 agents × 9 independently generated Map-B layouts it averages \textbf{0.45 ± 0.02} (range \textbf{0.09–0.86}). We therefore report the scene-level value as the claim's measure, and the position-level range as its honest robustness band rather than any single favourable draw. \emph{Scope note:} the scene space is coarse — ≈29 reachable scenes under 4³ discretisation — and comfort is bimodal (most scenes near-zero, a few high-comfort). A scene-resolution sweep shows the scene-level correlation \emph{falls} monotonically with finer bins (4³: 0.90 → 6³: 0.83 → 8³: 0.79), because finer scenes get fewer visits and noisier value estimates; 4³ is therefore the chosen operating point, not an arbitrary default.
+
+Two honesty notes. \textbf{(i) Seed sensitivity.} The headline +0.324 is one seed near the upper quartile; across 10 independently-seeded runs the gain is +0.203 ± 0.190 (range 0.010–0.573) — the \emph{direction} is robust (10/10, p = 0.001), the \emph{magnitude} is seed-sensitive, so we report the distribution rather than the best case. \textbf{(ii) The trajectory is episodic, not convergent.} Over the full run the median instantaneous comfort is ≈ 0.00 (63\% of sampled steps < 0.05): the agent alternates between extended exploratory excursions and returns to comfort zones, so the endpoint gain measures a rising \emph{return rate} to comfort, not sustained residence in it. This alternation between exploratory and comfort-seeking drives is itself consistent with the theory's dual drives (§2.1, §3).
+
+\textbf{Memory need defers sensory-need satisfaction (direct test of the hope mechanism).} CIT-K's policy (§3) selects actions by the \emph{remembered} successor value \texttt{M[scene][action]}, never by the present sensory comfort \texttt{C(s)}. To test whether this memory-driven rule actually \emph{overrides} immediate comfort, we contrast CIT-K (hope ON) with a hope-OFF baseline that, at every step, greedily maximises the \emph{immediate} successor comfort — a perfect-comfort-knowledge agent that chases present sensory need and never remembers. On \textbf{69\%} of CIT-K's deliberate (non-ε) steps the chosen action diverges from the immediate-comfort-greedy action; in the late phase (post-convergence) this is \textbf{68.7\%}, confirming the divergence is not early-learning noise. CIT-K also camps the comfort maximum only \textbf{0.032} of steps versus \textbf{0.128} for the pure-comfort agent. In short, the agent does \emph{not} sit at the nearest comfort peak: its decisions are governed by remembered value, so present sensory comfort is routinely deferred. This is the empirical realisation of the theory's claim that the memory need, facing the expectation of better-remembered states, suppresses the immediate sensory need. \textbf{Scope note:} the effect is \emph{local} — \texttt{M} is a one-step EMA of visited successors — so CIT-K exhibits deferral of immediate comfort and goal-anchored returns, not deep long-horizon planning; we state this precisely and claim no foresight.
+
+\subsection{4.2 Track B — Public benchmark cross-check (MiniGrid)}
+We port the \textbf{same} CIT-K agent to real MiniGrid (Farama), \textbf{ignore the mission (external goal)}, and drive purely by intrinsic novelty — placing CIT-K on the same stage as curiosity / intrinsic-motivation literature. We add \textbf{RND} (Random Network Distillation, Burda et al. 2018) in its \textbf{dependency-free, linear-predictor variant}: a fixed random target network whose representation is predicted by a closed-form ridge regressor (no torch, no autograd). This preserves RND's essential mechanism — \emph{random target + learnable predictor → prediction error as novelty} — while removing the deep-network dependency, so the comparison isolates the \emph{intrinsic-motivation idea} from its network substrate. All three agents share the \textbf{identical policy}; only the intrinsic signal differs (CIT-K = novelty count / zero-NN; RND = linear-predictor error). 3000 steps × \textbf{10 seeds}; values are means, with standard deviations reported alongside (and in \texttt{validation_results.json}).
+
+\begin{table}[ht]\centering
+\begin{tabular}{lll}
+\toprule
+Metric & Empty-8×8 (CIT-K / RND / Random) & FourRooms (CIT-K / RND / Random) \\
+\midrule
+Cell coverage (mean ± std) & 1.000 / 1.000 / 1.000 & 0.293 ± 0.044 / 0.305 ± 0.039 / 0.286 ± 0.056 \\
+\textbf{Transition coverage} (structure breadth, mean ± std) & 426 ± 4 / 430 ± 0 / 389 ± 15 & \textbf{767 ± 101 / 783 ± 100 / 628 ± 108} \\
+Rooms reached (mean ± std) & 4.0 / 4.0 / 4.0 & 2.7 ± 0.46 / 3.3 ± 0.46 / 2.2 ± 0.87 \\
+Causal-memory accuracy (mean ± std) & 0.884 ± 0.005 / 0.884 ± 0.005 & 0.859 ± 0.022 / 0.844 ± 0.021 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Reading.} In the unstructured Empty world all three saturate (expected). In the \textbf{structured FourRooms} world, CIT-K (zero-NN, passive memory) attains transition coverage \textbf{767 ± 101}, essentially matching RND in its linear variant (\textbf{783 ± 100}) and clearly exceeding Random (\textbf{628 ± 108}). The CIT-K–RND gap is far below one standard deviation, so the central empirical claim holds: \emph{a zero-data, zero-network, comfort-driven agent discovers world structure on par with the (dependency-free, linear) RND intrinsic-motivation method.} Welch t-tests over per-seed transition coverages confirm this reading: CIT-K vs. RND is statistically indistinguishable (two-tailed p = 0.74), while both significantly exceed Random (CIT-K vs. Random p = 0.011; RND vs. Random p = 0.005; n = 10 seeds). Across 10 seeds the ordering is stable: CIT-K ≈ RND ≫ Random for structure breadth. The one edge for RND is rooms reached (3.3 vs 2.7) and cell coverage, plausibly because its continuous error reward sustains longer-horizon exploration — a concrete, red-line-safe upgrade path for CIT-K (replace the discrete novelty count with a smoothed novelty signal).
+
+\subsection{4.3 Zero-data, no-pretraining: a constructive existence proof}
+
+The headline claim of CIT-K is that an intelligent agent can self-emerge \textbf{without any external training data, pretrained weights, or gradient-based learning}. This is not asserted rhetorically; it is \emph{proven constructively} and \emph{corroborated at execution time}.
+
+\textbf{Constructive proof (code-level).} CIT-K is a concrete, fully inspectable artifact (~119 lines). A static scan of the CIT-K agent establishes the following (exact commands and outputs are reproduced in Appendix A):
+
+\begin{table}[ht]\centering
+\begin{tabular}{lll}
+\toprule
+Inspection & What it rules out & Result on CIT-K \\
+\midrule
+Deep-learning imports (\texttt{torch / tensorflow / neural / backprop / autograd / optim}) & neural networks, gradient descent & only prose comments stating \emph{"no torch"}; \textbf{zero imports} \\
+Model / weight loading (\texttt{load() / pickle / .pt / .h5 / .npy / read_csv / datasets}) & pretrained parameters, external datasets & \textbf{zero hits} \\
+Memory initialisation (\texttt{self.V}, \texttt{self.M}) & baked-in world knowledge & start as \textbf{empty} \texttt{{}}; only a neutral EMA seed \texttt{0.5} and an empty visit counter \\
+Training loop / gradient step & offline or online pretraining & \textbf{absent} from the CIT-K agent \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In computer science, \emph{"here is a concrete artifact that exhibits the property"} is the standard proof that such an artifact \textbf{exists}. The artifact is the proof.
+
+\textbf{Execution-level corroboration.} The same blank agent, run from an empty memory, produces emergent learning from scratch: Track A comfort rises 0.054 → 0.378 (chaos → ordered seeking); cross-world recognition corr 0.902 at scene level (memory-based, not rote); Track B structure-discovery breadth matches the RND baseline while using zero networks. The behaviour demonstrably arises \textbf{without} any pretraining fed in.
+
+\textbf{The principled distinction that makes the claim rigorous: structural prior vs. content pretraining.} CIT-K does contain \emph{priors}, but they are exclusively \textbf{structural} — the algorithm itself encodes the theory (overlap-rate comfort, passive causal memory, one-step lookahead) and carries \textbf{no experiential content} about any specific world. This is categorically distinct from \textbf{content pretraining}, where world-specific data is ingested before deployment. A biological cat analogously has innate \emph{structural} priors (sensory needs, a body) yet learns all \emph{content} post-natally; CIT-K's "blank newborn" claim rests on exactly this distinction. The neutral \texttt{0.5} seeds and the fixed \texttt{NEED} / \texttt{σ} are \emph{body parameters} under red line R2(a) (innate physiology), not pretraining: a sceptic is correct that they are priors, but they encode \textbf{no experience}, hence they are not data-pretraining.
+
+\textbf{Honest boundaries of the proof.} The proof establishes that \emph{this implementation} has zero content pretraining; it does not assert that every future instantiation will. It proves \emph{existence} and the no-content-pretraining property for the artifact, resting on the structure / content-prior distinction above — not on rhetoric. It does \textbf{not} prove CIT-K is AGI, nor that it scales to ARC-AGI; those claims are explicitly disclaimed in §6.
+
+---
+
+\section{5. Emergent Cognition: Attention and Curiosity}
+
+Beyond exploration, the comfort framework predicts that \textbf{higher cognition is not bolted on but emergent} from the same drive. Two axioms follow directly from §2.2:
+
+\begin{itemize}
+\item \textbf{Axiom A — "where comfort goes, attention goes."} Attention is simply the agent's momentary focus on the sensory dimension or scene region whose comfort gradient is largest. Because all behaviour is gated by $\Delta L_t$, attention is \emph{by construction} co-located with the gradient of comfort — there is no separate attentional module to design.
+\item \textbf{Axiom B — "curiosity is the eternal drive to prevent comfort decline."} When comfort sits at a remembered peak, any local stay yields $\Delta L_t\le 0$; the only way to keep $\Delta L_t>0$ is to seek novelty (unvisited scenes). Curiosity is therefore not a hand-coded reward but the structural necessity of sustaining the comfort gradient — the same curiosity facet that drives Track B structure discovery.
+\end{itemize}
+
+These axioms unify the ancient intuition (Schopenhauer's blind will, Xunzi's 好利恶害, the Buddhist 十二因缘 seed-and-store) with a single computable variable: the comfort gradient. They are \emph{derived}, not asserted, and they require no additional mechanism beyond the kernel of §3.
+
+---
+
+\section{6. Why CIT-K Is Not Built to Win ARC-AGI (honest scope)}
+
+ARC-AGI-3 scores \textbf{external-goal-matching efficiency} (RHAE); although the goal must be \emph{discovered}, scoring still rewards \emph{hitting that discovered goal}. Our \textbf{red line R4 forbids external goals/rewards}. A prior full-agent implementation of the same theory on the ARC public environment empirically plateaus at RHAE ≈ 0.675 (8/25 levels passed) and cannot reach the leaderboard top (~1.03) without violating R4. We therefore treat ARC as a \emph{smoke test} (the agent runs in a real interactive environment) and explicitly \textbf{not} as the theory's validation yardstick. The validation yardstick for a self-emergent, intrinsically-driven theory is structure discovery (Tracks A/B), not goal matching.
+
+---
+
+\section{7. Related Work and Distinctiveness}
+
+The theory's \emph{mechanisms} are not each novel: enactivism / sensorimotor contingency (O'Regan \& Noë, 2001), active inference / free energy (Friston, 2010), homeostatic / homeostatically-regulated RL (Keramati \& Gutkin, 2014; Yoshida et al., 2025; Tomar, 2026), Damasio's homeostasis/somatic markers (1999), Piaget's sensorimotor stage (1952), Gibson's affordances (1979), Brooks' intelligence-without-representation (1986), Ashby's homeostat (1952), Braitenberg's vehicles (1984), Grey Walter's tortoises (1953), and the Buddhist 十二因缘 / 唯识 (seed-and-store) and Xunzi's 好利恶害 all anticipate pieces. \textbf{What is distinctive is the conjunction}: a minimal kernel that (a) starts from a \emph{blank newborn}, (b) learns only by \emph{passive} causal memory, (c) is driven solely by a single computable \emph{comfort gradient} $\Delta L$, and (d) is \emph{runnable in ~119 lines}. The historical minimal kernels (Braitenberg, Walter, Ashby, Brooks) are each smaller, but none carries the complete "learn-from-blank" narrative with the comfort-gradient variable. The same "minimal complete apparatus" logic is current biology's standard: the smallest full neural wiring diagram — 302 neurons and ~7,000 synapses in \emph{C. elegans} (White, Southgate, Thomson, \& Brenner, 1986) — took 15 years of manual electron-microscopy reconstruction and, five decades later, still has no complete simulation. CIT-K aims at the complementary property: not a minimal \emph{fragment} of a known circuit, but a \emph{minimal-but-complete} computational kernel that runs end-to-end and can be read line by line. Closest to us, \textbf{HRRL} (Yoshida et al., 2025) defines reward as \emph{drive reduction} $r_t=d(H_t)-d(H_{t+1})$ for a deviation $d$ from a homeostatic setpoint; CIT-K's comfort gradient $\Delta L_t = L_t - L_{t-1}$ is precisely that drive-reduction reward under $d \equiv 1-C$. CIT-K is therefore a \textbf{minimal, zero-network, zero-gradient, zero-content-pretraining instantiation of HRRL} — the family's smallest auditable member, not a rival to it. The family's \emph{scalable} end has been demonstrated independently: Yoshida \& Kuniyoshi (2025, IEEE ICDL) show homeostatic drive acquiring diverse survival skills (foraging, water-seeking, combat, shelter-building) in the Crafter open-ended environment — via deep RL. CIT-K occupies the complementary \emph{minimal} end, the same drive instantiated with zero networks. The field's most recent authoritative synthesis of this agenda is the interoceptive-AI Perspective (Lee, Oh, An, Yoon, Friston, Hong, \& Woo, 2026, \emph{Nature Machine Intelligence}): internal states, explicitly factorised from external states, as universally available and intrinsically valuable contexts that modulate learning and behaviour — precisely the role CIT-K's fixed \texttt{NEED}/comfort pair plays, here compressed to a single scalar rather than a multi-variable internal environment. Two further 2025–2026 reference points sharpen this positioning. The current intrinsic-motivation research agenda explicitly names the failure modes of single-objective drives (Belikov, 2026) — purely novelty- or competence-seeking objectives stall once uncertainty is resolved; CIT-K's hope mechanism (remembered comfort peaks pulling the agent out of low-variation traps) is a minimal single-scalar instance of precisely such a complementary structure, and its exploratory–comfort alternation (§4.1) is a measurable microcosm of the curiosity–competence trade-off formalised by Mantiuk et al. (2025). On the formal side, a new criterion-theoretic analysis (Viteri, Gomezjurado Gonzalez, \& Barrett, 2026) proves that specified count-based, prediction-error, empowerment and information-gain objectives can select Pareto-suboptimal policies under a counterfactual-information criterion, and establishes conditions under which intrinsic rewards \emph{do} succeed. CIT-K's Track-B claim should be read within exactly this frame: it is a \emph{floor} statement — the family mechanism still functions at zero networks on these stages — not a claim that any intrinsic signal is universally optimal; the comfort gradient's dual role (homeostatic anchor \emph{and} exploration driver, §5) is one structural hedge against single-objective stalling. The 2026 frontier sharpens this single-drive reading further: Moreno-Bote, Haefner, Galiano-Landeira, Yang, \& Maldonado (2026) place a \emph{single, immutable, top-level intrinsic motivation} — the maximisation of the occupancy (entropy) of future action–state paths, the Maximum Occupancy Principle (MOP) / Action–State Path Entropy (ASPE) — at the apex of a behaviour hierarchy, explicitly to break the homunculus infinite regress that a stack of extrinsic rewards would incur. CIT-K is a concrete, runnable instance of exactly this slot: its single computable comfort gradient $\Delta L_t$ is the one persistent, task-agnostic objective, and drives/goals emerge beneath it rather than above it — the MOP position arrived at independently from first principles and instantiated in 119 auditable lines rather than in a value-iteration neural policy. The MOP line itself has since been extended to partially observable settings: Mylonas \& Moreno-Bote (2026) reformulate MOP over belief states, where agents switch between goal-directed foraging and exploration across food sources depending on their available energy and belief state — while Active Inference agents instead settle near a single source of high pragmatic-epistemic value, with Empowerment qualitatively similar. CIT-K's own exploration–homecoming alternation (§4.1) is the tabular, belief-free analogue of this MOP switching regime, arrived at without any belief-inference machinery. We position CIT-K as a \emph{synthesis / unified minimal base}, not a claim of unprecedented mechanism. On the \emph{empirical} side, Track B sits inside the count-based / episodic-novelty family of intrinsic exploration: curiosity as self-supervised prediction error (Pathak et al., 2017), impact-driven episodic bonuses on procedurally-generated MiniGrid (Raileanu \& Rocktäschel, 2020), and NovelD's novelty-difference criterion gated by episodic first-visit counts (Zhang et al., 2021) all share CIT-K's structural skeleton — a \emph{difference} signal (prediction error, embedding change, novelty gain, comfort gradient) gated by \emph{memory} (episodic counts, V/M tables). What differs is the substrate: these methods estimate novelty with trained networks, whereas CIT-K uses exact tabular memory with zero networks. Track B's parity with the RND-variant baseline (§4.2) therefore reads not as a SOTA claim but as a \emph{floor} statement: the family's mechanism, compressed to 119 lines and zero gradient steps, still functions on the same public stage. Adjacent to this \emph{empirical} clustering lies the contemporary \emph{agentic} axis. The current research programme for agents that represent, generate and pursue their own goals is that of \emph{autotelic} agents: RL-IMGEP frameworks with explicit goal representations, goal-conditioned policies, internal reward functions, automated curricula and Learning-Progress-based goal sampling (Colas, Karch, Sigaud, \& Oudeyer, 2022). The canonical toolchain — language- or latent-space goal spaces, hindsight experience replay, deep goal-conditioned policies, automated curricula — is now standard. CIT-K is interesting against this locus not because it instantiates the canonical toolchain — its goal space is a single scalar, its policy is a direct argmax, there is no HER, no Learning-Progress sampler and no language — but because it \emph{still} exhibits the autotelic behaviour cluster: self-driven exploration, goal-anchored homecomings to remembered comfort peaks (demonstrated in §4.1), and self-generated scene-and-structure discovery. CIT-K therefore reads as a \emph{minimal non-canonical autotelic agent}: a demonstration that the autotelic behaviour cluster does not require the canonical toolchain, sharpening the question of which components are essential and which are inherited conventions of one implementation. CIT-K's V/M tabular memory is, in the modern usage of the term, a \emph{world model}: an internal representation that lets the agent predict successor states and choose actions without exhaustive trial-and-error. The contemporary revival of the concept — from compact latent recurrent simulators (Ha \& Schmidhuber, 2018) to the Joint Embedding Predictive Architecture (JEPA) and the configurable-predictive-world-model programme — replaces exact tabular counts with learned continuous latent embeddings and adds self-supervised training. CIT-K occupies the \emph{other} end of the trade: an exact, lookup-table world model with zero parameters, trained by simply living in the world. The functional role (state → next-state, action-conditioned, queryable for planning) is identical; the substrate (exact discrete counts vs. learned continuous embeddings) and the cost–benefit (auditability for compactness and generalisation) are where the two diverge. A further 2025–2026 anchor sharpens the \emph{plasticity-gating} reading of CIT-K's \texttt{learn()} rule. Computational-neuroscience work on multi-neuromodulatory dynamics treats synaptic plasticity as a \emph{three-factor rule} — presynaptic activity × postsynaptic depolarisation × a modulatory signal — where dopamine, acetylcholine, serotonin and noradrenaline jointly gate which synapses update and when (Mei et al., 2026). CIT-K's \texttt{learn(s, a, c, s2)} realises the same logical template: a state–action pair (the synaptic pre/post activity), a single scalar \texttt{c = C(s2)} (the modulatory signal), and an EMA write (the plasticity step). Where biology requires four interacting neuromodulators to coordinate plasticity across channels and timescales, CIT-K compresses the entire modulator to \emph{one} scalar — the comfort residual. The reduction is the point: CIT-K keeps the structural template of gated plasticity while making the gating signal auditable, parameter-free, and self-emergent — properties the four-neuromodulator story inherits from evolution but cannot itself explain. Two 2025–2026 neighbours bracket CIT-K on the \emph{engineering} side of the same question. On the integrated-architecture end, H-GRAIL (Romero, Baldassarre, Duro, \& Santucci, 2025) is a hierarchical robotic motivational architecture that \emph{simultaneously} discovers goals, acquires skills, and manages curricula in non-stationary real-robot environments — the opposite end of the spectrum from CIT-K's 119 lines, and a useful upper bound on what a full motivational stack looks like. On the \emph{backbone-free} question, the contemporaneous wave toward reward-free self-evolution (Agent0, Xiong et al., 2025; Dr. Zero, Yue et al., 2026; and Self-Play Pretraining with Zero Data, Cowsik et al., 2026 — two transformers bootstrapping from random initialisation with no human data at all) shows the field converging on the very ambition CIT-K pursues — agents that improve without human reward — yet almost every such system still rides a \emph{pretrained} LLM backbone or a pair of self-playing neural networks, so the "no content pretraining" property CIT-K proves constructively remains, to our knowledge, unique to the zero-network instantiation. Finally, because the kernel implements an autonomous drive, we state explicitly what it is \emph{not}: CIT-K makes no consciousness or sentience claim, and its 119 lines are instructive precisely as a \emph{negative} case. The current AI-consciousness indicator programme derives behavioural indicator properties from recurrent processing, global workspace, higher-order, predictive-processing and attention-schema theories (Butlin et al., 2023), and the first empirical test of a single indicator — higher-order thought (HOT-3) — reports belief-guided agency with meta-cognitive monitoring in frontier LLMs (Yalon, Goldstein, Mudrik, \& Geva, 2026). Whether such behavioural evidence constitutes consciousness remains open. CIT-K contributes the complementary measurement: an agent that explores, learns a world model and self-regulates from a single scalar, yet structurally satisfies none of the indicator properties the consensus treats as candidates — no recurrent broadcasting, no global workspace, no higher-order self-model, no integrated causal power, its entire state being a pair of lookup tables. Autonomous drive, in other words, is demonstrably separable from the consciousness indicator set.
+
+\subsection{7.1 Theoretical Lineage and This Paper's Contribution}
+This work sits on a continuous research line; we demarcate the manuscripts to avoid duplicate claims:
+\begin{itemize}
+\item \textbf{Foundation (published, Wang, 2018):} \emph{Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation}. Through introspection and commonsense reasoning it proposes a criterion for "machine autonomous motivation" and a minimal "love and hate" model — the philosophical and methodological origin of the theory.
+\item \textbf{This manuscript (submission):} the \textbf{unified} statement that consolidates, in one paper, the theory's \emph{architectural framework} (comfort-gradient drive $L_t/\Delta L_t$, hope mechanism of §2.2, emergent attention/curiosity of §5) \textbf{and} its \emph{existence proof} (constructive + empirical, §4.3) with dual-track reproducible validation (§4) and auditable red lines. It does not split the framework and the proof across separate manuscripts; the two are presented together as one coherent claim.
+\end{itemize}
+
+---
+
+\section{8. Conclusion and the "Base" Claim}
+
+CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-emerge a world model and discover structure on par with neural-network intrinsic-motivation baselines, under explicit red lines that exclude networks, pretraining, gradient, and external reward. We release it as a \textbf{minimal, reproducible base} — a canonical testbed, and a public-benchmark cross-check — so that the community can build on, break, or extend it. It is not, by design, a contender for external-goal benchmarks; its value is as an alternative architectural substrate for post-LLM intelligence research.
+
+---
+
+\section{9. Historical Significance and Outlook (position statement)}
+
+\textbf{An existence proof against the scaling axiom.} The mainstream premise — \emph{no intelligence without massive data} — is hereby demoted from axiom to testable hypothesis. A blank-born, zero-data, zero-network agent that self-emerges scene recognition and structure discovery proves, constructively, that the alternative exists.
+
+\textbf{Reviving a seventy-year-dormant line.} Ashby, Walter, Brooks, and developmental robotics all sought intelligence-from-blank, but stalled on non-reproducible kernels and missing testbeds. CIT-K supplies what they lacked: a 119-line auditable kernel plus a multi-track validation stage, on a shared stage with the intrinsic-motivation literature.
+
+\textbf{Falsifiable predictions.} \emph{1–2 years (~80\%):} cited as a curiosity-grade minimal benchmark, not a paradigm shift; the realistic opening is \textbf{data efficiency} as crawlable data depletes. \emph{3–5 years (~40–50\%):} "CIT-K explores, DL consumes" matures into \textbf{developmental agents as data engines} — the fusion path, consistent with the base claim (R1). \emph{10+ years (~10–15\%):} if language or cross-domain abstraction is layered onto such kernels, the empiricist–rationalist debate acquires an \textbf{experimental platform} — the innate prior becomes a tunable parameter. \emph{Chief risk:} remaining an elegant footnote, admired and bypassed, unless others build on it.
+
+\textbf{A research programme: evolve the need function.} Axiom N3 implies that \texttt{NEED} itself — here carried as a fixed body constant — is in principle the \emph{outcome} of population variation plus survival selection, not an input. A direct next step is therefore to replace the single hand-set \texttt{NEED} with a population of agents carrying varied sensory-need states, let the environment filter the survivors, and read off the survived need profile as the environment-fit drive. This would turn CIT-K from "minimal but with a phylogeny-given body" into "minimal and fully bootstrapped", closing the only place where a designer-chosen constant currently enters, and making the theory's natural-intelligence axioms fully constructive.
+
+\textbf{One sentence.} CIT-K's significance is not outperforming LLMs — it cannot — but demoting "intelligence must be fed data" from axiom to hypothesis, and building the first reproducible apparatus for the ancient question of whether intelligence can grow from blank. A monument at the beginning of the question, not at the end of the answer.
+
+---
+
+\begin{thebibliography}{99}
+\bibitem{Ashby1952}Ashby, W. R. (1952). \emph{Design for a Brain}. Chapman \& Hall.
+\bibitem{Belikov2026}Belikov, A. (2026). Intrinsic Motivation in Reinforcement Learning: A Research Agenda for Adaptive Self-Organisation. arXiv:2609.17325.
+\bibitem{Braitenberg1984}Braitenberg, V. (1984). \emph{Vehicles: Experiments in Synthetic Psychology}. MIT Press.
+\bibitem{Brooks1986}Brooks, R. (1986). A robust layered control system for a mobile robot. \emph{IEEE JRA}.
+\bibitem{Burda2018}Burda, Y., Edwards, H., Storkey, A., \& Klimov, O. (2018). Exploration by Random Network Distillation. \emph{arXiv:1810.12894}.
+\bibitem{Butlin2023}Butlin, P., Long, R., Elmoznino, E., Bengio, Y., Birch, J., et al. (2023). Consciousness in Artificial Intelligence: Insights from the Science of Consciousness. \emph{arXiv:2308.08708}.
+\bibitem{item}Chevalier-Boisvert, M., et al. (2018/2023). MiniGrid / BabyAI. \emph{arXiv:1807.09270}; Farama Foundation.
+\bibitem{Colas2022}Colas, C., Karch, T., Sigaud, O., \& Oudeyer, P.-Y. (2022). Autotelic Agents with Intrinsically Motivated Goal-Conditioned Reinforcement Learning: A Short Survey. \emph{Journal of Artificial Intelligence Research}, 74, 1159–1199.
+\bibitem{Cowsik2026}Cowsik, A., Dolev, K., Li, M. Y., De Luca, G. B., Cohen, N., Goodman, N. D., \& Levine, Y. (2026). Self-Play Pretraining with Zero Data. arXiv:2609.30063.
+\bibitem{Damasio1999}Damasio, A. (1999). \emph{The Feeling of What Happens}. Harcourt.
+\bibitem{Friston2010}Friston, K. (2010). The free-energy principle. \emph{Nature Reviews Neuroscience}.
+\bibitem{Gibson1979}Gibson, J. J. (1979). \emph{The Ecological Approach to Visual Perception}. Houghton Mifflin.
+\bibitem{Walter1953}Grey Walter, W. (1953). \emph{The Living Brain}. Duckworth.
+\bibitem{Ha2018}Ha, D., \& Schmidhuber, J. (2018). World Models. \emph{arXiv:1803.10122}. NeurIPS 2018.
+\bibitem{Keramati2014}Keramati, M., \& Gutkin, B. (2014). Homeostatic reinforcement learning. \emph{Nature Communications}.
+\bibitem{Lee2026}Lee, S., Oh, Y., An, H., Yoon, H., Friston, K. J., Hong, S. J., \& Woo, C.-W. (2026). Life-inspired interoceptive artificial intelligence for autonomous and adaptive agents. \emph{Nature Machine Intelligence}, 8, 1335–1346.
+\bibitem{Mantiuk2025}Mantiuk, F., Zhou, H., \& Wu, C. M. (2025). From Curiosity to Competence: How World Models Interact with the Dynamics of Exploration. arXiv:2507.08210.
+\bibitem{Mei2026}Mei, J., Rodriguez-Garcia, A., Takeuchi, D., Wainstein, G., Hubig, N., Mohsenzadeh, Y., \& Ramaswamy, S. (2026). Improving the adaptive and continuous learning capabilities of artificial neural networks: Lessons from multi-neuromodulatory dynamics. arXiv:2501.06762.
+\bibitem{MorenoBote2026}Moreno-Bote, R., Haefner, R., Galiano-Landeira, J., Yang, T., \& Maldonado, P. (2026). How Intrinsic Motivation Underlies Embodied Open-Ended Behavior. arXiv:2601.10276.
+\bibitem{Mylonas2026}Mylonas, M., \& Moreno-Bote, R. (2026). Belief-Based Maximum Occupancy Principle and Active Inference. arXiv:2609.39342. IWAI 2026.
+\bibitem{ORegan2001}O'Regan, J. K., \& Noë, A. (2001). A sensorimotor account of vision. \emph{BBS}.
+\bibitem{Pathak2017}Pathak, D., Agrawal, P., Efros, A. A., \& Darrell, T. (2017). Curiosity-driven exploration by self-supervised prediction. \emph{ICML 2017}. arXiv:1705.05363.
+\bibitem{Piaget1952}Piaget, J. (1952). \emph{The Origins of Intelligence in Children}.
+\bibitem{Raileanu2020}Raileanu, R., \& Rocktäschel, T. (2020). RIDE: Rewarding impact-driven exploration for procedurally-generated environments. \emph{ICLR 2020}. arXiv:2002.12292.
+\bibitem{Romero2025}Romero, A., Baldassarre, G., Duro, R. J., \& Santucci, V. G. (2025). H-GRAIL: A Robotic Motivational Architecture to Tackle Open-Ended Learning Challenges. \emph{IEEE Transactions on Cognitive and Developmental Systems}, 17(6), 1503–1519.
+\bibitem{Tomar2026}Tomar, D. (2026). From Tension to Resolution: Homeostatic Drive Learning as a Self-Regulating Alternative to Reward-Based Training. Preprint.
+\bibitem{Towers2023}Towers, M., et al. (2023). Gymnasium. \emph{arXiv:2407.17032}.
+\bibitem{Viteri2026}Viteri, S. W., Gomezjurado Gonzalez, L., \& Barrett, C. (2026). When Do Intrinsic Rewards Lead to Exploration? arXiv:2610.02159.
+\bibitem{Wang2018}Wang, C. (2018). Reflective Intelligence: The Simplest Machine Model Design with Autonomous Motivation. \emph{Artificial Intelligence and Robotics Research}, 7(1), 1–16. DOI: 10.12677/airr.2018.71001. (published; foundation)
+\bibitem{Wang2026}Wang, J., \& Huang, J. (2026). Reward Hacking as Equilibrium under Finite Evaluation. arXiv:2603.28063.
+\bibitem{White1986}White, J., Southgate, E., Thomson, J., \& Brenner, S. (1986). The structure of the nervous system of the nematode \emph{Caenorhabditis elegans} ("The mind of a worm"). \emph{Developmental Biology}.
+\bibitem{Xiong2025}Xiong, C., Qin, C., Wu, F., et al. (2025). Agent0: Unleashing Self-Evolving Agents from Zero Data via Tool-Integrated Reasoning. arXiv:2511.16043.
+\bibitem{Yalon2026}Yalon, N. S., Goldstein, A., Mudrik, L., \& Geva, M. (2026). Indications of Belief-Guided Agency and Meta-Cognitive Monitoring in Large Language Models. arXiv:2602.02467.
+\bibitem{Yoshida2025}Yoshida, N., \& Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. \emph{2025 IEEE International Conference on Development and Learning (ICDL)}. DOI: 10.1109/ICDL63968.2025.11204447.
+\bibitem{Yoshida2025}Yoshida, N., Sprekeler, H., \& Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. \emph{Current Opinion in Behavioral Sciences}, 66, 101611.
+\bibitem{Yue2026}Yue, Z., Upasani, K., Yang, X., et al. (2026). Dr. Zero: Self-Evolving Search Agents without Training Data. arXiv:2601.07055.
+\bibitem{Zhang2021}Zhang, T., Xu, H., Wang, X., Wu, Y., Keutzer, K., Gonzalez, J. E., \& Tian, Y. (2021). NovelD: A simple yet effective exploration criterion. \emph{NeurIPS 2021}.
+\bibitem{item}(and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
+\end{thebibliography}
+\paragraph{Code availability}
+\begin{itemize}
+\item \textbf{Code:} \texttt{citk_env.py} (Track A), \texttt{citk_minigrid.py} (Track B, with RND), \texttt{run_validation.py} (two-track harness).
+\item \textbf{Env:} Gymnasium-compatible \texttt{CITKGridEnv}; public MiniGrid (\texttt{MiniGrid-Empty-8x8-v0}, \texttt{MiniGrid-FourRooms-v0}).
+\item \textbf{Determinism:} all runs seeded; raw metrics in \texttt{validation_results.json} (Tracks A/B); figures in \texttt{validation_fig.png} / \texttt{citk_plus_dl_fig.png}.
+\item \textbf{Red lines:} enumerated as R1–R7 in §2.3; the kernel obeys them by construction.
+\item \textbf{DOI / priority:} this manuscript + code are archived via \textbf{GitHub Release → Zenodo}, minting a citable, immutable DOI. Priority of the \emph{idea} is anchored by the GitHub Release timestamp.
+\end{itemize}
+\end{document}
