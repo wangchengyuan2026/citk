@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CIT-K · 猫智能论内核 — 极简零网络自主动机智能体</title>
+<style>
+  :root{
+    --bg:#0f1220; --panel:#171b2e; --panel2:#1f2540; --ink:#e8ecf6; --muted:#9aa3bd;
+    --accent:#7c5cff; --accent2:#27d3a2; --warn:#ffb454; --line:#2a3150;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.65}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header.hero{padding:64px 0 40px;background:radial-gradient(1200px 400px at 70% -10%,rgba(124,92,255,.25),transparent),var(--bg)}
+  .badge{display:inline-block;font-size:13px;color:var(--muted);border:1px solid var(--line);
+    border-radius:999px;padding:4px 12px;margin-bottom:18px}
+  h1{font-size:46px;line-height:1.1;margin:0 0 10px;letter-spacing:.5px}
+  h1 .en{display:block;font-size:20px;color:var(--muted);font-weight:500;margin-top:8px}
+  .pitch{font-size:18px;color:#cdd4ea;max-width:720px;margin:18px 0 26px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;
+    border:1px solid transparent}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.ghost{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+  section{padding:34px 0;border-top:1px solid var(--line)}
+  h2{font-size:26px;margin:0 0 16px}
+  h2 .sub{font-size:14px;color:var(--muted);font-weight:400;margin-left:8px}
+  .grid{display:grid;gap:14px}
+  .grid.c3{grid-template-columns:repeat(3,1fr)}
+  .grid.c2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:760px){.grid.c3,.grid.c2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  .kpi{font-size:30px;font-weight:700;color:var(--accent2)}
+  .kpi small{display:block;font-size:13px;color:var(--muted);font-weight:400}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--muted);font-weight:600}
+  td .hl{color:var(--accent2);font-weight:600}
+  code{background:var(--panel2);padding:2px 6px;border-radius:6px;font-size:13px;color:#ffd9a8}
+  .diagram{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+  pre.cite{background:#0b0e1a;border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;
+    font-size:13px;color:#cdd4ea;white-space:pre-wrap}
+  .redlines{columns:2;column-gap:22px;font-size:14px;color:var(--muted)}
+  @media(max-width:760px){.redlines{columns:1}}
+  .redlines li{margin-bottom:6px}
+  footer{padding:28px 0 60px;color:var(--muted);font-size:13px}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:3px 9px;font-size:12px;color:var(--muted);margin:3px 4px 0 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">v1.0.0 · MIT/CC BY 4.0 · 永久存档 DOI 10.5281/zenodo.23145344</span>
+    <h1>CIT-K<span class="en">猫智能论内核 · Cognitive Internal Theory — Kernel</span></h1>
+    <p class="pitch">一个约 <b>119 行</b>、<b>零网络 · 零梯度 · 零预训练</b> 的自主动机智能体。
+    它只被一个可计算的「舒适度梯度」内生驱动，从一个记忆空白的新生体，自发涌现世界模型并发现环境结构——
+    不用外部奖励，不用设计者给定的目标。</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/wangchengyuan2026/citk">★ 代码仓库</a>
+      <a class="btn ghost" href="https://zenodo.org/records/23145344">论文 + 数据（Zenodo）</a>
+      <a class="btn ghost" href="https://github.com/wangchengyuan2026/citk/releases/tag/v1.0.0">v1.0.0 Release</a>
+      <a class="btn ghost" href="https://arxiv.org">arXiv 预印本（投稿中）</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>核心主张 <span class="sub">A blank-born agent can self-emerge intelligence — no data, no network</span></h2>
+    <div class="grid c3">
+      <div class="card"><div class="kpi">767±101</div><small>FourRooms 结构发现广度（转移覆盖）</small>
+        <p>零网络 CIT-K 基本追平免依赖线性 RND（783±100），显著超过随机（628±108）。</p></div>
+      <div class="card"><div class="kpi">0.054→0.378</div><small>规范测试台舒适度（前 500 → 后 500 步）</small>
+        <p>10/10 种子方向一致（符号检验 p=0.001），从混沌新生到有序趋利避害。</p></div>
+      <div class="card"><div class="kpi">~119 行</div><small>可逐行阅读的内核</small>
+        <p>无神经网络、无梯度、无预训练、无逐任务分支；唯一可调参数在「身体」。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>自涌现因果链 <span class="sub">The comfort-gradient loop</span></h2>
+    <div class="diagram">
+      <svg viewBox="0 0 720 220" width="100%" style="max-width:720px;height:auto" role="img" aria-label="CIT-K 因果循环">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#7c5cff"></path></marker>
+        </defs>
+        <g font-family="sans-serif" font-size="14" fill="#e8ecf6">
+          <g>
+            <rect x="20" y="86" width="120" height="48" rx="10" fill="#1f2540" stroke="#2a3150"></rect>
+            <text x="80" y="115" text-anchor="middle">① 空白新生</text>
+          </g>
+          <g>
+            <rect x="190" y="86" width="120" height="48" rx="10" fill="#1f2540" stroke="#2a3150"></rect>
+            <text x="250" y="115" text-anchor="middle">② 无序运动</text>
+          </g>
+          <g>
+            <rect x="360" y="86" width="120" height="48" rx="10" fill="#1f2540" stroke="#2a3150"></rect>
+            <text x="420" y="115" text-anchor="middle">③ 环境互动</text>
+          </g>
+          <g>
+            <rect x="530" y="86" width="150" height="48" rx="10" fill="#1f2540" stroke="#2a3150"></rect>
+            <text x="605" y="105" text-anchor="middle">④ 重叠率→舒适度</text>
+            <text x="605" y="124" text-anchor="middle" font-size="12" fill="#9aa3bd">C(s)=exp(−‖s−NEED‖²/2σ²)</text>
+          </g>
+          <g>
+            <rect x="300" y="22" width="170" height="44" rx="10" fill="#172a26" stroke="#27d3a2"></rect>
+            <text x="385" y="49" text-anchor="middle" fill="#27d3a2">⑤ 被动因果记忆</text>
+          </g>
+          <g>
+            <rect x="300" y="158" width="170" height="44" rx="10" fill="#2a2440" stroke="#7c5cff"></rect>
+            <text x="385" y="185" text-anchor="middle" fill="#cbbcff">⑥ 识别 / 决策</text>
+          </g>
+          <g stroke="#7c5cff" stroke-width="2" fill="none" marker-end="url(#ar)">
+            <path d="M140,110 L186,110"></path>
+            <path d="M310,110 L356,110"></path>
+            <path d="M480,110 L526,110"></path>
+            <path d="M605,134 L605,158"></path>
+            <path d="M470,180 L470,158 Q470,158 470,158"></path>
+            <path d="M385,158 L385,134"></path>
+            <path d="M385,66 L385,84"></path>
+            <path d="M300,44 L190,70"></path>
+          </g>
+          <text x="600" y="200" fill="#ffb454" font-size="12">ΔLₜ = Lₜ − Lₜ₋₁ 即内生奖励</text>
+        </g>
+      </svg>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-top:12px">
+      闭环即智能：运动改变感官状态 → 与需求态的重叠率产生舒适度 → 被动记住「(运动,互动)→感官变化→舒适度」
+      → 据此识别场景、决策以维持/提升舒适度（趋利避害）。舒适度的时间梯度 <code>ΔLₜ</code> 即唯一的内生奖励。</p>
+  </section>
+
+  <section>
+    <h2>双轨验证 <span class="sub">Reproducible testbed + public-benchmark cross-check</span></h2>
+    <table>
+      <tr><th>轨道</th><th>环境</th><th>指标</th><th>CIT-K</th><th>RND（线性）</th><th>Random</th></tr>
+      <tr><td>A 规范测试台</td><td>CITKGridEnv</td><td>舒适度增益（10 种子）</td><td class="hl">+0.203 ± 0.190</td><td>—</td><td>+0.001（随机奖励）</td></tr>
+      <tr><td>B 公开基准</td><td>MiniGrid-Empty-8×8</td><td>转移覆盖</td><td class="hl">426 ± 4</td><td>430 ± 0</td><td>389 ± 15</td></tr>
+      <tr><td>B 公开基准</td><td>MiniGrid-FourRooms</td><td>转移覆盖（结构广度）</td><td class="hl">767 ± 101</td><td>783 ± 100</td><td>628 ± 108</td></tr>
+    </table>
+    <p style="color:var(--muted);font-size:14px;margin-top:10px">
+      所有实验确定性可复现（仅依赖 <code>numpy</code> / <code>gymnasium</code> / <code>minigrid</code>），原始指标见 <code>validation_results.json</code>。</p>
+  </section>
+
+  <section>
+    <h2>红线（方法学约束） <span class="sub">Red lines — what CIT-K is NOT allowed to use</span></h2>
+    <ul class="redlines">
+      <li><b>R1</b> 最底层（感官-运动闭环→舒适度→被动因果记忆）不可替换</li>
+      <li><b>R2</b> 仅「身体」与「感官需求如何塑造记忆需求」可调；记忆需求态从不被直接设定</li>
+      <li><b>R3</b> 需求态必须自涌现，不被指派</li>
+      <li><b>R4</b> 不引入任何竞争理论：无 RL 奖励、无自由能目标、无外部目标</li>
+      <li><b>R5</b> 外部数学只回答「是什么」，不回答「要什么」</li>
+      <li><b>R6</b> 无神经网络、无预训练、无梯度、无逐游戏分支</li>
+      <li><b>R7</b> 感知只回答「是什么」，不回答「要什么」</li>
+    </ul>
+    <p style="color:var(--muted);font-size:14px;margin-top:10px">
+      <b>架构性免疫奖励黑客</b>：因 R4 不接纳任何奖励信号，智能体没有可供优化的目标，
+      奖励黑客这一失效模式在架构层面<b>结构性缺席</b>——不是靠更好的奖励塑形规避。</p>
+  </section>
+
+  <section>
+    <h2>引用 <span class="sub">Cite as</span></h2>
+    <pre class="cite">@misc{wang2026citk,
+  author = {Wang, Chengyuan},
+  title  = {CIT-K: Cognitive Internal Theory — Kernel (Minimal Zero-Network Kernel v1.0.0)},
+  year   = {2026},
+  doi    = {10.5281/zenodo.23145344},
+  url    = {https://doi.org/10.5281/zenodo.23145344}
+}</pre>
+    <p style="margin-top:12px">
+      <span class="pill">理论起源：猫智能论 / HIM</span>
+      <span class="pill">奠基：Wang 2018《Reflective Intelligence》</span>
+      <span class="pill">溯源存档：wangchengyuan2026/CIT-K</span>
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    CIT-K 由 Chengyuan Wang（王程远，独立学者）提出与实现 · 代码与数据经 GitHub Release → Zenodo 永久存档（DOI 10.5281/zenodo.23145344）·
+    本页面为项目展示站，随仓库自动构建（GitHub Pages）。
+  </div>
+</footer>
+
+</body>
+</html>
