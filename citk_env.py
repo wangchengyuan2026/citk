@@ -211,6 +211,71 @@ def run_own_track(steps=6000, seedA=1, seedB=2):
     }
 
 
+def _E_comfort_of_scene(sc, bins=4, ngrid=6):
+    """场景的真实平均舒适度 E[C|scene]：在场景 bin 内对 C(s) 网格采样求均值。
+    因 C(s)=exp(-‖s-NEED‖²/2σ²) 只依赖 s，故 E[C|scene] 世界无关——这是「价值世界
+    无关」的正确度量（而非位置级探针，后者混入了场景内位置方差与世界几何）。"""
+    lo = np.asarray(sc, float) / bins
+    hi = (np.asarray(sc, float) + 1.0) / bins
+    xs = np.linspace(lo[0], hi[0], ngrid)
+    ys = np.linspace(lo[1], hi[1], ngrid)
+    zs = np.linspace(lo[2], hi[2], ngrid)
+    tot = 0.0
+    n = 0
+    for x in xs:
+        for y in ys:
+            for z in zs:
+                s = np.array([x, y, z])
+                tot += np.exp(-np.sum((s - NEED) ** 2) / (2 * SIGMA ** 2))
+                n += 1
+    return tot / n
+
+
+def run_crossworld_robust(steps=6000, seedA=1, world_seeds=(2, 3, 4, 5, 6, 7, 8, 9, 10),
+                          n_probes=400):
+    """跨世界一致性的稳健版：场景级解析相关（正确度量，世界无关）+ 多世界位置级
+    探针（诚实稳健性区间）。修复原单一世界位置级 0.799 对世界布局敏感的缺陷。"""
+    envA = CITKGridEnv(seed=seedA, max_steps=steps)
+    kit = Kitten()
+    rollout(envA, kit, steps, seed=seedA)
+
+    # (1) 场景级：V[scene] vs E[C|scene]（世界无关，正确度量）
+    scenes = sorted(kit.V.keys())
+    vv = [kit.V[sc] for sc in scenes]
+    cc = [_E_comfort_of_scene(sc) for sc in scenes]
+    corr_scene = _pearson(vv, cc)
+    mae_scene = float(np.mean([abs(v - c) for v, c in zip(vv, cc)])) if scenes else None
+
+    # (2) 多世界位置级：单一布局会高估/低估，跨 9 世界报告区间
+    corrs_pos, maes_pos = [], []
+    for sb in world_seeds:
+        envB = CITKGridEnv(seed=sb, max_steps=steps)
+        rng = np.random.default_rng(99 + sb)
+        pairs = []
+        for _ in range(n_probes):
+            pos = envB.free[int(rng.integers(len(envB.free)))]
+            s = envB._sensory(pos, noise=0.0)
+            sc = kit.scene(s)
+            pairs.append((kit.V.get(sc, 0.5), envB.comfort(s)))
+        corrs_pos.append(_pearson([p for p, _ in pairs], [t for _, t in pairs]))
+        maes_pos.append(float(np.mean([abs(p - t) for p, t in pairs])))
+
+    corrs_pos = np.asarray(corrs_pos, float)
+    maes_pos = np.asarray(maes_pos, float)
+    return {
+        "track": "A_crossworld_robust",
+        "n_scenes_learned": len(scenes),
+        "scene_level_corr": round(corr_scene, 4) if corr_scene == corr_scene else None,
+        "scene_level_mae": round(mae_scene, 4) if mae_scene is not None else None,
+        "n_worlds": len(world_seeds),
+        "position_level_corr_mean": round(float(corrs_pos.mean()), 4),
+        "position_level_corr_se": round(float(corrs_pos.std() / np.sqrt(len(corrs_pos))), 4),
+        "position_level_corr_min": round(float(corrs_pos.min()), 4),
+        "position_level_corr_max": round(float(corrs_pos.max()), 4),
+        "position_level_mae_mean": round(float(maes_pos.mean()), 4),
+    }
+
+
 def _greedy_run(env, steps, sd):
     """希望关基线（纯感官需求）：仅追即时舒适，无记忆、无探索。"""
     obs, _ = env.reset(seed=sd)

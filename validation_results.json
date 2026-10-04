@@ -142,6 +142,18 @@
     "greedy_peak_dwell_frac": 0.1281,
     "citk_coverage": 25.8
   },
+  "A_crossworld_robust": {
+    "track": "A_crossworld_robust",
+    "n_scenes_learned": 30,
+    "scene_level_corr": 0.8708,
+    "scene_level_mae": 0.0574,
+    "n_worlds": 9,
+    "position_level_corr_mean": 0.5083,
+    "position_level_corr_se": 0.0629,
+    "position_level_corr_min": 0.3179,
+    "position_level_corr_max": 0.8248,
+    "position_level_mae_mean": 0.0836
+  },
   "B_minigrid_empty": {
     "track": "B_minigrid_public",
     "env_id": "MiniGrid-Empty-8x8-v0",
