@@ -1,11 +1,10 @@
 \documentclass[11pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage[margin=1in]{geometry}
 \usepackage[hidelinks]{hyperref}
+\usepackage{ctex}
 
 \title{CIT-K: A Minimal Zero-Data, Comfort-Driven Self-Emergent Intelligence Kernel\\ \large 猫智能论 (Cat Intelligence Theory) — Architecture, Proof, and Reproducible Testbed}
 \author{Chengyuan Wang (王程远)\\ Independent Scholar, Huizhou, Guangdong, China}
@@ -16,7 +15,7 @@
 \textbf{Preprint draft.} This manuscript is the unified statement of the Cat Intelligence Theory (猫智能论) and its minimal implementation, CIT-K. It consolidates, in a single paper, the theory's \emph{architectural framework} (comfort-gradient drive, hope mechanism, emergent attention/curiosity) and its \emph{existence proof} (a zero-content-pretraining agent that self-emerges from a blank newborn). It is released with a runnable, reproducible validation harness (Track A canonical testbed + Track B public-benchmark cross-check).
 \textbf{Author:} 王程远 (Chengyuan Wang, b. 1987), Independent Scholar, Huizhou, Guangdong, China
 \textbf{Date:} 2026-10-03
-\textbf{Status:} Draft for submission. Not peer-reviewed. Code + data archived via GitHub Release → Zenodo (DOI to be minted).
+\textbf{Status:} Draft for submission. Not peer-reviewed. Code + data archived via GitHub Release → Zenodo (DOI: \href{https://doi.org/10.5281/zenodo.23145344}{10.5281/zenodo.23145344}).
 \end{quote}
 \begin{abstract}
 
@@ -167,7 +166,7 @@ Two honesty notes. \textbf{(i) Seed sensitivity.} The headline +0.324 is one see
 \textbf{Memory need defers sensory-need satisfaction (direct test of the hope mechanism).} CIT-K's policy (§3) selects actions by the \emph{remembered} successor value \texttt{M[scene][action]}, never by the present sensory comfort \texttt{C(s)}. To test whether this memory-driven rule actually \emph{overrides} immediate comfort, we contrast CIT-K (hope ON) with a hope-OFF baseline that, at every step, greedily maximises the \emph{immediate} successor comfort — a perfect-comfort-knowledge agent that chases present sensory need and never remembers. On \textbf{69\%} of CIT-K's deliberate (non-ε) steps the chosen action diverges from the immediate-comfort-greedy action; in the late phase (post-convergence) this is \textbf{68.7\%}, confirming the divergence is not early-learning noise. CIT-K also camps the comfort maximum only \textbf{0.032} of steps versus \textbf{0.128} for the pure-comfort agent. In short, the agent does \emph{not} sit at the nearest comfort peak: its decisions are governed by remembered value, so present sensory comfort is routinely deferred. This is the empirical realisation of the theory's claim that the memory need, facing the expectation of better-remembered states, suppresses the immediate sensory need. \textbf{Scope note:} the effect is \emph{local} — \texttt{M} is a one-step EMA of visited successors — so CIT-K exhibits deferral of immediate comfort and goal-anchored returns, not deep long-horizon planning; we state this precisely and claim no foresight.
 
 \subsection{4.2 Track B — Public benchmark cross-check (MiniGrid)}
-We port the \textbf{same} CIT-K agent to real MiniGrid (Farama), \textbf{ignore the mission (external goal)}, and drive purely by intrinsic novelty — placing CIT-K on the same stage as curiosity / intrinsic-motivation literature. We add \textbf{RND} (Random Network Distillation, Burda et al. 2018) in its \textbf{dependency-free, linear-predictor variant}: a fixed random target network whose representation is predicted by a closed-form ridge regressor (no torch, no autograd). This preserves RND's essential mechanism — \emph{random target + learnable predictor → prediction error as novelty} — while removing the deep-network dependency, so the comparison isolates the \emph{intrinsic-motivation idea} from its network substrate. All three agents share the \textbf{identical policy}; only the intrinsic signal differs (CIT-K = novelty count / zero-NN; RND = linear-predictor error). 3000 steps × \textbf{10 seeds}; values are means, with standard deviations reported alongside (and in \texttt{validation_results.json}).
+We port the \textbf{same} CIT-K agent to real MiniGrid (Farama), \textbf{ignore the mission (external goal)}, and drive purely by intrinsic novelty — placing CIT-K on the same stage as curiosity / intrinsic-motivation literature. We add \textbf{RND} (Random Network Distillation, Burda et al. 2018) in its \textbf{dependency-free, linear-predictor variant}: a fixed random target network whose representation is predicted by a closed-form ridge regressor (no torch, no autograd). This preserves RND's essential mechanism — \emph{random target + learnable predictor → prediction error as novelty} — while removing the deep-network dependency, so the comparison isolates the \emph{intrinsic-motivation idea} from its network substrate. All three agents share the \textbf{identical policy}; only the intrinsic signal differs (CIT-K = novelty count / zero-NN; RND = linear-predictor error). 3000 steps × \textbf{10 seeds}; values are means, with standard deviations reported alongside (and in \texttt{validation\_results.json}).
 
 \begin{table}[ht]\centering
 \begin{tabular}{lll}
@@ -196,8 +195,8 @@ The headline claim of CIT-K is that an intelligent agent can self-emerge \textbf
 Inspection & What it rules out & Result on CIT-K \\
 \midrule
 Deep-learning imports (\texttt{torch / tensorflow / neural / backprop / autograd / optim}) & neural networks, gradient descent & only prose comments stating \emph{"no torch"}; \textbf{zero imports} \\
-Model / weight loading (\texttt{load() / pickle / .pt / .h5 / .npy / read_csv / datasets}) & pretrained parameters, external datasets & \textbf{zero hits} \\
-Memory initialisation (\texttt{self.V}, \texttt{self.M}) & baked-in world knowledge & start as \textbf{empty} \texttt{{}}; only a neutral EMA seed \texttt{0.5} and an empty visit counter \\
+Model / weight loading (\texttt{load() / pickle / .pt / .h5 / .npy / read\_csv / datasets}) & pretrained parameters, external datasets & \textbf{zero hits} \\
+Memory initialisation (\texttt{self.V}, \texttt{self.M}) & baked-in world knowledge & start as \textbf{empty} \texttt{\{\}}; only a neutral EMA seed \texttt{0.5} and an empty visit counter \\
 Training loop / gradient step & offline or online pretraining & \textbf{absent} from the CIT-K agent \\
 \bottomrule
 \end{tabular}
@@ -272,7 +271,7 @@ CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-e
 \bibitem{Brooks1986}Brooks, R. (1986). A robust layered control system for a mobile robot. \emph{IEEE JRA}.
 \bibitem{Burda2018}Burda, Y., Edwards, H., Storkey, A., \& Klimov, O. (2018). Exploration by Random Network Distillation. \emph{arXiv:1810.12894}.
 \bibitem{Butlin2023}Butlin, P., Long, R., Elmoznino, E., Bengio, Y., Birch, J., et al. (2023). Consciousness in Artificial Intelligence: Insights from the Science of Consciousness. \emph{arXiv:2308.08708}.
-\bibitem{item}Chevalier-Boisvert, M., et al. (2018/2023). MiniGrid / BabyAI. \emph{arXiv:1807.09270}; Farama Foundation.
+\bibitem{ChevalierBoisvert2018}Chevalier-Boisvert, M., et al. (2018/2023). MiniGrid / BabyAI. \emph{arXiv:1807.09270}; Farama Foundation.
 \bibitem{Colas2022}Colas, C., Karch, T., Sigaud, O., \& Oudeyer, P.-Y. (2022). Autotelic Agents with Intrinsically Motivated Goal-Conditioned Reinforcement Learning: A Short Survey. \emph{Journal of Artificial Intelligence Research}, 74, 1159–1199.
 \bibitem{Cowsik2026}Cowsik, A., Dolev, K., Li, M. Y., De Luca, G. B., Cohen, N., Goodman, N. D., \& Levine, Y. (2026). Self-Play Pretraining with Zero Data. arXiv:2609.30063.
 \bibitem{Damasio1999}Damasio, A. (1999). \emph{The Feeling of What Happens}. Harcourt.
@@ -299,17 +298,17 @@ CIT-K demonstrates that a blank-born, zero-data, comfort-driven agent can self-e
 \bibitem{White1986}White, J., Southgate, E., Thomson, J., \& Brenner, S. (1986). The structure of the nervous system of the nematode \emph{Caenorhabditis elegans} ("The mind of a worm"). \emph{Developmental Biology}.
 \bibitem{Xiong2025}Xiong, C., Qin, C., Wu, F., et al. (2025). Agent0: Unleashing Self-Evolving Agents from Zero Data via Tool-Integrated Reasoning. arXiv:2511.16043.
 \bibitem{Yalon2026}Yalon, N. S., Goldstein, A., Mudrik, L., \& Geva, M. (2026). Indications of Belief-Guided Agency and Meta-Cognitive Monitoring in Large Language Models. arXiv:2602.02467.
-\bibitem{Yoshida2025}Yoshida, N., \& Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. \emph{2025 IEEE International Conference on Development and Learning (ICDL)}. DOI: 10.1109/ICDL63968.2025.11204447.
-\bibitem{Yoshida2025}Yoshida, N., Sprekeler, H., \& Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. \emph{Current Opinion in Behavioral Sciences}, 66, 101611.
+\bibitem{Yoshida2025a}Yoshida, N., \& Kuniyoshi, Y. (2025). Unexpected Capability of Homeostasis for Open-ended Learning. \emph{2025 IEEE International Conference on Development and Learning (ICDL)}. DOI: 10.1109/ICDL63968.2025.11204447.
+\bibitem{Yoshida2025b}Yoshida, N., Sprekeler, H., \& Gutkin, B. (2025). Linking homeostasis to reinforcement learning: Internal state control of motivated behavior. \emph{Current Opinion in Behavioral Sciences}, 66, 101611.
 \bibitem{Yue2026}Yue, Z., Upasani, K., Yang, X., et al. (2026). Dr. Zero: Self-Evolving Search Agents without Training Data. arXiv:2601.07055.
 \bibitem{Zhang2021}Zhang, T., Xu, H., Wang, X., Wu, Y., Keutzer, K., Gonzalez, J. E., \& Tian, Y. (2021). NovelD: A simple yet effective exploration criterion. \emph{NeurIPS 2021}.
-\bibitem{item}(and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
+\bibitem{Lineage}(and the philosophical lineage: Schopenhauer, Spinoza, Freud, Xunzi, Buddhist Abhidharma / 唯识宗.)
 \end{thebibliography}
 \paragraph{Code availability}
 \begin{itemize}
-\item \textbf{Code:} \texttt{citk_env.py} (Track A), \texttt{citk_minigrid.py} (Track B, with RND), \texttt{run_validation.py} (two-track harness).
+\item \textbf{Code:} \texttt{citk\_env.py} (Track A), \texttt{citk\_minigrid.py} (Track B, with RND), \texttt{run\_validation.py} (two-track harness).
 \item \textbf{Env:} Gymnasium-compatible \texttt{CITKGridEnv}; public MiniGrid (\texttt{MiniGrid-Empty-8x8-v0}, \texttt{MiniGrid-FourRooms-v0}).
-\item \textbf{Determinism:} all runs seeded; raw metrics in \texttt{validation_results.json} (Tracks A/B); figures in \texttt{validation_fig.png} / \texttt{citk_plus_dl_fig.png}.
+\item \textbf{Determinism:} all runs seeded; raw metrics in \texttt{validation\_results.json} (Tracks A/B); figures in \texttt{validation\_fig.png} / \texttt{citk\_plus\_dl\_fig.png}.
 \item \textbf{Red lines:} enumerated as R1–R7 in §2.3; the kernel obeys them by construction.
 \item \textbf{DOI / priority:} this manuscript + code are archived via \textbf{GitHub Release → Zenodo}, minting a citable, immutable DOI. Priority of the \emph{idea} is anchored by the GitHub Release timestamp.
 \end{itemize}
