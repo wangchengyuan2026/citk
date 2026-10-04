@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this CIT-K kernel or the Cat Intelligence (HIM) theory in your research, please cite the works below."
+title: "CIT-K: The Minimal Zero-Network Kernel of Cat Intelligence (HIM) Theory"
+abstract: >-
+  CIT-K is a ~119-line, zero-network, zero-gradient, zero-content-pretraining
+  autonomous-motivation agent driven solely by a single computable comfort
+  gradient. It starts from a blank newborn, learns only by passive causal
+  memory, and self-emerges a world model and an exploration-homecoming
+  alternation without external reward, preset goal, or neural network.
+authors:
+  - family-names: Wang
+    given-names: Chengyuan
+    alias: "王程远"
+    affiliation: "Independent Scholar"
+type: software
+license: MIT
+version: "1.0.0"
+date-released: "2026-10-05"
+keywords:
+  - intrinsic motivation
+  - autonomous agent
+  - homeostatic reinforcement learning
+  - zero-network
+  - minimal kernel
+  - cat intelligence
+  - HIM
+references:
+  - type: article
+    title: "反思智能：存在自主动机的最简机器模型设计"
+    authors:
+      - family-names: Wang
+        given-names: Chengyuan
+    journal: "人工智能与机器人研究"
+    volume: 7
+    issue: 1
+    start: 1
+    end: 16
+    year: 2018
+    doi: "10.12677/airr.2018.71001"
+  - type: manuscript
+    title: "CIT-K — Cat Intelligence Theory Kernel (companion manuscript, in prep for arXiv)"
+    authors:
+      - family-names: Wang
+        given-names: Chengyuan
+    year: 2026

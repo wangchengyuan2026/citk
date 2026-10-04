@@ -15,6 +15,9 @@ CIT-K（Cat Intelligence Theory Kernel，猫智能论内核）是「猫智能论
 - `*.json` / `*.png` — 实测数据与逐种子存证
 - `docs/` — 多模型独立验收与终审记录（supplementary）
 
+## 理论溯源 / Lineage
+CIT-K 是「猫智能论 / HIM（Homeostatic Incentive Mechanism）」理论的最简内核实现。更早的、结构更完整的 HIM 理论实验实现与批判复算——包括对你原论文伪代码 `drive = ΔL + hope` 跑不出探索的复算、区域新奇度算子的补全、以及公理/无感官/空间打乱等消融实验——存档于姊妹仓库 **[wangchengyuan2026/CIT-K](https://github.com/wangchengyuan2026/CIT-K)**，可作为本内核的理论前身与历史记录。两者同源（均源于 Wang, 2018）；CIT-K 走更纯净的单一标量舒适 + V/M 表格记忆路线，去除了显式新奇度算子。
+
 ## 前置文献 / Prior work
 - (Wang, 2018) 反思智能：存在自主动机的最简机器模型设计。*人工智能与机器人研究*, 7(1):1–16. DOI: 10.12677/airr.2018.71001.（已发表，基石；本文的理论起源）
 - 注：CIT-K 的架构框架（舒适度梯度驱动、希望机制、涌现注意力/好奇心）与无预训练存在性证明已**合并于本文单一投稿稿**，不再单独成稿。
