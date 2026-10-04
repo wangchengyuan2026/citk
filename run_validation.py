@@ -94,13 +94,14 @@ RND/NovelD 同台只测「状态覆盖 / 因果覆盖」。
   非探索步中 CIT-K 的记忆驱动动作偏离「即时舒适贪婪动作」的比例 **{A_def['override_rate_mean']}**（±{A_def['override_rate_se']}）；
   峰值区停留占比 CIT-K **{A_def['citk_peak_dwell_frac']}** vs 即时舒适贪婪基线 **{A_def['greedy_peak_dwell_frac']}**
   （CIT-K 显著更低 → 不赖在最近舒适峰、推延即时满足；详见 §4.1）
-- 价值跨世界一致性（场景级，正确度量）：Map A 学得的 V[场景] 对场景真实平均舒适度
-  E[C|场景]（世界无关）corr=**{A_cw['scene_level_corr']}**、MAE=**{A_cw['scene_level_mae']}**，
-  覆盖 **{A_cw['n_scenes_learned']}** 个场景
-- 价值跨世界一致性（位置级，稳健性区间）：跨 **{A_cw['n_worlds']}** 个独立 Map B 布局
+- 价值跨世界一致性（场景级，正确度量，多种子）：Map A 学得的 V[场景] 对场景真实平均舒适度
+  E[C|场景]（世界无关）corr=**{A_cw['scene_level_corr_mean']} ± {A_cw['scene_level_corr_se']}**
+  （{A_cw['n_agent_seeds']} 个 agent 种子，区间 {A_cw['scene_level_corr_min']}–{A_cw['scene_level_corr_max']}）、
+  MAE=**{A_cw['scene_level_mae_mean']}**，每种子约 **{A_cw['n_scenes_learned_mean']}** 个场景
+- 价值跨世界一致性（位置级，诚实稳健带）：跨 {A_cw['n_agent_seeds']} agent × {A_cw['n_worlds']} 世界组合
   corr=**{A_cw['position_level_corr_mean']} ± {A_cw['position_level_corr_se']}**
   （区间 {A_cw['position_level_corr_min']}–{A_cw['position_level_corr_max']}）——
-  说明单一世界的 0.799 是对布局敏感的单点，场景级才是「价值世界无关」的忠实度量
+  说明原单一世界 0.799 是对布局/种子敏感的单点，场景级才是「价值世界无关」的忠实度量
 
 ## Track B — MiniGrid 公开校验（外部可信度：CIT-K vs RND vs Random）
 | 指标 | Empty-8x8 (CIT-K/RND/Random) | FourRooms (CIT-K/RND/Random) |

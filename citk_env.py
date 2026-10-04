@@ -231,48 +231,68 @@ def _E_comfort_of_scene(sc, bins=4, ngrid=6):
     return tot / n
 
 
-def run_crossworld_robust(steps=6000, seedA=1, world_seeds=(2, 3, 4, 5, 6, 7, 8, 9, 10),
-                          n_probes=400):
-    """跨世界一致性的稳健版：场景级解析相关（正确度量，世界无关）+ 多世界位置级
-    探针（诚实稳健性区间）。修复原单一世界位置级 0.799 对世界布局敏感的缺陷。"""
+def run_crossworld_robust(steps=6000, seedA=1, agent_seeds=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+                          world_seeds=(2, 3, 4, 5, 6, 7, 8, 9, 10), n_probes=400):
+    """跨世界一致性的稳健版（多种子）：场景级解析相关（正确度量，世界无关）+
+    多世界位置级探针（诚实稳健性区间）。场景级报告 10 个 agent 种子的均值±SE，
+    位置级报告 agent×world 组合的均值±SE，从而给出分布而非单点。"""
     envA = CITKGridEnv(seed=seedA, max_steps=steps)
-    kit = Kitten()
-    rollout(envA, kit, steps, seed=seedA)
 
-    # (1) 场景级：V[scene] vs E[C|scene]（世界无关，正确度量）
-    scenes = sorted(kit.V.keys())
-    vv = [kit.V[sc] for sc in scenes]
-    cc = [_E_comfort_of_scene(sc) for sc in scenes]
-    corr_scene = _pearson(vv, cc)
-    mae_scene = float(np.mean([abs(v - c) for v, c in zip(vv, cc)])) if scenes else None
-
-    # (2) 多世界位置级：单一布局会高估/低估，跨 9 世界报告区间
+    scene_corrs, scene_maes, n_scenes_list = [], [], []
     corrs_pos, maes_pos = [], []
-    for sb in world_seeds:
-        envB = CITKGridEnv(seed=sb, max_steps=steps)
-        rng = np.random.default_rng(99 + sb)
-        pairs = []
-        for _ in range(n_probes):
-            pos = envB.free[int(rng.integers(len(envB.free)))]
-            s = envB._sensory(pos, noise=0.0)
-            sc = kit.scene(s)
-            pairs.append((kit.V.get(sc, 0.5), envB.comfort(s)))
-        corrs_pos.append(_pearson([p for p, _ in pairs], [t for _, t in pairs]))
-        maes_pos.append(float(np.mean([abs(p - t) for p, t in pairs])))
+    for sd in agent_seeds:
+        kit = Kitten(seed=sd)
+        rollout(envA, kit, steps, seed=seedA)  # 世界固定 seedA（重置布局+噪声RNG），只变 agent
 
+        # (1) 场景级：V[scene] vs E[C|scene]（世界无关，正确度量）
+        scenes = sorted(kit.V.keys())
+        vv = [kit.V[sc] for sc in scenes]
+        cc = [_E_comfort_of_scene(sc, bins=kit.bins) for sc in scenes]
+        scene_corrs.append(_pearson(vv, cc))
+        scene_maes.append(float(np.mean([abs(v - c) for v, c in zip(vv, cc)])) if scenes else float("nan"))
+        n_scenes_list.append(len(scenes))
+
+        # (2) 多世界位置级：单一布局会高估/低估，跨 9 世界报告区间
+        for sb in world_seeds:
+            envB = CITKGridEnv(seed=sb, max_steps=steps)
+            rng = np.random.default_rng(99 + sb)
+            pairs = []
+            for _ in range(n_probes):
+                pos = envB.free[int(rng.integers(len(envB.free)))]
+                s = envB._sensory(pos, noise=0.0)
+                sc = kit.scene(s)
+                pairs.append((kit.V.get(sc, 0.5), envB.comfort(s)))
+            corrs_pos.append(_pearson([p for p, _ in pairs], [t for _, t in pairs]))
+            maes_pos.append(float(np.mean([abs(p - t) for p, t in pairs])))
+
+    scene_corrs = np.asarray(scene_corrs, float)
+    scene_maes = np.asarray(scene_maes, float)
     corrs_pos = np.asarray(corrs_pos, float)
     maes_pos = np.asarray(maes_pos, float)
+
+    def _m(x):
+        x = np.asarray(x, float)
+        return float(x.mean()) if x.size else float("nan")
+
+    def _se(x):
+        x = np.asarray(x, float)
+        return float(x.std() / np.sqrt(x.size)) if x.size > 1 else 0.0
+
     return {
         "track": "A_crossworld_robust",
-        "n_scenes_learned": len(scenes),
-        "scene_level_corr": round(corr_scene, 4) if corr_scene == corr_scene else None,
-        "scene_level_mae": round(mae_scene, 4) if mae_scene is not None else None,
+        "n_agent_seeds": len(agent_seeds),
+        "n_scenes_learned_mean": round(_m(n_scenes_list), 1),
+        "scene_level_corr_mean": round(_m(scene_corrs), 4),
+        "scene_level_corr_se": round(_se(scene_corrs), 4),
+        "scene_level_corr_min": round(float(scene_corrs.min()), 4),
+        "scene_level_corr_max": round(float(scene_corrs.max()), 4),
+        "scene_level_mae_mean": round(_m(scene_maes), 4),
         "n_worlds": len(world_seeds),
-        "position_level_corr_mean": round(float(corrs_pos.mean()), 4),
-        "position_level_corr_se": round(float(corrs_pos.std() / np.sqrt(len(corrs_pos))), 4),
+        "position_level_corr_mean": round(_m(corrs_pos), 4),
+        "position_level_corr_se": round(_se(corrs_pos), 4),
         "position_level_corr_min": round(float(corrs_pos.min()), 4),
         "position_level_corr_max": round(float(corrs_pos.max()), 4),
-        "position_level_mae_mean": round(float(maes_pos.mean()), 4),
+        "position_level_mae_mean": round(_m(maes_pos), 4),
     }
 
 

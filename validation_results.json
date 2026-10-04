@@ -144,15 +144,19 @@
   },
   "A_crossworld_robust": {
     "track": "A_crossworld_robust",
-    "n_scenes_learned": 30,
-    "scene_level_corr": 0.8708,
-    "scene_level_mae": 0.0574,
+    "n_agent_seeds": 10,
+    "n_scenes_learned_mean": 28.7,
+    "scene_level_corr_mean": 0.9015,
+    "scene_level_corr_se": 0.0124,
+    "scene_level_corr_min": 0.8493,
+    "scene_level_corr_max": 0.9747,
+    "scene_level_mae_mean": 0.0482,
     "n_worlds": 9,
-    "position_level_corr_mean": 0.5083,
-    "position_level_corr_se": 0.0629,
-    "position_level_corr_min": 0.3179,
-    "position_level_corr_max": 0.8248,
-    "position_level_mae_mean": 0.0836
+    "position_level_corr_mean": 0.4474,
+    "position_level_corr_se": 0.0227,
+    "position_level_corr_min": 0.0889,
+    "position_level_corr_max": 0.8588,
+    "position_level_mae_mean": 0.0893
   },
   "B_minigrid_empty": {
     "track": "B_minigrid_public",
