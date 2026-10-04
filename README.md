@@ -30,8 +30,14 @@ python citk_plus_dl.py              # 协作原型
 ```
 无内容预训练的可审计证明见英文稿附录 A.1（四条 grep 命令真复现）。
 
-## 发布 / Release
-代码与论文经 **GitHub Release → Zenodo** 归档，铸出不可变 DOI（arXiv 因账号限制未走）。原始发布包亦存于 WorkBuddy 资料库。
+## 永久存档 / Permanent archive (DOI)
+代码与论文经 **GitHub Release → Zenodo** 铸出不可变 DOI，作为优先权与时间戳证据（删不改、谁也改不了）：
+
+- **DOI:** [10.5281/zenodo.23145344](https://doi.org/10.5281/zenodo.23145344)
+- **Zenodo 记录:** https://zenodo.org/records/23145344
+
+标准引用格式：
+> Wang, C. (2026). *CIT-K: Cognitive Internal Theory - K (Minimal Zero-Network Kernel v1.0.0)*. Zenodo. https://doi.org/10.5281/zenodo.23145344
 
 ## 许可 / License
 代码以 MIT 许可证开源（见 `LICENSE`）；论文以预印本形式发布，保留作者署名。

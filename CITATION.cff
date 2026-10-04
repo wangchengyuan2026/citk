@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this CIT-K kernel or the Cat Intelligence (HIM) theory in your research, please cite the works below."
-title: "CIT-K: The Minimal Zero-Network Kernel of Cat Intelligence (HIM) Theory"
+title: "CIT-K: Cognitive Internal Theory — Kernel (Minimal Zero-Network Kernel)"
 abstract: >-
   CIT-K is a ~119-line, zero-network, zero-gradient, zero-content-pretraining
   autonomous-motivation agent driven solely by a single computable comfort
@@ -16,6 +16,10 @@ type: software
 license: MIT
 version: "1.0.0"
 date-released: "2026-10-05"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23145344
+    description: "Permanent archive of CIT-K v1.0.0 (GitHub Release snapshot via Zenodo)"
 keywords:
   - intrinsic motivation
   - autonomous agent
@@ -37,9 +41,13 @@ references:
     end: 16
     year: 2018
     doi: "10.12677/airr.2018.71001"
-  - type: manuscript
-    title: "CIT-K — Cat Intelligence Theory Kernel (companion manuscript, in prep for arXiv)"
-    authors:
-      - family-names: Wang
-        given-names: Chengyuan
-    year: 2026
+preferred-citation:
+  type: software
+  title: "CIT-K: Cognitive Internal Theory - K (Minimal Zero-Network Kernel v1.0.0)"
+  authors:
+    - family-names: Wang
+      given-names: Chengyuan
+  version: "1.0.0"
+  date-released: "2026-10-05"
+  doi: "10.5281/zenodo.23145344"
+  url: "https://doi.org/10.5281/zenodo.23145344"
